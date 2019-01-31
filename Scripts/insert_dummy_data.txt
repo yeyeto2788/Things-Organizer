@@ -1,0 +1,49 @@
+/*Insert user admin*/
+INSERT INTO User (Name, Lastname,
+Email, Password, LastLogin, Active) VALUES('Admin', 'Admin', 'admin@test.com', 'aGVsbG8=', '1548403200', 0);
+
+/*Categories*/
+INSERT INTO Category (Name) VALUES('Electronics');
+INSERT INTO Category (Name) VALUES('Others');
+
+/*Storages*/
+INSERT INTO Storage (Name, Location) VALUES('BOX1', 'Room');
+INSERT INTO Storage (Name, Location) VALUES('BOX2', 'Room');
+INSERT INTO Storage (Name, Location) VALUES('BOX3', 'Room');
+INSERT INTO Storage (Name, Location) VALUES('BOX4', 'Garage');
+
+/*Things*/
+INSERT INTO Thing (Name, Description, Unit, Quantity, StorageID, CategoryID)
+VALUES('ESP8216', 'Microcontroller', 'Board', 2, 1, 1);
+INSERT INTO Thing (Name, Description, Unit, Quantity, StorageID, CategoryID)
+VALUES('ESP32', 'Microcontroller', 'Board', 2, 1, 1);
+INSERT INTO Thing (Name, Description, Unit, Quantity, StorageID, CategoryID)
+VALUES('Arduino', 'Microcontroller', 'Board', 2, 1, 1);
+INSERT INTO Thing (Name, Description, Unit, Quantity, StorageID, CategoryID)
+VALUES('Ethernet Cable', 'Cable', 'Unit', 3, 2, 2);
+INSERT INTO Thing (Name, Description, Unit, Quantity, StorageID, CategoryID)
+VALUES('USB Cable', 'Cable', 'Unit', 5, 2, 2);
+INSERT INTO Thing (Name, Description, Unit, Quantity, StorageID, CategoryID)
+VALUES('Telephone Cable', 'Cable', 'Unit', 1, 2, 2);
+INSERT INTO Thing (Name, Description, Unit, Quantity, StorageID, CategoryID)
+VALUES('Power Cable', 'Cable', 'Unit', 1, 2, 2);
+
+/*Tags*/
+INSERT INTO Tags (Title) VALUES('MicroPython');
+INSERT INTO Tags (Title) VALUES('Microcontroller');
+INSERT INTO Tags (Title) VALUES('Electronics');
+INSERT INTO Tags (Title) VALUES('Cables');
+
+/*ThingTags*/
+INSERT INTO ThingTag (ThingID, TagID) VALUES(1, 3);
+INSERT INTO ThingTag (ThingID, TagID) VALUES(2, 3);
+INSERT INTO ThingTag (ThingID, TagID) VALUES(3, 3);
+INSERT INTO ThingTag (ThingID, TagID) VALUES(5, 3);
+INSERT INTO ThingTag (ThingID, TagID) VALUES(6, 3);
+INSERT INTO ThingTag (ThingID, TagID) VALUES(7, 3);
+
+/*UserThings*/
+INSERT INTO UserThing (UserID, ThingID) VALUES(1, 1);
+INSERT INTO UserThing (UserID, ThingID) VALUES(1, 2);
+INSERT INTO UserThing (UserID, ThingID) VALUES(1, 3);
+INSERT INTO UserThing (UserID, ThingID) VALUES(1, 4);

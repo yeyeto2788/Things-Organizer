@@ -1,0 +1,21 @@
+# Virtual environments:
+/venv/*
+
+# Pycharm related:
+.idea/
+.cache
+
+# Test related files:
+.coverage
+coverage.xml
+unittests.xml
+
+# PyLint related files:
+./pylint.txt
+
+# Scripts with sensitive info
+Scripts/generate_doc.py
+Scripts/testing_gendoc.py
+
+# Databases
+./things_organizer/data/*.db
