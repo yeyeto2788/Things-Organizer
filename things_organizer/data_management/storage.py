@@ -27,7 +27,7 @@ def add_storage(str_storage, str_location):
     bln_return = False
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     database = Operations.DataBase(DB_NAME)
     database.close_connection = 0
@@ -54,7 +54,7 @@ def add_storage(str_storage, str_location):
                 database.close_db_connection()
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     return bln_return
 
@@ -71,12 +71,13 @@ def get_storages():
     lst_data = []
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     database = Operations.DataBase(DB_NAME)
     database.connect_to_db()
 
     try:
+        utils.debug("Getting all data from table {}\n".format(TBL_STORAGE))
         lst_data = database.get_table_content(TBL_STORAGE)
     except Errors.DataBaseError as excerror:
         utils.debug("An Error occurred: \n {}".format(excerror.__str__()))
@@ -86,6 +87,54 @@ def get_storages():
         database.close_db_connection()
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     return lst_data
+
+
+def get_storage_id(str_name):
+    """
+    Get the id of the storage based on the name of the storage.
+
+    Args:
+        str_name: Name of the storage.
+
+    Returns:
+        int if found, else None
+    """
+
+    int_return = None
+
+    utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+
+    database = Operations.DataBase(DB_NAME)
+    database.close_connection = 0
+    database.connect_to_db()
+    cursor = database.db_connection.cursor()
+
+    str_sql = "SELECT ID FROM {} WHERE Name='{}'".format(TBL_STORAGE, str_name)
+
+    try:
+        utils.debug("Executing query \n{}\n".format(str_sql))
+        cursor.execute(str_sql)
+        rows = cursor.fetchall()
+        int_row_length = len(rows)
+
+        if int_row_length > 0:
+            for row in rows:
+                for column in row:
+                    int_return = column
+                    break
+                break
+    except Errors.DataBaseError as excerror:
+        utils.debug("An Error occurred: \n {}".format(excerror.__str__()))
+        db_log = Operations.DataBaseLogger()
+        db_log.log_error(excerror.__str__())
+    finally:
+        database.close_db_connection()
+
+    utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+
+    return int_return

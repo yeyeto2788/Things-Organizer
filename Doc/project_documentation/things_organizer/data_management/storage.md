@@ -17,6 +17,16 @@ storage passed by parameters.
 **Returns:** True if record is added, else False.
 
 
+### `get_storage_id(str_name)`
+Get the id of the storage based on the name of the storage.
+
+**Args:**
+
+ * **`str_name`**  Name of the storage.
+
+**Returns:** int if found, else None
+
+
 ### `get_storages()`
 Get all storages on database.
 

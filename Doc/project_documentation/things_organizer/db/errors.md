@@ -15,6 +15,9 @@ TableExistenceError
 
 
 ### `class AlreadyExistsError(DataBaseError)`
+
+### `AlreadyExistsError(variable=None)`
+
 DataBaseError used for when the data already exist on the database.
 
 If the `variable` is not message will be:
@@ -46,7 +49,7 @@ __weakref__
 list of weak references to the object (if defined)
 
 
-Methods inherited from builtins.Exception:
+Static methods inherited from builtins.Exception:
 
 
 ### `__new__(*args, **kwargs) from builtins.type`
@@ -68,7 +71,7 @@ Methods inherited from builtins.BaseException:
 
 
 ### `__reduce__(...)`
-helper for pickle
+Helper for pickle.
 
 
 ### `__repr__(self, /)`
@@ -108,6 +111,9 @@ args
 
 
 ### `class DataBaseConnectionError(DataBaseError)`
+
+### `DataBaseConnectionError(variable=None)`
+
 DataBaseError used for when there is a database connection error.
 
 If the `variable` is not message will be:
@@ -139,7 +145,7 @@ __weakref__
 list of weak references to the object (if defined)
 
 
-Methods inherited from builtins.Exception:
+Static methods inherited from builtins.Exception:
 
 
 ### `__new__(*args, **kwargs) from builtins.type`
@@ -161,7 +167,7 @@ Methods inherited from builtins.BaseException:
 
 
 ### `__reduce__(...)`
-helper for pickle
+Helper for pickle.
 
 
 ### `__repr__(self, /)`
@@ -201,6 +207,9 @@ args
 
 
 ### `class DataBaseError(builtins.Exception)`
+
+### `DataBaseError(message, variable=None)`
+
 Base Error for database operations, it will just raise a general exception with the message
 given as parameter.
 
@@ -229,7 +238,7 @@ __weakref__
 list of weak references to the object (if defined)
 
 
-Methods inherited from builtins.Exception:
+Static methods inherited from builtins.Exception:
 
 
 ### `__new__(*args, **kwargs) from builtins.type`
@@ -251,7 +260,7 @@ Methods inherited from builtins.BaseException:
 
 
 ### `__reduce__(...)`
-helper for pickle
+Helper for pickle.
 
 
 ### `__repr__(self, /)`
@@ -291,6 +300,9 @@ args
 
 
 ### `class DataBaseExistenceError(DataBaseError)`
+
+### `DataBaseExistenceError(variable=None)`
+
 DataBaseError used for when a database do not exists on a directory.
 
 If the `variable` is not message will be:
@@ -322,7 +334,7 @@ __weakref__
 list of weak references to the object (if defined)
 
 
-Methods inherited from builtins.Exception:
+Static methods inherited from builtins.Exception:
 
 
 ### `__new__(*args, **kwargs) from builtins.type`
@@ -344,7 +356,7 @@ Methods inherited from builtins.BaseException:
 
 
 ### `__reduce__(...)`
-helper for pickle
+Helper for pickle.
 
 
 ### `__repr__(self, /)`
@@ -384,6 +396,9 @@ args
 
 
 ### `class NotFoundError(DataBaseError)`
+
+### `NotFoundError(variable=None)`
+
 DataBaseError used for records not found.
 
 Method resolution order:
@@ -412,7 +427,7 @@ __weakref__
 list of weak references to the object (if defined)
 
 
-Methods inherited from builtins.Exception:
+Static methods inherited from builtins.Exception:
 
 
 ### `__new__(*args, **kwargs) from builtins.type`
@@ -434,7 +449,7 @@ Methods inherited from builtins.BaseException:
 
 
 ### `__reduce__(...)`
-helper for pickle
+Helper for pickle.
 
 
 ### `__repr__(self, /)`
@@ -474,6 +489,9 @@ args
 
 
 ### `class TableExistenceError(DataBaseError)`
+
+### `TableExistenceError(variable=None)`
+
 DataBaseError used for when a table do not exists on the database.
 
 If the `variable` is not message will be:
@@ -505,7 +523,7 @@ __weakref__
 list of weak references to the object (if defined)
 
 
-Methods inherited from builtins.Exception:
+Static methods inherited from builtins.Exception:
 
 
 ### `__new__(*args, **kwargs) from builtins.type`
@@ -527,7 +545,7 @@ Methods inherited from builtins.BaseException:
 
 
 ### `__reduce__(...)`
-helper for pickle
+Helper for pickle.
 
 
 ### `__repr__(self, /)`

@@ -62,6 +62,12 @@ Handles the storage creation and rendering on the page.
 **Returns:** Flask template based on the request method.
 
 
+### `handle_tags()`
+Handles the showing or not of the tags on the system.
+
+**Returns:** flask template.
+
+
 ### `handle_things()`
 Handles the showing or not of the things belonging to the user.
 

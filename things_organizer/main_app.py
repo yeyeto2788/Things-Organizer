@@ -40,16 +40,13 @@ def root():
 
     """
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
-    if 'email' not in flask.session:
-        utils.debug("Redirecting to 'login' page.")
-        template_return = flask.redirect(flask.url_for('handle_login'))
-    else:
-        utils.debug("Redirecting to 'things' page.")
-        template_return = flask.render_template(flask.url_for('handle_things'))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+    utils.debug("Rendering 'Index' page.")
+
+    template_return = flask.render_template('index.html')
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
     return template_return
 
 
@@ -69,10 +66,11 @@ def handle_edit(str_to_edit, int_id):
 
     lst_to_edit = {'category': common.TBL_CATEGORIES,
                    'storage': common.TBL_STORAGE,
-                   'thing': common.TBL_THINGS}
+                   'thing': common.TBL_THINGS,
+                   'tag': common.TBL_TAGS}
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     template_return = flask.render_template('404.html'), 404
 
@@ -97,8 +95,8 @@ def handle_edit(str_to_edit, int_id):
                 lst_new_values.append(form_data[data_key])
 
             # Add the ID from requests since it is not enable on the form
-            # lst_new_values[0] = int_id
-            # TODO: Get StorageID and CategoryID from Name
+            # lst_new_values.insert(0, int_id)
+
             utils.debug('lst_columns: ', lst_columns, 'lst_new_values', lst_new_values)
 
             bln_return = common.update_table_row(lst_to_edit[str_to_edit],
@@ -113,6 +111,9 @@ def handle_edit(str_to_edit, int_id):
                 elif str_to_edit == "thing":
                     utils.debug("Redirecting to '{}' page.".format(str_to_edit))
                     template_return = flask.redirect(flask.url_for("handle_things"))
+                elif str_to_edit == "tag":
+                    utils.debug("Redirecting to '{}' page.".format(str_to_edit))
+                    template_return = flask.redirect(flask.url_for("handle_tags"))
 
     elif 'email' not in flask.session:
         utils.debug("Redirecting to 'Login' page.")
@@ -122,7 +123,7 @@ def handle_edit(str_to_edit, int_id):
         template_return = flask.redirect(flask.url_for('page_not_found'))
 
         utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
     return template_return
 
 
@@ -137,7 +138,7 @@ def handle_login():
 
     """
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
     if flask.request.method == 'GET':
         flask_template = flask.render_template('login.html')
     else:
@@ -157,7 +158,7 @@ def handle_login():
                                                    str_to_display=_CONTAINER.format(str_page))
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
     return flask_template
 
 
@@ -170,18 +171,18 @@ def handle_logout():
         It will redirect the user to home.
 
     """
-    # remove the username from the session if it's there
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
-
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+    # remove the username from the session if it's there
     if 'email' in flask.session:
         int_id = user.get_user_id(flask.session['email'])
         flask.session.pop('email', None)
         user.delete_session(int_id)
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+
     return flask.redirect(flask.url_for('root'))
 
 
@@ -195,27 +196,52 @@ def handle_categories():
 
     """
 
-    lst_tdata = []
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
-    if flask.request.method == 'GET':
+    html_data = {
+        "form_url": flask.url_for("handle_categories"),
+        "form_items": ["Category Name"],
+        "table_columns": ["ID", "Name"],
+        "table_name": common.TBL_CATEGORIES,
+        "edit_url": "category"
+    }
 
-        if 'email' in flask.session:
-            if common.is_table_configured(
-                    common.TBL_CATEGORIES):
-                lst_tdata = category.get_categories()
+    if 'email' in flask.session:
+        int_id = user.get_user_id(flask.session['email'])
+
+        if flask.request.method == 'GET':
+
+            if common.is_table_configured(common.TBL_CATEGORIES):
+                    lst_tdata = category.get_categories()
+            else:
+                lst_tdata = None
+
+            template_return = flask.render_template('_table.html', table_data=lst_tdata,
+                                                    html_data=html_data)
         else:
-            lst_tdata = None
-    else:
-        str_category = flask.request.form['strCategoryName']
+            str_category = flask.request.form['strCategoryName']
 
-        if category.add_category(str_category):
-            lst_tdata = category.get_categories()
+            if user.check_session(int_id):
+
+                if category.add_category(str_category):
+                    lst_tdata = category.get_categories()
+
+                else:
+                    lst_tdata = None
+
+                template_return = flask.render_template('_table.html', table_data=lst_tdata,
+                                                        html_data=html_data)
+            else:
+                template_return = flask.redirect(flask.url_for('page_not_found'))
+
+    else:
+        template_return = flask.redirect('/login')
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
-    return flask.render_template('categories.html', table_data=lst_tdata)
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+
+    return template_return
 
 
 @app.route('/storages', methods=['POST', 'GET'])
@@ -228,29 +254,53 @@ def handle_storage():
 
     """
 
-    lst_tdata = []
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
-    if flask.request.method == 'GET':
+    html_data = {
+        "form_url": flask.url_for("handle_storage"),
+        "form_items": ["Storage name", "Storage location"],
+        "table_columns": ["ID", "Name", "Location"],
+        "table_name": common.TBL_STORAGE,
+        "edit_url": "storage"
+    }
 
-        if 'email' in flask.session:
+    if 'email' in flask.session:
+        int_id = user.get_user_id(flask.session['email'])
 
-            if common.is_table_configured(
-                    common.TBL_STORAGE):
-                lst_tdata = storage.get_storages()
+        if flask.request.method == 'GET':
+
+            if common.is_table_configured(common.TBL_STORAGE):
+                    lst_tdata = category.get_categories()
+            else:
+                lst_tdata = None
+
+            template_return = flask.render_template('_table.html', table_data=lst_tdata,
+                                                    html_data=html_data)
         else:
-            lst_tdata = None
-    else:
-        str_storage = flask.request.form['strStorageName']
-        str_location = flask.request.form['strLocation']
+            str_storage = flask.request.form['strStorageName']
+            str_location = flask.request.form['strLocation']
 
-        if storage.add_storage(str_storage, str_location):
-            lst_tdata = storage.get_storages()
+            if user.check_session(int_id):
+
+                if storage.add_storage(str_storage, str_location):
+                    lst_tdata = storage.get_storages()
+
+                else:
+                    lst_tdata = None
+
+                template_return = flask.render_template('_table.html', table_data=lst_tdata,
+                                                        html_data=html_data)
+            else:
+                template_return = flask.redirect(flask.url_for('page_not_found'))
+
+    else:
+        template_return = flask.redirect('/login')
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
-    return flask.render_template('storages.html', table_data=lst_tdata)
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+
+    return template_return
 
 
 @app.route('/register', methods=['POST', 'GET'])
@@ -266,7 +316,7 @@ def handle_register():
     """
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     if flask.request.method == 'GET':
         flask_template = flask.render_template('register.html', )
@@ -311,8 +361,67 @@ def handle_register():
                                                str_to_display=_CONTAINER.format(str_page))
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
     return flask_template
+
+
+@app.route("/tags", methods=['POST', 'GET'])
+@app.route("/tags.html", methods=['POST', 'GET'])
+def handle_tags():
+    """
+        Handles the showing or not of the tags on the system.
+
+        Returns:
+            flask template.
+
+        """
+
+    utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+
+    html_data = {
+        "form_url": flask.url_for("handle_tags"),
+        "form_items": ["Tag title"],
+        "table_columns": ["ID", "Title"],
+        "table_name": common.TBL_TAGS,
+        "edit_url": "tag"
+    }
+
+    if 'email' in flask.session:
+        int_id = user.get_user_id(flask.session['email'])
+
+        if flask.request.method == 'GET':
+
+            if common.is_table_configured(common.TBL_STORAGE):
+                    lst_tdata = category.get_categories()
+            else:
+                lst_tdata = None
+
+            template_return = flask.render_template('_table.html', table_data=lst_tdata,
+                                                    html_data=html_data)
+        else:
+            str_title = flask.request.form['strTitle']
+
+            if user.check_session(int_id):
+
+                if tag.add_tag(str_title):
+                    lst_tdata = tag.get_tags()
+
+                else:
+                    lst_tdata = None
+
+                template_return = flask.render_template('_table.html', table_data=lst_tdata,
+                                                        html_data=html_data)
+            else:
+                template_return = flask.redirect(flask.url_for('page_not_found'))
+
+    else:
+        template_return = flask.redirect('/login')
+
+    utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+
+    return template_return
 
 
 @app.route("/things", methods=['GET'])
@@ -327,16 +436,20 @@ def handle_things():
     """
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     if 'email' in flask.session:
         int_id = user.get_user_id(flask.session['email'])
+
         if user.check_session(int_id):
             lst_tdata = things.get_user_things(int_id)
+
             if not lst_tdata:
                 lst_tdata = None
+
             utils.debug("Redirecting to 'things' page.")
             flask_template = flask.render_template('things.html', table_data=lst_tdata)
+
         else:
             utils.debug("Redirecting to 'login' page.")
             flask_template = flask.redirect(flask.url_for('handle_login'))
@@ -345,7 +458,7 @@ def handle_things():
         flask_template = flask.redirect(flask.url_for('handle_login'))
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
     return flask_template
 
 
@@ -358,14 +471,19 @@ def logs():
         flask.template with all logs of the application.
     """
 
-    lst_data = common.get_logs()
-
-    str_page = _CONTAINER
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S",
+                                                            time.gmtime())))
 
-    if lst_data:
-        str_inner = """<div class="table-responsive">
+    if 'email' in flask.session:
+        int_id = user.get_user_id(flask.session['email'])
+
+        str_page = _CONTAINER
+
+        lst_data = common.get_logs()
+
+        if lst_data:
+            str_inner = """<div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
@@ -376,23 +494,31 @@ def logs():
                       <th>Timestamp</th>
                     </tr>
                   </thead>
-        """
-        for row in lst_data:
-            str_inner += "<tr>"
-            for int_id, column in enumerate(row):
-                if int_id == 2:
-                    str_inner += "<td><code>{}</code></td>".format(column)
-                else:
-                    str_inner += "<td>{}</td>".format(column)
-            str_inner += "</tr>"
-        str_inner += """</table>
-              </div>"""
+                """
+            for row in lst_data:
+                str_inner += "<tr>"
+                for int_id, column in enumerate(row):
+                    if int_id == 2:
+                        str_inner += "<td><code>{}</code></td>".format(column)
+                    else:
+                        str_inner += "<td>{}</td>".format(column)
+                str_inner += "</tr>"
+            str_inner += """</table>
+                      </div>"""
+        else:
+            str_inner = "<br><h1 align='center'>No logs registered.</h1>"
+
+        template_return = flask.render_template('_blank.html',
+                                                str_to_display=str_page.format(str_inner))
     else:
-        str_inner = "<br><h1 align='center'>No logs registered.</h1>"
+        utils.debug("Rendering '/login' page.")
+
+        template_return = flask.redirect('/login')
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
-    return flask.render_template('_blank.html', str_to_display=str_page.format(str_inner))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+
+    return template_return
 
 
 @app.errorhandler(404)
@@ -428,7 +554,7 @@ def generate_form(str_editing, lst_columns, lst_values):
     str_inner_form = ""
 
     for column, value in zip(lst_columns, lst_values):
-        str_disable = " disabled" if (column == 'ID') else " "
+        str_disable = """ disabled""" if (column == 'ID') else " "
 
         if column == "StorageID":
             column = "Storage"
@@ -438,9 +564,9 @@ def generate_form(str_editing, lst_columns, lst_values):
                 str_inner += """<option value="{}">{}</option>\n""".format(row[0], row[1])
 
             str_inner_form += """<label for="str{column}">{column}</label>
-                        <select class="form-control">
-                            {str_inner}
-                        </select>""".format(column=column, str_inner=str_inner)
+            <select name="str{column}" class="form-control">
+                {str_inner}
+            </select>""".format(column=column, str_inner=str_inner)
         elif column == "CategoryID":
             column = "Category"
             lst_ncolumns = category.get_categories()
@@ -449,13 +575,13 @@ def generate_form(str_editing, lst_columns, lst_values):
                 str_inner += """<option value="{}">{}</option>\n""".format(row[0], row[1])
 
             str_inner_form += """<label for="str{column}">{column}</label>
-            <select class="form-control">
+            <select name="str{column}" class="form-control">
                 {str_inner}
             </select>""".format(column=column, str_inner=str_inner)
         else:
             str_inner_form += """<label for="str{column}">{column}</label>
         <input type="text" class="form-control" id="str{column}" name="str{column}" value="{value}" 
-        placeholder="{value}"{disable}>""".format(column=column, value=value, disable=str_disable)
+        placeholder="{value}" {disable}>""".format(column=column, value=value, disable=str_disable)
 
     str_form = """
     <div>

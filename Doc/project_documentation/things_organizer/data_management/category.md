@@ -21,6 +21,16 @@ Get all categories on database.
 
 **Returns:** List with the return of get_table_content from Operations.DataBase
 
+
+### `get_category_id(str_name)`
+Get the id of the category based on the name of the storage.
+
+**Args:**
+
+ * **`str_name`**  Name of the storage.
+
+**Returns:** int if found, else None
+
 ## DATA
 DB_NAME = 'testing.db'
 TBL_CATEGORIES = 'Category'

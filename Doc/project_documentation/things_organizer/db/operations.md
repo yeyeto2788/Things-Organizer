@@ -10,6 +10,9 @@ DataBaseLogger
 
 
 ### `class DataBase(builtins.object)`
+
+### `DataBase(str_db_name='things_organizer.db')`
+
 Database object to do all possible operation on DB.
 
 Attributes:
@@ -319,4 +322,4 @@ Return the current time in seconds since the Epoch.
 Fractions of a second may be present if the system clock provides them.
 
 ## DATA
-DB_PATH = '/home/linux/GitHub/Things-Organizer/things_organizer/data'
+DB_PATH = r'C:\workspace\unnamed\things_organizer\data'

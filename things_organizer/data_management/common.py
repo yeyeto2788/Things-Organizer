@@ -39,7 +39,7 @@ def create_tables(str_dbname=DB_NAME):
     bln_return = False
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     database = Operations.DataBase(str_dbname)
     database.close_connection = 0
@@ -99,7 +99,7 @@ def create_tables(str_dbname=DB_NAME):
     database.close_db_connection()
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     return bln_return
 
@@ -122,7 +122,7 @@ def is_data_on_table(str_tname, lst_values, bln_omit_id=1):
     bln_return = False
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     database = Operations.DataBase(DB_NAME)
     database.close_connection = 0
@@ -160,7 +160,7 @@ def is_data_on_table(str_tname, lst_values, bln_omit_id=1):
             database.close_db_connection()
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     return bln_return
 
@@ -180,7 +180,7 @@ def is_table_configured(str_tname):
     bln_return = False
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     database = Operations.DataBase(DB_NAME)
 
@@ -208,7 +208,7 @@ def is_table_configured(str_tname):
         database.close_db_connection()
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     return bln_return
 
@@ -226,7 +226,7 @@ def get_all_data_from(str_tname):
     """
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     database = Operations.DataBase(DB_NAME)
     database.connect_to_db()
@@ -234,7 +234,7 @@ def get_all_data_from(str_tname):
     database.close_db_connection()
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     return lst_return
 
@@ -252,7 +252,7 @@ def get_columns_from(str_tname):
     """
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     database = Operations.DataBase(DB_NAME)
     database.connect_to_db()
@@ -260,7 +260,7 @@ def get_columns_from(str_tname):
     database.close_db_connection()
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     return lst_return
 
@@ -282,7 +282,7 @@ def get_data_by_id(str_tname, int_id):
     lst_return = []
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     database = Operations.DataBase(DB_NAME)
     database.connect_to_db()
@@ -301,7 +301,7 @@ def get_data_by_id(str_tname, int_id):
         database.close_db_connection()
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     return lst_return
 
@@ -318,7 +318,7 @@ def get_logs():
     lst_data = []
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     database = Operations.DataBaseLogger()
 
@@ -331,7 +331,7 @@ def get_logs():
         database.close_db_connection()
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     return lst_data
 
@@ -354,7 +354,7 @@ def update_table_row(str_tname, lst_columns, lst_values, int_id=None):
     bln_return = False
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     database = Operations.DataBase(DB_NAME)
     database.close_connection = 0
@@ -394,6 +394,6 @@ def update_table_row(str_tname, lst_columns, lst_values, int_id=None):
         database.close_db_connection()
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     return bln_return

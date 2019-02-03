@@ -25,7 +25,7 @@ def add_tag(str_tag_title):
     bln_return = False
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     database = Operations.DataBase(DB_NAME)
     database.close_connection = 0
@@ -51,7 +51,7 @@ def add_tag(str_tag_title):
                 database.close_db_connection()
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     return bln_return
 
@@ -68,7 +68,7 @@ def get_tags():
     lst_data = []
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     database = Operations.DataBase(DB_NAME)
     database.connect_to_db()
@@ -83,6 +83,6 @@ def get_tags():
         database.close_db_connection()
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     return lst_data

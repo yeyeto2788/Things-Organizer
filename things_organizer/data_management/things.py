@@ -23,12 +23,12 @@ def add_thing():
     bln_return = False
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     print("Add a thing")
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     return bln_return
 
@@ -49,7 +49,7 @@ def get_thing_tags(int_thingid):
     lst_data = []
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     database = Operations.DataBase(DB_NAME)
     database.close_connection = 0
@@ -73,7 +73,7 @@ def get_thing_tags(int_thingid):
         database.close_db_connection()
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     return lst_data
 
@@ -94,7 +94,7 @@ def get_things_by_category(str_category, int_user):
     lst_data = []
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     database = Operations.DataBase(DB_NAME)
     database.close_connection = 0
@@ -130,7 +130,7 @@ def get_things_by_category(str_category, int_user):
         database.close_db_connection()
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     return lst_data
 
@@ -151,7 +151,7 @@ def get_things_by_location(str_location, int_user):
     lst_data = []
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     database = Operations.DataBase(DB_NAME)
     database.close_connection = 0
@@ -187,7 +187,7 @@ def get_things_by_location(str_location, int_user):
         database.close_db_connection()
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     return lst_data
 
@@ -208,7 +208,7 @@ def get_things_by_storage(str_storage, int_user):
     lst_data = []
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     database = Operations.DataBase(DB_NAME)
     database.close_connection = 0
@@ -244,7 +244,7 @@ def get_things_by_storage(str_storage, int_user):
         database.close_db_connection()
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     return lst_data
 
@@ -264,7 +264,7 @@ def get_user_things(int_id):
     lst_data = []
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     database = Operations.DataBase(DB_NAME)
     database.connect_to_db()
@@ -301,6 +301,6 @@ def get_user_things(int_id):
         database.close_db_connection()
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     return lst_data

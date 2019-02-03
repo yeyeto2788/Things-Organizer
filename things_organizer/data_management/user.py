@@ -26,7 +26,7 @@ def add_session(int_user):
     bln_return = False
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     database = Operations.DataBase(DB_NAME)
     database.close_connection = 0
@@ -54,7 +54,7 @@ def add_session(int_user):
         database.close_db_connection()
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     return bln_return
 
@@ -73,7 +73,7 @@ def is_user(str_email, str_password):
     bln_return = False
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     database = Operations.DataBase(DB_NAME)
     database.close_connection = 0
@@ -101,7 +101,7 @@ def is_user(str_email, str_password):
         database.close_db_connection()
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     return bln_return
 
@@ -118,7 +118,7 @@ def delete_all_sessions():
     bln_return = False
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     database = Operations.DataBase(DB_NAME)
     database.close_connection = 0
@@ -137,7 +137,7 @@ def delete_all_sessions():
         database.close_db_connection()
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     return bln_return
 
@@ -157,7 +157,7 @@ def delete_session(int_id):
     bln_return = False
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     database = Operations.DataBase(DB_NAME)
     database.close_connection = 0
@@ -176,7 +176,7 @@ def delete_session(int_id):
         database.close_db_connection()
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     return bln_return
 
@@ -196,7 +196,7 @@ def get_session(int_user):
     str_session = None
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     database = Operations.DataBase(DB_NAME)
     database.close_connection = 0
@@ -226,7 +226,7 @@ def get_session(int_user):
         db_log.log_error(excerror.__str__(), str_sql)
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     return str_session
 
@@ -246,7 +246,7 @@ def get_user_id(str_email):
     int_return = None
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     database = Operations.DataBase(DB_NAME)
     database.close_connection = 0
@@ -276,7 +276,7 @@ def get_user_id(str_email):
         database.close_db_connection()
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     return int_return
 
@@ -296,7 +296,7 @@ def get_user_password(str_email):
     str_return = None
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     database = Operations.DataBase(DB_NAME)
     database.close_connection = 0
@@ -327,7 +327,7 @@ def get_user_password(str_email):
         database.close_db_connection()
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     return str_return
 
@@ -348,7 +348,7 @@ def register_user(str_name, str_lastname, str_email, str_password):
     bln_return = False
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     database = Operations.DataBase(DB_NAME)
     database.close_connection = 0
@@ -357,7 +357,7 @@ def register_user(str_name, str_lastname, str_email, str_password):
     str_sql = """INSERT INTO {user} (Name, Lastname, Email, Password, LastLogin, Active)
      VALUES('{name}', '{lastname}', '{email}', '{password}', '{timestamp}', 1);
      """.format(user=TBL_USERS, name=str_name, lastname=str_lastname, email=str_email,
-                password=str_password, timestamp=time())
+                password=str_password, timestamp=int(time.time()))
     try:
         utils.debug("Executing query \n{}\n".format(str_sql))
         bln_return = database.execute_sql(str_sql)
@@ -370,7 +370,7 @@ def register_user(str_name, str_lastname, str_email, str_password):
         database.close_db_connection()
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     return bln_return
 
@@ -391,7 +391,7 @@ def check_session(int_user):
     bln_return = False
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     database = Operations.DataBase(DB_NAME)
     database.close_connection = 0
@@ -427,6 +427,6 @@ def check_session(int_user):
         db_log.log_error(excerror.__str__(), str_sql)
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     return bln_return
