@@ -400,7 +400,7 @@ def handle_tags():
             template_return = flask.render_template('_table.html', table_data=lst_tdata,
                                                     html_data=html_data)
         else:
-            str_title = flask.request.form['strTitle']
+            str_title = flask.request.form['strTagtitle']
 
             if user.check_session(int_id):
 
