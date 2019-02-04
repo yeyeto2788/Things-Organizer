@@ -392,15 +392,15 @@ def handle_tags():
 
         if flask.request.method == 'GET':
 
-            if common.is_table_configured(common.TBL_STORAGE):
-                    lst_tdata = category.get_categories()
+            if common.is_table_configured(common.TBL_TAGS):
+                    lst_tdata = tag.get_tags()
             else:
                 lst_tdata = None
 
             template_return = flask.render_template('_table.html', table_data=lst_tdata,
                                                     html_data=html_data)
         else:
-            str_title = flask.request.form['strTagtitle']
+            str_title = flask.request.form['strTitle']
 
             if user.check_session(int_id):
 
