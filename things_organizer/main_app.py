@@ -149,8 +149,13 @@ def handle_login():
             flask.session['email'] = str_email
             int_id = user.get_user_id(str_email)
             user.add_session(int_id)
-            utils.debug("Redirecting to 'things' page.")
-            flask_template = flask.redirect(flask.url_for('handle_things'))
+
+            if 'next_url' in flask.session:
+                flask_template = flask.redirect(flask.session['next_url'])
+                utils.debug("Redirecting to '{}' page.".format(flask.session['next_url']))
+            else:
+                flask_template = flask.redirect(flask.url_for('root'))
+                utils.debug("Redirecting to 'root' page.")
         else:
             str_page = """<h1 align="center">Not possible to sign in :(</h1>"""
             utils.debug("Redirecting to '_blank' page due to problems logging in.")
@@ -237,6 +242,7 @@ def handle_categories():
 
     else:
         template_return = flask.redirect('/login')
+        flask.session['next_url'] = flask.request.path
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
                                               time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
@@ -271,15 +277,15 @@ def handle_storage():
         if flask.request.method == 'GET':
 
             if common.is_table_configured(common.TBL_STORAGE):
-                    lst_tdata = category.get_categories()
+                    lst_tdata = storage.get_storages()
             else:
                 lst_tdata = None
 
             template_return = flask.render_template('_table.html', table_data=lst_tdata,
                                                     html_data=html_data)
         else:
-            str_storage = flask.request.form['strStorageName']
-            str_location = flask.request.form['strLocation']
+            str_storage = flask.request.form['strStoragename']
+            str_location = flask.request.form['strStoragelocation']
 
             if user.check_session(int_id):
 
@@ -296,6 +302,7 @@ def handle_storage():
 
     else:
         template_return = flask.redirect('/login')
+        flask.session['next_url'] = flask.request.path
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
                                               time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
@@ -417,6 +424,7 @@ def handle_tags():
 
     else:
         template_return = flask.redirect('/login')
+        flask.session['next_url'] = flask.request.path
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
                                               time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
@@ -453,9 +461,11 @@ def handle_things():
         else:
             utils.debug("Redirecting to 'login' page.")
             flask_template = flask.redirect(flask.url_for('handle_login'))
+            flask.session['next_url'] = flask.request.path
     else:
         utils.debug("Redirecting to 'login' page.")
         flask_template = flask.redirect(flask.url_for('handle_login'))
+        flask.session['next_url'] = flask.request.path
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
                                               time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
@@ -514,6 +524,7 @@ def logs():
         utils.debug("Rendering '/login' page.")
 
         template_return = flask.redirect('/login')
+        flask.session['next_url'] = flask.request.path
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
                                               time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
