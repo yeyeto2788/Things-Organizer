@@ -381,6 +381,9 @@ class DataBaseLogger(DataBase):
             if "'" in str_sql:
                 str_sql = str_sql.translate(str.maketrans({"'": None}))
 
+            if "'" in str_message:
+                str_message = str_message.translate(str.maketrans({"'": None}))
+
             lst_values = utils.convert_list_to_values([str_message, str_sql,
                                                        str_date, str(timestamp)])
 
