@@ -104,6 +104,37 @@ def create_tables(str_dbname=DB_NAME):
     return bln_return
 
 
+def exists_database():
+    """
+    Check whether the database exists or not on the given path for database operations.
+
+    Returns:
+        True if database, else False.
+
+    """
+
+    bln_return = False
+
+    utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+
+    database = Operations.DataBase(DB_NAME)
+    database.close_connection = 0
+    try:
+        database.connect_to_db()
+        database.close_db_connection()
+        bln_return = True
+    except Errors.DataBaseExistenceError as excerror:
+        utils.debug("An Error occurred: \n {}".format(excerror.__str__()))
+        db_log = Operations.DataBaseLogger()
+        db_log.log_error("An Error occurred: \n {}".format(excerror.__str__()))
+
+    utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+
+    return bln_return
+
+
 def is_data_on_table(str_tname, lst_values, bln_omit_id=1):
     """
     Check weather the data is present on table so if already present on table there is no need to
@@ -190,13 +221,8 @@ def is_table_configured(str_tname):
 
         lst_columns = database.get_columns_names(str_tname)
 
-        if lst_columns is None:
-            bln_return = False
-        else:
-            lst_tdata = database.get_table_content(str_tname)
-
-            if lst_tdata:
-                bln_return = True
+        if lst_columns is not None:
+            bln_return = True
 
     except Errors.DataBaseExistenceError as excerror:
         utils.debug("An Error occurred: \n {}".format(excerror.__str__()))
