@@ -50,6 +50,58 @@ def root():
     return template_return
 
 
+@app.route('/add_thing', methods=['POST', 'GET'])
+def handle_add_thing():
+    utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+
+    if 'email' in flask.session:
+        lst_columns = common.get_columns_from(common.TBL_THINGS)[1:]
+
+        lst_categories = [row[1] for row in category.get_categories()]
+        lst_storage = [row[1] for row in storage.get_storages()]
+
+        html_data = {
+            'form_items': lst_columns,
+            'form_url': flask.request.path,
+            'lst_categories': lst_categories,
+            'lst_storage': lst_storage
+        }
+
+        if flask.request.method == 'GET':
+            template_return = flask.render_template('add_thing.html', html_data=html_data)
+        else:
+            form_data = flask.request.form
+            data_keys = []
+            lst_new_values = []
+
+            for data_key in form_data.keys():
+                data_keys.append(data_key)
+                lst_new_values.append(form_data[data_key])
+
+            # Get the storage and category id from given text.
+            int_category = category.get_category_id(lst_new_values[-1])
+            lst_new_values[-1] = int_category
+            int_storage = storage.get_storage_id(lst_new_values[-2])
+            lst_new_values[-2] = int_storage
+
+            utils.debug('lst_columns: ', lst_columns, 'lst_new_values', lst_new_values)
+
+            # Add this on the db.
+            int_user = user.get_user_id(flask.session['email'])
+            bln_return = things.add_thing(lst_columns, lst_new_values, int_user)
+
+            template_return = flask.redirect(flask.url_for('handle_things'))
+    else:
+        flask.session['next_url'] = flask.request.path
+        utils.debug("Redirecting to 'login' page.")
+        template_return = flask.redirect(flask.url_for('handle_login'))
+
+    utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+    return template_return
+
+
 @app.route('/edit/<string:str_to_edit>/<int:int_id>', methods=['POST', 'GET'])
 def handle_edit(str_to_edit, int_id):
     """
@@ -157,7 +209,14 @@ def handle_login():
                 flask_template = flask.redirect(flask.url_for('root'))
                 utils.debug("Redirecting to 'root' page.")
         else:
-            str_page = """<h1 align="center">Not possible to sign in :(</h1>"""
+            str_page = """<div class="container" align="center">
+            <br>
+            <h1>Upss...</h1>
+            <br>
+            <h1>Not possible to sign in :(</h1>
+            <br>
+            <h5>Could it be that you're not registered on the system?</h5>
+            </div>"""
             utils.debug("Redirecting to '_blank' page due to problems logging in.")
             flask_template = flask.render_template('_blank.html',
                                                    str_to_display=_CONTAINER.format(str_page))
@@ -205,7 +264,7 @@ def handle_categories():
                                               time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     html_data = {
-        "form_url": flask.url_for("handle_categories"),
+        "form_url": flask.request.path,
         "form_items": ["Category Name"],
         "table_columns": ["ID", "Name"],
         "table_name": common.TBL_CATEGORIES,
@@ -264,7 +323,7 @@ def handle_storage():
                                               time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     html_data = {
-        "form_url": flask.url_for("handle_storage"),
+        "form_url": flask.request.path,
         "form_items": ["Storage name", "Storage location"],
         "table_columns": ["ID", "Name", "Location"],
         "table_name": common.TBL_STORAGE,
@@ -387,7 +446,7 @@ def handle_tags():
                                               time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     html_data = {
-        "form_url": flask.url_for("handle_tags"),
+        "form_url": flask.request.path,
         "form_items": ["Tag title"],
         "table_columns": ["ID", "Title"],
         "table_name": common.TBL_TAGS,

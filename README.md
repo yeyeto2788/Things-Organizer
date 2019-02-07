@@ -21,7 +21,7 @@ stored that thing. I can also print the label for that item or even for the stor
 I have on different locations(**e.g.** Garage, Room, etc.).
 
 This tool is using the bootstrap template from @BlackrockDigital
-[Start Bootstrap - SB Admin](https://github.com/BlackrockDigital/startbootstrap-sb-admin/blob/master/tables.html)
+[Start Bootstrap - SB Admin](https://github.com/BlackrockDigital/startbootstrap-sb-admin)
 
 ## Project Structure
 
@@ -149,7 +149,7 @@ All logs are accessible from the route `<ip:port>/logs`
    <ul><li> - [ ] Script for Linux.</li>
    <li> - [ ] Script generating DB.</li>
       <ul><li> - [X] Create tables.</li>
-      <li> - [ ] Insert dummy data on tables.</li>
+      <li> - [X] Insert dummy data on tables.</li>
       <li> - [ ] Clear all tables.</li></ul>
    </ul>
  - [ ] Features to add:

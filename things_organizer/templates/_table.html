@@ -37,8 +37,8 @@
                 {% else %}
                     <h2 align="center">Seems like you're not logged in.</h2>
                     <p align="center">
-                        <a href="/register">Register</a> or
-                        <a href="/login">Login</a>.
+                        <a href="{{ url_for('handle_register') }}">Register</a> or
+                        <a href="{{ url_for('handle_login') }}">Login</a>.
                     </p>
                 {% endif %}
               {% else %}

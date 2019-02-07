@@ -18,6 +18,9 @@ content on a template.
 **Returns:** string with the form for the block content of the template.
 
 
+### `handle_add_thing()`
+
+
 ### `handle_categories()`
 Handles the categories creation and rendering on the page.
 

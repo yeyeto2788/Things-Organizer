@@ -22,6 +22,12 @@ hardcoded in this module.
 **Returns:** True if all tables where created.
 
 
+### `exists_database()`
+Check whether the database exists or not on the given path for database operations.
+
+**Returns:** True if database, else False.
+
+
 ### `get_all_data_from(str_tname)`
 Get all data from a table.
 

@@ -9,23 +9,101 @@ import inspect
 from things_organizer import utils
 from things_organizer.data_management.common import DB_NAME, TBL_TAGS, TBL_THINGS_TAGS, TBL_THINGS
 from things_organizer.data_management.common import TBL_STORAGE, TBL_CATEGORIES, TBL_USER_THINGS
+from things_organizer.data_management.common import get_columns_from
 from things_organizer.db import Operations, Errors
 
 
-def add_thing():
+def add_thing(lst_columns, lst_values, int_user):
     """
-    Add a new thing into the database and populate needed tables.
+    Add a new thing into the database and also link thing to user given by
+    argument.
+
+    Args:
+        lst_columns: Columns to be added on the sql
+        lst_values: Values to be assigned
+        int_user: User id
 
     Returns:
         True if operation done, else False.
+
     """
-    # TODO: IMPLEMENT IT HERE AND CHANGE IT IN main_app
+
     bln_return = False
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
                                               time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
-    print("Add a thing")
+    database = Operations.DataBase(DB_NAME)
+    database.close_connection = 0
+    database.connect_to_db()
+    cursor = database.db_connection.cursor()
+
+    str_sql = "INSERT INTO {table_name} ({columns}) VALUES({values});".format(
+        table_name=TBL_THINGS,
+        values=utils.convert_list_to_values(lst_values),
+        columns=utils.convert_list_to_columns(lst_columns))
+
+    try:
+        utils.debug("Executing query \n{}\n".format(str_sql))
+        cursor.execute(str_sql)
+
+        # Retrieve last inserted row.
+        int_thing = cursor.lastrowid
+
+        bln_return = add_user_thing(int_thing, int_user)
+
+    except Exception as excerror:
+        utils.debug("An Error occurred: \n {}".format(excerror.__str__()))
+        db_log = Operations.DataBaseLogger()
+        db_log.log_error(excerror.__str__(), str_sql)
+
+    finally:
+        database.close_db_connection()
+
+    utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+
+    return bln_return
+
+
+def add_user_thing(int_user, int_thing):
+    """
+    Assign a thing to a user.
+
+    Args:
+        int_user: User Id
+        int_thing: Thing Id
+
+    Returns:
+        True if operation done, else False.
+    """
+    bln_return = False
+
+    utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+
+    database = Operations.DataBase(DB_NAME)
+    database.close_connection = 0
+    database.connect_to_db()
+
+    lst_columns = get_columns_from(TBL_USER_THINGS)[1:]
+
+    str_sql = "INSERT INTO {table_name} ({columns}) VALUES({values});".format(
+        table_name=TBL_USER_THINGS,
+        values=utils.convert_list_to_values([int_user, int_thing]),
+        columns=utils.convert_list_to_columns(lst_columns))
+
+    try:
+        utils.debug("Executing query \n{}\n".format(str_sql))
+        bln_return = database.execute_sql(str_sql)
+
+    except Errors.DataBaseError as excerror:
+        utils.debug("An Error occurred: \n {}".format(excerror.__str__()))
+        db_log = Operations.DataBaseLogger()
+        db_log.log_error(excerror.__str__(), str_sql)
+
+    finally:
+        database.close_db_connection()
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
                                               time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))

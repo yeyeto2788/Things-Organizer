@@ -5,8 +5,26 @@ things - Main Things data management.
 
 ## FUNCTIONS
 
-### `add_thing()`
-Add a new thing into the database and populate needed tables.
+### `add_thing(lst_columns, lst_values, int_user)`
+Add a new thing into the database and also link thing to user given by
+argument.
+
+**Args:**
+
+ * **`lst_columns`**  Columns to be added on the sql
+ * **`lst_values`**  Values to be assigned
+ * **`int_user`**  User id
+
+**Returns:** True if operation done, else False.
+
+
+### `add_user_thing(int_user, int_thing)`
+Assign a thing to a user.
+
+**Args:**
+
+ * **`int_user`**  User Id
+ * **`int_thing`**  Thing Id
 
 **Returns:** True if operation done, else False.
 

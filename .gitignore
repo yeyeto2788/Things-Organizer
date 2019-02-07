@@ -1,9 +1,13 @@
+# Compiled:
+*.pyc
+
 # Virtual environments:
 /venv/*
 
 # Pycharm related:
 .idea/
 .cache
+*__pycache__*
 
 # Test related files:
 .coverage
