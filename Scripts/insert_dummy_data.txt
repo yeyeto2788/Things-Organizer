@@ -5,28 +5,51 @@ Email, Password, LastLogin, Active) VALUES('Admin', 'Admin', 'admin@test.com', '
 /*Categories*/
 INSERT INTO Category (Name) VALUES('Electronics');
 INSERT INTO Category (Name) VALUES('Others');
+INSERT INTO Category (Name) VALUES('Household');
+INSERT INTO Category (Name) VALUES('Tools');
+INSERT INTO Category (Name) VALUES('Microcontroller');
+INSERT INTO Category (Name) VALUES('Board');
 
 /*Storages*/
 INSERT INTO Storage (Name, Location) VALUES('BOX1', 'Room');
 INSERT INTO Storage (Name, Location) VALUES('BOX2', 'Room');
 INSERT INTO Storage (Name, Location) VALUES('BOX3', 'Room');
 INSERT INTO Storage (Name, Location) VALUES('BOX4', 'Garage');
+INSERT INTO Storage (Name, Location) VALUES('BOX5', 'Garage');
 
 /*Things*/
 INSERT INTO Thing (Name, Description, Unit, Quantity, StorageID, CategoryID)
-VALUES('ESP8216', 'Microcontroller', 'Board', 2, 1, 1);
+VALUES('ESP8216', 'MCU with builtin WiFi', 'Board', 2, 1, 1);
+
 INSERT INTO Thing (Name, Description, Unit, Quantity, StorageID, CategoryID)
-VALUES('ESP32', 'Microcontroller', 'Board', 2, 1, 1);
+VALUES('ESP32', 'MCU with builtin WiFi and Bluetooth', 'Board', 2, 1, 1);
+
 INSERT INTO Thing (Name, Description, Unit, Quantity, StorageID, CategoryID)
-VALUES('Arduino', 'Microcontroller', 'Board', 2, 1, 1);
+VALUES('Arduino', '8 Bits Microcontroller', 'Board', 2, 1, 1);
+
 INSERT INTO Thing (Name, Description, Unit, Quantity, StorageID, CategoryID)
-VALUES('Ethernet Cable', 'Cable', 'Unit', 3, 2, 2);
+VALUES('Ethernet Cable', '', 'Unit', 3, 2, 2);
+
 INSERT INTO Thing (Name, Description, Unit, Quantity, StorageID, CategoryID)
-VALUES('USB Cable', 'Cable', 'Unit', 5, 2, 2);
+VALUES('USB Cable', '', 'Unit', 5, 2, 2);
+
 INSERT INTO Thing (Name, Description, Unit, Quantity, StorageID, CategoryID)
-VALUES('Telephone Cable', 'Cable', 'Unit', 1, 2, 2);
+VALUES('Telephone Cable', '', 'Unit', 1, 2, 2);
+
 INSERT INTO Thing (Name, Description, Unit, Quantity, StorageID, CategoryID)
-VALUES('Power Cable', 'Cable', 'Unit', 1, 2, 2);
+VALUES('Power Cable', '', 'Unit', 1, 2, 2);
+
+INSERT INTO Thing (Name, Description, Unit, Quantity, StorageID, CategoryID)
+VALUES('Raspberry Pi zero', 'SOC board with linux on', 'Unit', 1, 3, 6);
+
+INSERT INTO Thing (Name, Description, Unit, Quantity, StorageID, CategoryID)
+VALUES('Raspberry Pi Zero W', 'SOC board with linux on', 'Unit', 1, 3, 6);
+
+INSERT INTO Thing (Name, Description, Unit, Quantity, StorageID, CategoryID)
+VALUES('Orange Pi One', 'SOC board with linux on', 'Unit', 1, 3, 6);
+
+INSERT INTO Thing (Name, Description, Unit, Quantity, StorageID, CategoryID)
+VALUES('Orange Pi PC', 'SOC board with linux on', 'Unit', 1, 3, 6);
 
 /*Tags*/
 INSERT INTO Tags (Title) VALUES('MicroPython');
@@ -41,9 +64,21 @@ INSERT INTO ThingTag (ThingID, TagID) VALUES(3, 3);
 INSERT INTO ThingTag (ThingID, TagID) VALUES(5, 3);
 INSERT INTO ThingTag (ThingID, TagID) VALUES(6, 3);
 INSERT INTO ThingTag (ThingID, TagID) VALUES(7, 3);
+INSERT INTO ThingTag (ThingID, TagID) VALUES(1, 1);
+INSERT INTO ThingTag (ThingID, TagID) VALUES(2, 1);
+INSERT INTO ThingTag (ThingID, TagID) VALUES(1, 2);
+INSERT INTO ThingTag (ThingID, TagID) VALUES(2, 2);
+INSERT INTO ThingTag (ThingID, TagID) VALUES(3, 2);
 
 /*UserThings*/
 INSERT INTO UserThing (UserID, ThingID) VALUES(1, 1);
 INSERT INTO UserThing (UserID, ThingID) VALUES(1, 2);
 INSERT INTO UserThing (UserID, ThingID) VALUES(1, 3);
 INSERT INTO UserThing (UserID, ThingID) VALUES(1, 4);
+INSERT INTO UserThing (UserID, ThingID) VALUES(1, 5);
+INSERT INTO UserThing (UserID, ThingID) VALUES(1, 6);
+INSERT INTO UserThing (UserID, ThingID) VALUES(1, 7);
+INSERT INTO UserThing (UserID, ThingID) VALUES(1, 8);
+INSERT INTO UserThing (UserID, ThingID) VALUES(1, 9);
+INSERT INTO UserThing (UserID, ThingID) VALUES(1, 10);
+INSERT INTO UserThing (UserID, ThingID) VALUES(1, 11);
