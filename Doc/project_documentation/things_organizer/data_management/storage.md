@@ -34,4 +34,5 @@ Get all storages on database.
 
 ## DATA
 DB_NAME = 'testing.db'
+
 TBL_STORAGE = 'Storage'

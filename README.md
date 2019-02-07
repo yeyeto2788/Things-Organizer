@@ -4,7 +4,7 @@ Simple and "lightweight" web application for organizing that disaster or room/ga
 (I suppose) we all have.
 
 ```
-Put here the gif of the application running
+Pending to put here the gif of the application running
 ```
 
 The idea came from a day I was looking a SOC board like the Raspberry Pi and I could find it
@@ -156,6 +156,6 @@ All logs are accessible from the route `<ip:port>/logs`
    <ul><li> - [ ] API.</li>
    <li> - [ ] Tags.</li>
    <li> - [ ] Print labels.</li>
-   <li> - [ ] Generate PDF of view.</li>
+   <li> - [ ] Generate PDF/Text file of view.</li>
    <li> - [ ] Create Docker image to run the application.</li>
    </ul>

@@ -102,12 +102,20 @@ Edits the information on a table based on the ID and also the new values passed 
 **Returns:** Boolean with the return of execute_sql from Operations.DataBase.
 
 ## DATA
-DB_NAME = 'testing.db'
+DB_NAME = 'things_organizer.db'
+
 TBL_CATEGORIES = 'Category'
+
 TBL_SESSIONS = 'Session'
+
 TBL_STORAGE = 'Storage'
+
 TBL_TAGS = 'Tags'
+
 TBL_THINGS = 'Thing'
+
 TBL_THINGS_TAGS = 'ThingTag'
+
 TBL_USERS = 'User'
+
 TBL_USER_THINGS = 'UserThing'

@@ -33,4 +33,5 @@ Get the id of the category based on the name of the storage.
 
 ## DATA
 DB_NAME = 'testing.db'
+
 TBL_CATEGORIES = 'Category'

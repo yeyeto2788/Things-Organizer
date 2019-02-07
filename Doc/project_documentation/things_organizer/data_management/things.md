@@ -84,9 +84,15 @@ Get all things that belongs to a given user ID
 
 ## DATA
 DB_NAME = 'testing.db'
+
 TBL_CATEGORIES = 'Category'
+
 TBL_STORAGE = 'Storage'
+
 TBL_TAGS = 'Tags'
+
 TBL_THINGS = 'Thing'
+
 TBL_THINGS_TAGS = 'ThingTag'
+
 TBL_USER_THINGS = 'UserThing'

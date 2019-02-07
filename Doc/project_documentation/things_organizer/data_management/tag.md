@@ -22,4 +22,5 @@ Get all tags on database.
 
 ## DATA
 DB_NAME = 'testing.db'
+
 TBL_TAGS = 'Tags'

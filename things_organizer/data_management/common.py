@@ -20,7 +20,7 @@ TBL_STORAGE = 'Storage'
 TBL_THINGS = 'Thing'
 TBL_TAGS = 'Tags'
 TBL_THINGS_TAGS = 'ThingTag'
-DB_NAME = 'testing.db'
+DB_NAME = 'things_organizer.db'
 
 
 def create_tables(str_dbname=DB_NAME):
@@ -63,7 +63,7 @@ def create_tables(str_dbname=DB_NAME):
         str_sql = """CREATE TABLE IF NOT EXISTS {} (ID INTEGER PRIMARY KEY AUTOINCREMENT,
          Name VARCHAR(255), Description VARCHAR(255), Unit VARCHAR(30), Quantity INTEGER,
          StorageID INTEGER , CategoryID INTEGER, UNIQUE (ID),
-         FOREIGN KEY (StorageID) REFERENCES {}(ID), 
+         FOREIGN KEY (StorageID) REFERENCES {}(ID),
          FOREIGN KEY (CategoryID) REFERENCES {}(ID));
          """.format(TBL_THINGS, TBL_STORAGE, TBL_CATEGORIES)
         utils.debug("Executing query \n{}\n".format(str_sql))

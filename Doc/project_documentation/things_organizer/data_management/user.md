@@ -99,5 +99,7 @@ Adds the user into the database.
 
 ## DATA
 DB_NAME = 'testing.db'
+
 TBL_SESSIONS = 'Session'
+
 TBL_USERS = 'User'
