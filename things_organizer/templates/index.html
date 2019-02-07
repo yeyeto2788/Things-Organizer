@@ -8,17 +8,46 @@
           <!-- Page Content -->
           {% if 'email' in session %}
             <div class="container">
-              <h4 align="center">Hurray!!!</h4>
-              <h4 align="center">All setup for using the application</h4>
-              <br>
-              <p>You can now head over to: </p>
-              <br>
-              <ul>
-                <li><a href="{{ url_for('handle_things') }}">Things</a> to view all your things</li>
-                <li><a href="{{ url_for('handle_categories') }}">Categories</a> to view and add categories to the application.</li>
-                <li><a href="{{ url_for('handle_storage') }}">Storage</a> to view and add storage to the application.</li>
-              </ul>
-              <p><b>Note:</b> Take into account that <b>Categories</b> and <b>Storage</b> is used by anyone register on the application.</p>
+              <div class="row justify-content-center pt-4">
+                <h3 class="display-4" align="center">Hurray!!!</h3>
+              </div>
+              <div class="row justify-content-center">
+                <h3 class="lead" align="center"><b>All setup for using the application</b></h3>
+              </div>
+              <!-- Cards with links -->
+              <div class="row m-4 pb-4">
+                <div class="col-sm-4">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h5 class="card-title">Things</h5>
+                      <p class="card-text">View all items you have on the application.</p>
+                      <a href="{{ url_for('handle_things') }}" class="btn btn-primary">Let's see them!</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h5 class="card-title">Categories</h5>
+                      <p class="card-text">Add or edit different categories for the items you want to organize.</p>
+                      <a href="{{ url_for('handle_categories') }}" class="btn btn-primary">Let's see them!</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h5 class="card-title">Storage</h5>
+                      <p class="card-text">Add or edit different places and types of storage where the items will be stored.</p>
+                      <a href="{{ url_for('handle_storage') }}" class="btn btn-primary">Let's see them!</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Note at the end of the page -->
+              <div class="row justify-content-center">
+                <p class="lead text-muted"><b>Note:</b> Take into account that <b>Categories</b> and <b>Storage</b> is used by anyone registered on the application.</p>
+              </div>
             </div>
           {% else %}
             <div class="container">
@@ -26,7 +55,7 @@
                 <br>
                 <h3 class="lead"><b>Have you ever wondered having all your stuff organized at least like this?</b></h3>
                 <br>
-                <div class="card mb-3 mx-auto" style="width: 60rem;">
+                <div class="card mb-3 mx-auto" style="width: 40rem;">
                   <img class="card-img-top" src="/static/img/landing_image.jpg" alt="Photo by Raymond Rasmusson on Unsplash">
                   <div class="card-body">
                     <p class="card-text"><small class="text-muted">Photo by Raymond Rasmusson on Unsplash</small></p>
