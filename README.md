@@ -100,9 +100,9 @@ In the image below you can see the relationship of each table created on the dat
 <p align="center">
 <img src="Doc/img/sql_diagram.png" alt="SQL scheme Diagram"  width="500"/>
 </p>
-<p align="center">Image done with [dbschema](https://www.dbschema.com/download.html).
+<p align="center">Image done with <a href="https://www.dbschema.com/download.html">dbschema</a>.
 </p>
-<p align="center">Pending to use [SchemaCrawler](https://github.com/schemacrawler/SchemaCrawler) since it is open
+<p align="center">Pending to use <a href="https://github.com/schemacrawler/SchemaCrawler">SchemaCrawler</a> since it is open
 source.</p>
 
 As you can see in the image above there are some uniques columns on tables, which are the following:
@@ -114,23 +114,23 @@ As you can see in the image above there are some uniques columns on tables, whic
       <th>Column</th>
     </tr>
     <tr>
-      <td>`Storage`</td>
+      <td><code>Storage</code></td>
       <td>Name</td>
     </tr>
     <tr>
-      <td>`Category`</td>
+      <td><code>Category</code></td>
       <td>Name</td>
     </tr>
     <tr>
-      <td>`User`</td>
+      <td><code>User</code></td>
       <td>Email</td>
     </tr>
     <tr>
-      <td>`Session`</td>
+      <td><code>Session</code></td>
       <td>SessionKey</td>
     </tr>
     <tr>
-      <td>`Session`</td>
+      <td><code>Session</code></td>
       <td>UserID</td>
     </tr>
   </table>
