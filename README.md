@@ -3,9 +3,9 @@
 Simple and "lightweight" web application for organizing that disaster or room/garage/lab
 (I suppose) we all have.
 
-```
-Pending to put here the gif of the application running
-```
+<div style="text-align:center">
+<img src="Doc/img/animation.gif" />
+</div>
 
 The idea came from a day I was looking a SOC board like the Raspberry Pi and I could find it
 due to the mess I had, all boards, cables, equipment, etc. where all around in different boxes and
