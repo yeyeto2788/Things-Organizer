@@ -26,7 +26,7 @@ else:
 # If you want a debugging server set
 # variable below to True, otherwise leave
 # as it is.
-DEBUG = False
+DEBUG = True
 
 if DEBUG:
     app.run(host=config['ip'], port=config['port'], threaded=True)
