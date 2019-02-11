@@ -7,7 +7,7 @@ from things_organizer.data_management import common
 from waitress import serve
 
 # TODO: Put all application related configuration into a file.
-config = {'ip': '127.0.0.1', 'port': 8080}
+config = {'ip': '0.0.0.0', 'port': 8080}
 
 # Generate a new Key each time the app is run.
 app.secret_key = os.urandom(16)

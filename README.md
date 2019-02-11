@@ -157,5 +157,5 @@ All logs are accessible from the route `<ip:port>/logs`
    <li> - [ ] Tags.</li>
    <li> - [ ] Print labels.</li>
    <li> - [ ] Generate PDF/Text file of view.</li>
-   <li> - [ ] Create Docker image to run the application.</li>
+   <li> - [X] Create Docker image to run the application.</li>
    </ul>
