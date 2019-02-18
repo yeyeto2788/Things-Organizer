@@ -1,115 +1,112 @@
-{% include "_header.html" %}
-{% include "_sidebar.html" %}
+{% extends "_base.html" %}
 
-    <div id="wrapper">
+{% block title %}
+  Things Organizer - Home
+{% endblock %}
 
-        <div class="container-fluid">
-
-          <!-- Page Content -->
-          {% if 'email' in session %}
-            <div class="container">
-              <div class="row justify-content-center pt-4">
-                <h3 class="display-4" align="center">Hurray!!!</h3>
-              </div>
-              <div class="row justify-content-center">
-                <h3 class="lead" align="center"><b>All setup for using the application</b></h3>
-              </div>
-              <!-- Cards with links -->
-              <div class="row m-4 pb-4">
-                <div class="col-sm-4">
-                  <div class="card h-100">
-                    <div class="card-body">
-                      <h5 class="card-title">Things</h5>
-                      <p class="card-text">View all items you have on the application.</p>
-                      <a href="{{ url_for('handle_things') }}" class="btn btn-primary">Let's see them!</a>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-4">
-                  <div class="card h-100">
-                    <div class="card-body">
-                      <h5 class="card-title">Categories</h5>
-                      <p class="card-text">Add or edit different categories for the items you want to organize.</p>
-                      <a href="{{ url_for('handle_categories') }}" class="btn btn-primary">Let's see them!</a>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-4">
-                  <div class="card h-100">
-                    <div class="card-body">
-                      <h5 class="card-title">Storage</h5>
-                      <p class="card-text">Add or edit different places and types of storage where the items will be stored.</p>
-                      <a href="{{ url_for('handle_storage') }}" class="btn btn-primary">Let's see them!</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- Note at the end of the page -->
-              <div class="row justify-content-center">
-                <p class="lead text-muted"><b>Note:</b> Take into account that <b>Categories</b> and <b>Storage</b> is used by anyone registered on the application.</p>
-              </div>
-            </div>
-          {% else %}
-            <div class="container">
-              <div class="mx-auto text-center">
-                <br>
-                <h3 class="lead"><b>Have you ever wondered having all your stuff organized at least like this?</b></h3>
-                <br>
-                <div class="card mb-3 mx-auto" style="width: 40rem;">
-                  <img class="card-img-top" src="/static/img/landing_image.jpg" alt="Photo by Raymond Rasmusson on Unsplash">
-                  <div class="card-body">
-                    <p class="card-text"><small class="text-muted">Photo by Raymond Rasmusson on Unsplash</small></p>
-                  </div>
-                </div>
-              </div>
-
-              <br>
-
-              <p class="lead" align="justify">
-                This is a simple and "lightweight" web application for organizing that disaster or room/garage/lab (I suppose) we all have.
-              </p>
-              <p class="lead" align="justify">
-                The idea came from a day I was looking a SOC board like the Raspberry Pi and I could find it
-                due to the mess I had, all boards, cables, equipment, etc. where all around in different boxes and
-                different places all over my house from my room lab to the garage.
-              </p>
-              <p class="lead" align="justify">
-                So I came up with the idea of develop a server using <a href="http://flask.pocoo.org/">Flask</a> and
-                other Python libraries.
-              </p>
-              <p class="lead" align="justify">
-                Now I can search the thing I'm looking for on the application and it will tell me where I have
-                stored that thing. I can also print the label for that item or even for the storage boxes and bags
-                I have on different locations(<b>e.g.</b> Garage, Room, etc.).
-              </p>
-              <p class="lead" align="justify">
-                This tool is using the bootstrap template from <a href="https://github.com/BlackrockDigital/">@BlackrockDigital</a>
-                <a href="https://github.com/BlackrockDigital/startbootstrap-sb-admin">Start Bootstrap - SB Admin</a>
-              </p>
-              <br>
-              <br>
-              <div class="container text-center">
-                <div class="row align-items-center">
-                  <div class="col">
-                    <a href="{{ url_for('handle_register') }}" class="btn btn-primary btn-lg">Register</a>
-                    <label class="lead"><b> or </b></label>
-                    <a href="{{ url_for('handle_login') }}" class="btn btn-primary btn-lg">Login</a>
-                  </div>
-                </div>
-                <div class="row align-items-center">
-                  <div class="col align-self-center">
-                    <p class="lead"><b>to start using the application</b></p>
-                  </div>
-                </div>
-              </div>
-              <br>
-              <br>
-              <p class="lead" align="left">
-                <b>Note:</b> If you see any issue or you want a feature on this project, please open an issue on the project's <a href="">GitHub repository</a>.
-              </p>
-            </div>
-          {% endif %}
+{% block content %}
+    {% if 'email' in session %}
+      <div class="container">
+        <div class="row justify-content-center pt-4">
+          <h3 class="display-4" align="center">Hurray!!!</h3>
         </div>
-        <!-- /.container-fluid -->
+        <div class="row justify-content-center">
+          <h3 class="lead" align="center"><b>All setup for using the application</b></h3>
+        </div>
+        <!-- Cards with links -->
+        <div class="row m-4 pb-4">
+          <div class="col-sm-4">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title">Things</h5>
+                <p class="card-text">View all items you have on the application.</p>
+                <a href="{{ url_for('handle_things') }}" class="btn btn-primary">Let's see them!</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title">Categories</h5>
+                <p class="card-text">Add or edit different categories for the items you want to organize.</p>
+                <a href="{{ url_for('handle_categories') }}" class="btn btn-primary">Let's see them!</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title">Storage</h5>
+                <p class="card-text">Add or edit different places and types of storage where the items will be stored.</p>
+                <a href="{{ url_for('handle_storage') }}" class="btn btn-primary">Let's see them!</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Note at the end of the page -->
+        <div class="row justify-content-center">
+          <p class="lead text-muted"><b>Note:</b> Take into account that <b>Categories</b> and <b>Storage</b> is used by anyone registered on the application.</p>
+        </div>
+      </div>
+    {% else %}
+      <div class="container">
+        <div class="mx-auto text-center">
+          <br>
+          <h3 class="lead"><b>Have you ever wondered having all your stuff organized at least like this?</b></h3>
+          <br>
+          <div class="card mb-3 mx-auto" style="width: 40rem;">
+            <img class="card-img-top" src="/static/img/landing_image.jpg" alt="Photo by Raymond Rasmusson on Unsplash">
+            <div class="card-body">
+              <p class="card-text"><small class="text-muted">Photo by Raymond Rasmusson on Unsplash</small></p>
+            </div>
+          </div>
+        </div>
 
-{% include "_footer.html" %}
+        <br>
+
+        <p class="lead" align="justify">
+          This is a simple and "lightweight" web application for organizing that disaster or room/garage/lab (I suppose) we all have.
+        </p>
+        <p class="lead" align="justify">
+          The idea came from a day I was looking a SOC board like the Raspberry Pi and I could find it
+          due to the mess I had, all boards, cables, equipment, etc. where all around in different boxes and
+          different places all over my house from my room lab to the garage.
+        </p>
+        <p class="lead" align="justify">
+          So I came up with the idea of develop a server using <a href="http://flask.pocoo.org/">Flask</a> and
+          other Python libraries.
+        </p>
+        <p class="lead" align="justify">
+          Now I can search the thing I'm looking for on the application and it will tell me where I have
+          stored that thing. I can also print the label for that item or even for the storage boxes and bags
+          I have on different locations(<b>e.g.</b> Garage, Room, etc.).
+        </p>
+        <p class="lead" align="justify">
+          This tool is using the bootstrap template from <a href="https://github.com/BlackrockDigital/">@BlackrockDigital</a>
+          <a href="https://github.com/BlackrockDigital/startbootstrap-sb-admin">Start Bootstrap - SB Admin</a>
+        </p>
+        <br>
+        <br>
+        <div class="container text-center">
+          <div class="row align-items-center">
+            <div class="col">
+              <a href="{{ url_for('handle_register') }}" class="btn btn-primary btn-lg">Register</a>
+              <label class="lead"><b> or </b></label>
+              <a href="{{ url_for('handle_login') }}" class="btn btn-primary btn-lg">Login</a>
+            </div>
+          </div>
+          <div class="row align-items-center">
+            <div class="col align-self-center">
+              <p class="lead"><b>to start using the application</b></p>
+            </div>
+          </div>
+        </div>
+        <br>
+        <br>
+        <p class="lead" align="left">
+          <b>Note:</b> If you see any issue or you want a feature on this project, please open an issue on the project's <a href="">GitHub repository</a>.
+        </p>
+      </div>
+    {% endif %}
+{% endblock %}
+
