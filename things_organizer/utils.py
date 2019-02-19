@@ -5,10 +5,14 @@ not to repeat code.
 Common conversions and so on.
 
 """
+import os
 import re
 
 from os import urandom
 from base64 import b64encode
+
+
+DB_PATH = os.path.normpath(os.path.join(os.path.dirname(__file__), "db"))
 
 
 def convert_lists_to_assignment(lst_columns, lst_values):

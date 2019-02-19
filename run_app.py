@@ -1,6 +1,6 @@
 import os
 
-from things_organizer.main_app import app
+from things_organizer import app, DB
 from things_organizer.data_management.user import delete_all_sessions
 from things_organizer.data_management import common
 
@@ -29,6 +29,6 @@ else:
 DEBUG = False
 
 if DEBUG:
-    app.run(host=config['ip'], port=config['port'], threaded=True)
+    app.run(host=config['ip'], port=config['port'], threaded=True, debug=True)
 else:
     serve(app, listen='{}:{}'.format(config['ip'], config['port']))

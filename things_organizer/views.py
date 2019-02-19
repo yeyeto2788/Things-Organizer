@@ -1,5 +1,5 @@
 """
-Main logic of the application is declared here.
+Main views of the application are declared here.
 
 """
 import time
@@ -7,18 +7,13 @@ import base64
 import inspect
 
 import flask
-import flask_restful
+import flask_login
 
-from things_organizer.data_management import category, common, user, storage, tag, things
+from things_organizer import app, login_manager
 from things_organizer import utils
-from things_organizer.api import categories
+from things_organizer.data_management import common, user, things, tag, category, storage
+from things_organizer.db.db_models import User, Thing, Tag, Category, Storage
 
-app = flask.Flask(__name__, static_url_path="/static")
-
-
-API = flask_restful.Api(app)
-
-API.add_resource(categories.CategoriesAPI, '/api/categories', '/api/categories/<int:int_id>')
 
 _CONTAINER = """
  <div id="content-wrapper">
@@ -27,6 +22,11 @@ _CONTAINER = """
     </div>
 </div>
 """
+
+
+@login_manager.user_loader
+def load_user(userid):
+    return User.query.get(int(userid))
 
 
 @app.route('/')
@@ -668,7 +668,6 @@ def generate_form(str_editing, lst_columns, lst_values):
     </div>""".format(str_inner_form, str_editing.title())
 
     return _CONTAINER.format(str_form)
-
 
 # with open(JSON_PATH) as f:
 #     config = json.load(f)
