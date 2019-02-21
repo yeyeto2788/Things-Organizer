@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    {% if 'email' in session %}
+    {% if current_user.is_authenticated %}
       <div class="container">
         <div class="row justify-content-center pt-4">
           <h3 class="display-4" align="center">Hurray!!!</h3>

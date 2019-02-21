@@ -16,12 +16,24 @@ class Thing(database.Model):
     id = database.Column(database.Integer, primary_key=True)
     name = database.Column(database.Text, nullable=False)
     description = database.Column(database.String(300))
-    user_id = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
-    category_id = database.Column(database.Integer, database.ForeignKey('category.id'), nullable=False)
-    storage_id = database.Column(database.Integer, database.ForeignKey('storage.id'), nullable=False)
-    date = database.Column(database.DateTime, default=datetime.utcnow)
-    _tags = database.relationship('Tag', secondary=tags,
-                            backref=database.backref('things', lazy='dynamic'))
+    user_id = database.Column(database.Integer,
+                              database.ForeignKey('user.id'),
+                              nullable=False)
+    category_id = database.Column(database.Integer,
+                                  database.ForeignKey('category.id'),
+                                  nullable=False)
+    storage_id = database.Column(database.Integer,
+                                 database.ForeignKey('storage.id'),
+                                 nullable=False)
+    date = database.Column(database.DateTime,
+                           default=datetime.utcnow)
+    _tags = database.relationship('Tag',
+                                  secondary=tags,
+                                  backref=database.backref('things', lazy='dynamic'))
+    category = database.relationship('Category',
+                                     backref=database.backref('things', lazy='dynamic'))
+    storage = database.relationship('Storage',
+                                    backref=database.backref('things', lazy='dynamic'))
 
     @staticmethod
     def newest(num):
@@ -37,13 +49,14 @@ class Thing(database.Model):
             self._tags = [Tag.get_or_create(name) for name in string.split(',')]
 
     def __repr__(self):
-        return "<Bookmark '{}': '{}'>".format(self.description, self.name)
+        return "<Thing %r>" % self.name
 
 
 class User(database.Model, UserMixin):
     id = database.Column(database.Integer, primary_key=True)
     username = database.Column(database.String(80), unique=True, nullable=False)
     email = database.Column(database.String(120), unique=True, nullable=False)
+    things = database.relationship('Thing', backref='user', lazy='dynamic')
     password_hash = database.Column(database.String)
 
     @property
@@ -62,7 +75,10 @@ class User(database.Model, UserMixin):
         return User.query.filter_by(username=username).first()
 
     def __repr__(self):
-        return "<User '{}'>".format(self.username)
+        return "<User %r>" % self.username
+
+    def __unicode__(self):
+        return self.username
 
 
 class Category(database.Model):
@@ -96,3 +112,6 @@ class Tag(database.Model):
     @staticmethod
     def all():
         return Tag.query.all()
+
+    def __repr__(self):
+        return self.name

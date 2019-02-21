@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-  {% if 'email' in session %}
+  {% if current_user.is_authenticated %}
     {% if html_data['form_items'] %}
         <div>
             <form action="{{ html_data['form_url'] }}" method="post">
@@ -32,7 +32,7 @@
       {{ html_data['table_name'] }} table</div>
     <div class="card-body">
       {% if table_data is none %}
-        {% if 'email' in session  and table_data is none %}
+        {% if current_user.is_authenticated  and table_data is none %}
             <h2 align="center">Seems like table does not have data</h2>
             <p align="center">Try adding items into the table.</p>
         {% else %}

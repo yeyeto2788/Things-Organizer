@@ -1,0 +1,73 @@
+{% extends "_base.html" %}
+
+{% block title %}
+  Things Organizer - Storage
+{% endblock %}
+
+{% block content %}
+  {% if current_user.is_authenticated %}
+    <div>
+        <form action="" method="post">
+          <div class="form-group">
+              {{form.hidden_tag()}}
+              <label for="name">Storage name</label>
+              {{ form.name(class_="form-control") }}
+              <label for="location">Storage Location</label>
+              {{ form.location(class_="form-control") }}
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-10">
+              <button type="submit" class="btn btn-primary">Add</button>
+            </div>
+          </div>
+        </form>
+    </div>
+  {% endif %}
+
+  <!-- DataTables Example -->
+  <div class="card mb-3">
+    <div class="card-header">
+      <i class="fas fa-table"></i>
+      Category table</div>
+    <div class="card-body">
+      {% if table_data is none %}
+        {% if current_user.is_authenticated  and table_data is none %}
+            <h2 align="center">Seems like table does not have data</h2>
+            <p align="center">Try adding items into the table.</p>
+        {% endif %}
+      {% else %}
+        <div class="table-responsive">
+          <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Actions</th>
+              </tr>
+            </tfoot>
+            <tbody>
+              {% for row in table_data %}
+                <tr>
+                  <td>{{ row.name }}</td>
+                  <td>{{ row.location }}</td>
+                  <td>
+                    <a href="/edit/storage/{{ row.id }}"><i class="fas fa-edit"></i></a>
+                    <a href="/delete/storage/{{ row.id }}"><i class="fas fa-trash" style="color:red"></i></a>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% endif %}
+    </div>
+    <!--<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>-->
+  </div>
+{% endblock %}

@@ -11,9 +11,9 @@
       Things table</div>
     <div class="card-body">
       {% if table_data is none %}
-        {% if 'email' in session  and table_data is none %}
+        {% if current_user.is_authenticated  and table_data is none %}
             <h2 align="center">Seems like table does not have data</h2>
-            <p align="center">Try adding items into the table.</p>
+            <p align="center">Try <a href="{{ url_for('handle_add_thing') }}">adding</a> items into the table.</p>
         {% else %}
             <h2 align="center">Seems like you're not logged in.</h2>
             <p align="center">
@@ -26,39 +26,52 @@
           <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
             <thead>
               <tr>
-                <th>ID</th>
                 <th>Name</th>
                 <th>Description</th>
-                <th>Unit</th>
-                <th>Quantity</th>
-                <th>Location</th>
-                <th>Storage</th>
+                <!--<th>Unit</th>-->
+                <!--<th>Quantity</th>-->
                 <th>Category</th>
-                <th></th>
+                <th>Storage</th>
+                <th>Location</th>
+                <th>Tags</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tfoot>
               <tr>
-                <th>ID</th>
                 <th>Name</th>
                 <th>Description</th>
-                <th>Unit</th>
-                <th>Quantity</th>
-                <th>Location</th>
-                <th>Storage</th>
+                <!--<th>Unit</th>-->
+                <!--<th>Quantity</th>-->
                 <th>Category</th>
-                <th></th>
+                <th>Storage</th>
+                <th>Location</th>
+                <th>Tags</th>
+                <th>Actions</th>
               </tr>
             </tfoot>
             <tbody>
             {% for row in table_data %}
               <tr>
-                {% for column in row %}
-                  <td>{{ column }}</td>
-                {% endfor %}
+                <td>{{ row.name }}</td>
+                <td>{{ row.description }}</td>
+                <td>{{ row.category.name }}</td>
+                <td>{{ row.storage.name }}</td>
+                <td>{{ row.storage.location }}</td>
                 <td>
-                  <a href="/edit/thing/{{ row[0] }}"><i class="fas fa-edit"></i></a>
-                  <a href="/delete/thing/{{ row[0] }}"><i class="fas fa-trash" style="color:red"></i></a>
+                  {% if row.tags %}
+                    {% for tag in row._tags %}
+                    <span class="badge badge-pill badge-primary">{{ tag.name }}</span>
+                    <!--<a href="#"></a>-->
+                    {% endfor %}
+                  {% else %}
+                    No tags.
+                  {% endif %}
+                </td>
+                <!--Edit and delete link icons-->
+                <td>
+                  <a href="/edit/thing/{{ row.id }}"><i class="fas fa-edit"></i></a>
+                  <a href="/delete/thing/{{ row.id }}"><i class="fas fa-trash" style="color:red"></i></a>
                 </td>
               </tr>
             {% endfor %}
