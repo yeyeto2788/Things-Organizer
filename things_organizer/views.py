@@ -10,7 +10,7 @@ import flask_login
 
 from things_organizer import app, login_manager, DB
 from things_organizer import utils
-from things_organizer.forms import LoginForm, SignupForm, ThingForm, CategoryForm, StorageForm
+from things_organizer.forms import LoginForm, SignupForm, ThingForm, CategoryForm, StorageForm, TagForm
 from things_organizer.data_management import common, user, tag, category, storage
 from things_organizer.db import db_models
 
@@ -105,7 +105,7 @@ def handle_edit(str_to_edit, int_id):
 
     """
 
-    lst_to_edit = ['category', 'storage', 'thing']
+    lst_to_edit = ['category', 'storage', 'thing', 'tag']
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
                                               time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
@@ -120,6 +120,10 @@ def handle_edit(str_to_edit, int_id):
             table_object = db_models.Storage.query.get_or_404(int_id)
             form = StorageForm(obj=table_object)
             str_redirect = 'handle_storage'
+        elif str_to_edit == "tag":
+            table_object = db_models.Tag.query.get_or_404(int_id)
+            form = TagForm(obj=table_object)
+            str_redirect = 'handle_tags'
         else:
             table_object = db_models.Thing.query.get_or_404(int_id)
             form = ThingForm(obj=table_object)
@@ -167,66 +171,53 @@ def handle_delete(str_to_edit, int_id):
 
     """
 
-    lst_to_edit = {'category': common.TBL_CATEGORIES,
-                   'storage': common.TBL_STORAGE,
-                   'thing': common.TBL_THINGS,
-                   'tag': common.TBL_TAGS}
+    lst_to_edit = ['category', 'storage', 'thing', 'tag']
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
                                               time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
-    template_return = flask.render_template('404.html'), 404
+    if (str_to_edit in lst_to_edit) and flask_login.current_user.is_authenticated:
 
-    if (str_to_edit in lst_to_edit.keys()) and 'email' in flask.session:
-
-        lst_pre_values = common.get_data_by_id(lst_to_edit[str_to_edit], int_id)
-        lst_columns = common.get_columns_from(lst_to_edit[str_to_edit])
-
-        if flask.request.method == 'GET':
-
-            str_return = generate_form(str_to_edit, lst_columns, lst_pre_values)
-            utils.debug("Redirecting to the edit page for {}.".format(str_to_edit))
-            template_return = flask.render_template('_blank.html', str_to_display=str_return)
-
+        if str_to_edit == "category":
+            table_object = db_models.Category.query.get_or_404(int_id)
+            form = CategoryForm(obj=table_object)
+            str_redirect = 'handle_categories'
+        elif str_to_edit == "storage":
+            table_object = db_models.Storage.query.get_or_404(int_id)
+            form = StorageForm(obj=table_object)
+            str_redirect = 'handle_storage'
+        elif str_to_edit == "tag":
+            table_object = db_models.Tag.query.get_or_404(int_id)
+            form = TagForm(obj=table_object)
+            str_redirect = 'handle_tags'
         else:
-            form_data = flask.request.form
-            data_keys = []
-            lst_new_values = []
+            table_object = db_models.Thing.query.get_or_404(int_id)
+            form = ThingForm(obj=table_object)
+            categories = [(cat.id, cat.name) for cat in db_models.Category.query.all()]
+            form.category.choices = categories
+            storages = [(s.id, s.name) for s in db_models.Storage.query.all()]
+            form.storage.choices = storages
+            str_redirect = 'handle_things'
 
-            for data_key in form_data.keys():
-                data_keys.append(data_key)
-                lst_new_values.append(form_data[data_key])
+            if flask_login.current_user != table_object.user:
+                flask.abort(403)
 
-            # Add the ID from requests since it is not enable on the form
-            # lst_new_values.insert(0, int_id)
+        if flask.request.method == "POST":
+            DB.session.delete(table_object)
+            DB.session.commit()
+            flask.flash("Deleted '{}' {}".format(table_object.name, str_to_edit))
+            template_return = flask.redirect(flask.url_for(
+                str_redirect, username=flask_login.current_user.username))
+        else:
+            flask.flash("Please confirm deleting the {} '{}'.".format(
+                str_to_edit, table_object.name))
+            template_return = flask.render_template("confirm_deletion.html", form=form)
 
-            utils.debug('lst_columns: ', lst_columns, 'lst_new_values', lst_new_values)
-
-            bln_return = common.update_table_row(lst_to_edit[str_to_edit],
-                                                 lst_columns, lst_new_values, int_id)
-            if bln_return:
-                if str_to_edit == "category":
-                    utils.debug("Redirecting to '{}' page.".format(str_to_edit))
-                    template_return = flask.redirect(flask.url_for("handle_categories"))
-                elif str_to_edit == "storage":
-                    utils.debug("Redirecting to '{}' page.".format(str_to_edit))
-                    template_return = flask.redirect(flask.url_for("handle_storage"))
-                elif str_to_edit == "thing":
-                    utils.debug("Redirecting to '{}' page.".format(str_to_edit))
-                    template_return = flask.redirect(flask.url_for("handle_things"))
-                elif str_to_edit == "tag":
-                    utils.debug("Redirecting to '{}' page.".format(str_to_edit))
-                    template_return = flask.redirect(flask.url_for("handle_tags"))
-
-    elif 'email' not in flask.session:
-        utils.debug("Redirecting to 'Login' page.")
-        template_return = flask.redirect('/login')
     else:
-        utils.debug("Redirecting to '404' page.")
-        template_return = flask.redirect(flask.url_for('page_not_found'))
+        template_return = flask.redirect(flask.url_for('root'))
 
-        utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+    utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
     return template_return
 
 
@@ -317,6 +308,42 @@ def handle_categories():
     return template_return
 
 
+@app.route("/search", methods=['POST'])
+@app.route("/search.html", methods=['POST'])
+@flask_login.login_required
+def handle_search():
+    utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+
+    if flask_login.current_user.is_authenticated:
+
+        form_text = flask.request.form.get('search-text')
+        template_text = "Results for '{}' > ".format(form_text)
+        print(form_text)
+
+        if form_text.startswith('thing:'):
+            search_txt = form_text.split(':')[1].lstrip()
+            things = db_models.Thing.query.filter_by(
+                user_id=flask_login.current_user.id).filter(
+                db_models.Thing.name.like("%" + search_txt + "%")).first()
+
+            if things:
+                template_text += str(things)
+            else:
+                template_text += "NOT FOUND"
+
+        flask_template = flask.render_template('_blank.html', str_to_display=str(template_text))
+
+    else:
+        utils.debug("Redirecting to 'login' page.")
+        flask_template = flask.redirect(flask.url_for('handle_login'))
+        flask.session['next_url'] = flask.request.path
+
+    utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+    return flask_template
+
+
 @app.route('/storages', methods=['POST', 'GET'])
 @flask_login.login_required
 def handle_storage():
@@ -400,49 +427,22 @@ def handle_tags():
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
                                               time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
-    html_data = {
-        "form_url": flask.request.path,
-        "form_items": ["Tag title"],
-        "table_columns": ["ID", "Title"],
-        "table_name": common.TBL_TAGS,
-        "edit_url": "tag"
-    }
+    form = TagForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        tag_obj = db_models.Tag(name=name)
+        DB.session.add(tag_obj)
+        DB.session.commit()
+        flask.flash("Tag {} stored.".format(tag_obj.name))
+    tags = db_models.Tag.query.filter().all()
 
-    if flask_login.current_user.is_authenticated:
-        int_id = user.get_user_id(flask.session['email'])
+    if not tags:
+        tags = None
 
-        if flask.request.method == 'GET':
-
-            if common.is_table_configured(common.TBL_TAGS):
-                    lst_tdata = tag.get_tags()
-            else:
-                lst_tdata = None
-
-            template_return = flask.render_template('_table.html', table_data=lst_tdata,
-                                                    html_data=html_data)
-        else:
-            str_title = flask.request.form['strTitle']
-
-            if user.check_session(int_id):
-
-                if tag.add_tag(str_title):
-                    lst_tdata = tag.get_tags()
-
-                else:
-                    lst_tdata = None
-
-                template_return = flask.render_template('_table.html', table_data=lst_tdata,
-                                                        html_data=html_data)
-            else:
-                template_return = flask.redirect(flask.url_for('page_not_found'))
-
-    else:
-        template_return = flask.redirect('/login')
-        flask.session['next_url'] = flask.request.path
+    template_return = flask.render_template('tags.html', table_data=tags, form=form)
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
                                               time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
-
     return template_return
 
 
@@ -557,8 +557,19 @@ def page_not_found(error):
 
     return flask.render_template('404.html'), 404
 
+
 @app.errorhandler(403)
-def forbidden(e):
+def forbidden(error):
+    """
+    Function for handling all forbidden requests to the application.
+
+    Args:
+        error:
+
+    Returns:
+        Template for 403 error code.
+
+    """
     return flask.render_template('403.html'), 403
 
 

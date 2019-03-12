@@ -81,3 +81,7 @@ class StorageForm(FlaskForm):
             bln_return = False
 
         return bln_return
+
+
+class TagForm(FlaskForm):
+    name = StringField(label='Tag Name')
