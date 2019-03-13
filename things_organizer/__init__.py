@@ -16,8 +16,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 
 from things_organizer import utils
-from things_organizer.api import categories
-from things_organizer.data_management import common
+from things_organizer.api import categories, storages, tags
 
 
 app = flask.Flask(__name__, static_url_path="/static")
@@ -34,6 +33,8 @@ login_manager.init_app(app)
 
 API = flask_restful.Api(app)
 API.add_resource(categories.CategoriesAPI, '/api/categories', '/api/categories/<int:int_id>')
+API.add_resource(storages.StoragesAPI, '/api/storages', '/api/storages/<int:int_id>')
+API.add_resource(tags.TagsAPI, '/api/tags', '/api/tags/<int:int_id>')
 
 from things_organizer import views
 from things_organizer.db import db_models

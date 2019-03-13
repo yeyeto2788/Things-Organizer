@@ -1,3 +1,7 @@
+"""
+Models definition of the tables for the application to be used.
+
+"""
 from datetime import datetime
 
 from sqlalchemy import desc
@@ -13,9 +17,16 @@ tags = database.Table('thing_tag',
 
 
 class Thing(database.Model):
+    """
+    Model representation of the thing table.
+
+    """
+
     id = database.Column(database.Integer, primary_key=True)
     name = database.Column(database.Text, nullable=False)
     description = database.Column(database.String(300))
+    unit = database.Column(database.String(100))
+    quantity = database.Column(database.Integer)
     user_id = database.Column(database.Integer,
                               database.ForeignKey('user.id'),
                               nullable=False)
@@ -37,6 +48,15 @@ class Thing(database.Model):
 
     @staticmethod
     def newest(num):
+        """
+        Get a given number of items based on the date created.
+
+        Args:
+            num: Integer for the number of things to be retrieved.
+
+        Returns:
+            List with things.
+        """
         return Thing.query.order_by(desc(Thing.date)).limit(num)
 
     @property
@@ -53,6 +73,11 @@ class Thing(database.Model):
 
 
 class User(database.Model, UserMixin):
+    """
+    Model representation of the user table.
+
+    """
+
     id = database.Column(database.Integer, primary_key=True)
     username = database.Column(database.String(80), unique=True, nullable=False)
     email = database.Column(database.String(120), unique=True, nullable=False)
@@ -65,13 +90,42 @@ class User(database.Model, UserMixin):
 
     @password.setter
     def password(self, password):
+        """
+        Setter for the password hash.
+
+        Args:
+            password: Password to be hashed.
+
+        """
+
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
+        """
+        Validate hash of given password.
+
+        Args:
+            password: Password to be checked.
+
+        Returns:
+            True if it is correct else False.
+
+        """
+
         return check_password_hash(self.password_hash, password)
 
     @staticmethod
     def get_by_username(username):
+        """
+        Get the user from the username given as parameter.
+
+        Args:
+            username: string with the username.
+
+        Returns:
+            User object.
+        """
+
         return User.query.filter_by(username=username).first()
 
     def __repr__(self):
@@ -82,6 +136,11 @@ class User(database.Model, UserMixin):
 
 
 class Category(database.Model):
+    """
+    Model representation of the category table.
+
+    """
+
     id = database.Column(database.Integer, primary_key=True)
     name = database.Column(database.String(50), nullable=False)
 
@@ -90,6 +149,11 @@ class Category(database.Model):
 
 
 class Storage(database.Model):
+    """
+    Model representation of the storage table.
+
+    """
+
     id = database.Column(database.Integer, primary_key=True)
     name = database.Column(database.String(50), nullable=False)
     location = database.Column(database.String(120), nullable=False)
@@ -99,11 +163,27 @@ class Storage(database.Model):
 
 
 class Tag(database.Model):
+    """
+    Model representation of the tag table.
+
+    """
+
     id = database.Column(database.Integer, primary_key=True)
     name = database.Column(database.String(25), nullable=False, unique=True, index=True)
 
     @staticmethod
     def get_or_create(name):
+        """
+        Method to get a tag by a given name or create it if does not exists.
+
+        Args:
+            name: Name for the tag
+
+        Returns:
+            Tag object
+
+        """
+
         try:
             return Tag.query.filter_by(name=name).one()
         except:
@@ -111,6 +191,14 @@ class Tag(database.Model):
 
     @staticmethod
     def all():
+        """
+        Get all tags from database.
+
+        Returns:
+            List with all tags on database.
+
+        """
+
         return Tag.query.all()
 
     def __repr__(self):

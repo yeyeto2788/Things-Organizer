@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms.fields import StringField, PasswordField, BooleanField, SubmitField, SelectField
+from wtforms.fields import StringField, PasswordField, BooleanField, SubmitField, SelectField, IntegerField
 # from flask.ext.wtf.html5 import URLField
 from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo, url, ValidationError
 
@@ -39,6 +39,8 @@ class ThingForm(FlaskForm):
     description = StringField('Description (Optional)')
     category = SelectField(label="Select a category", coerce=int)
     storage = SelectField(label="Select a storage", coerce=int)
+    quantity = IntegerField(label="Please type how many items")
+    unit = StringField('Unit for the item')
     tags = StringField(
         'Tags',
         validators=[Regexp(r'^[a-zA-Z0-9, ]*$',

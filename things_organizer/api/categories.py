@@ -6,8 +6,8 @@ API end point for the things categories.
 from flask import jsonify
 from flask_restful import Resource, abort
 
+import things_organizer
 from things_organizer import utils
-from things_organizer.data_management import common
 
 
 class CategoriesAPI(Resource):
@@ -34,34 +34,27 @@ class CategoriesAPI(Resource):
         dict_convert = {"data": 0}
         dict_inner = {}
         lst_values = []
-        lst_columns = common.get_columns_from(
-            common.TBL_CATEGORIES)
 
         if int_id is not None:
-            lst_values = common.get_data_by_id(
-                common.TBL_CATEGORIES, int_id)
+            lst_values = things_organizer.db_models.Category.query.filter_by(id=int_id).first()
 
         elif int_id is None:
-            lst_values = common.get_all_data_from(
-                common.TBL_CATEGORIES)
+            lst_values = things_organizer.db_models.Category.query.all()
 
         try:
             if lst_values:
 
-                if isinstance(lst_values[0], list):
+                if isinstance(lst_values, list):
 
-                    for int_counter, row in enumerate(lst_values):
-                        for int_inner, (column, value) in enumerate(zip(lst_columns, row)):
-                            dict_inner[column] = value
-                        dict_convert[int_counter + 1] = dict_inner
+                    for int_inner, value in enumerate(lst_values):
+                        dict_inner[int_inner] = {'id': value.id,
+                                                 'name': value.name}
 
-                    dict_convert['data'] = int_counter + 1
-
+                    dict_convert['categories'] = dict_inner
+                    dict_convert['data'] = len(lst_values)
                 else:
-                    for int_inner, (column, value) in enumerate(zip(lst_columns, lst_values)):
-                        dict_inner[column] = value
-                    dict_convert[int_inner] = dict_inner
-
+                    dict_convert['id'] = lst_values.id
+                    dict_convert['name'] = lst_values.name
                     dict_convert['data'] = 1
 
             else:

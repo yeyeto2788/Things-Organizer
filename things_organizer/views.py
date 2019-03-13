@@ -10,8 +10,8 @@ import flask_login
 
 from things_organizer import app, login_manager, DB
 from things_organizer import utils
-from things_organizer.forms import LoginForm, SignupForm, ThingForm, CategoryForm, StorageForm, TagForm
-from things_organizer.data_management import common, user, tag, category, storage
+from things_organizer.forms import LoginForm, SignupForm, ThingForm
+from things_organizer.forms import CategoryForm, StorageForm, TagForm
 from things_organizer.db import db_models
 
 
@@ -72,12 +72,15 @@ def handle_add_thing():
     if form.validate_on_submit():
         name = form.name.data
         description = form.description.data
+        unit = form.unit.data
+        quantity = form.quantity.data
         user_id = flask_login.current_user.id
         category_id = form.category.data
         storage_id = form.storage.data
         tags = form.tags.data
         thing_obj = db_models.Thing(name=name, description=description, user_id=user_id,
-                                    category_id=category_id, storage_id=storage_id, tags=tags)
+                                    category_id=category_id, storage_id=storage_id, tags=tags,
+                                    unit=unit, quantity=quantity)
         DB.session.add(thing_obj)
         DB.session.commit()
         flask.flash("Stored '{}'".format(thing_obj.description))
@@ -137,13 +140,17 @@ def handle_edit(str_to_edit, int_id):
                 flask.abort(403)
 
         if form.validate_on_submit():
-            # TODO: Fix population of thing
+
             if str_to_edit == 'thing':
                 table_object.category_id = form.category.data
                 table_object.storage_id = form.storage.data
-                table_object.user_id = flask_login.current_user.id
+                table_object.quantity = form.quantity.data
+                table_object.unit = form.unit.data
+                table_object.name = form.name.data
+                table_object.description = form.description.data
 
-            form.populate_obj(table_object)
+            else:
+                form.populate_obj(table_object)
             DB.session.commit()
             template_return = flask.redirect(flask.url_for(str_redirect))
         else:
@@ -571,69 +578,3 @@ def forbidden(error):
 
     """
     return flask.render_template('403.html'), 403
-
-
-def generate_form(str_editing, lst_columns, lst_values):
-    """
-    Create a form with the columns and values passed as arguments so it can be rendered in a block
-    content on a template.
-
-    Args:
-        str_editing: Type of table to edit.
-        lst_columns: Columns of the table to be added into the form.
-        lst_values: Values of the table to be added into the form.
-
-    Returns:
-        string with the form for the block content of the template.
-
-    """
-    str_inner_form = ""
-
-    for column, value in zip(lst_columns, lst_values):
-        str_disable = """ disabled""" if (column == 'ID') else " "
-
-        if column == "StorageID":
-            column = "Storage"
-            lst_ncolumns = storage.get_storages()
-            str_inner = ""
-            for row in lst_ncolumns:
-                str_inner += """<option value="{}">{}</option>\n""".format(row[0], row[1])
-
-            str_inner_form += """<label for="str{column}">{column}</label>
-            <select name="str{column}" class="form-control">
-                {str_inner}
-            </select>""".format(column=column, str_inner=str_inner)
-        elif column == "CategoryID":
-            column = "Category"
-            lst_ncolumns = category.get_categories()
-            str_inner = ""
-            for row in lst_ncolumns:
-                str_inner += """<option value="{}">{}</option>\n""".format(row[0], row[1])
-
-            str_inner_form += """<label for="str{column}">{column}</label>
-            <select name="str{column}" class="form-control">
-                {str_inner}
-            </select>""".format(column=column, str_inner=str_inner)
-        else:
-            str_inner_form += """<label for="str{column}">{column}</label>
-        <input type="text" class="form-control" id="str{column}" name="str{column}" value="{value}" 
-        placeholder="{value}" {disable}>""".format(column=column, value=value, disable=str_disable)
-
-    str_form = """
-    <div>
-        <form action="#" method="post">
-          <div class="form-group">
-            {}
-          </div>
-          <div class="form-group row">
-            <div class="col-sm-10">
-              <button type="submit" class="btn btn-primary">Update {}</button>
-            </div>
-          </div>
-        </form>
-    </div>""".format(str_inner_form, str_editing.title())
-
-    return _CONTAINER.format(str_form)
-
-# with open(JSON_PATH) as f:
-#     config = json.load(f)
