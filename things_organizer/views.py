@@ -488,67 +488,6 @@ def handle_things():
     return flask_template
 
 
-@app.route('/logs', methods=['GET'])
-@flask_login.login_required
-def logs():
-    """
-    This is to handle the requests of the application's logs.
-
-    Returns:
-        flask.template with all logs of the application.
-    """
-
-    utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                              time.strftime("%Y-%m-%d %H:%M:%S",
-                                                            time.gmtime())))
-
-    if flask_login.current_user.is_authenticated:
-        int_id = user.get_user_id(flask.session['email'])
-
-        str_page = _CONTAINER
-
-        lst_data = common.get_logs()
-
-        if lst_data:
-            str_inner = """<div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Error Message</th>
-                      <th>SQL executed</th>
-                      <th>Date</th>
-                      <th>Timestamp</th>
-                    </tr>
-                  </thead>
-                """
-            for row in lst_data:
-                str_inner += "<tr>"
-                for int_id, column in enumerate(row):
-                    if int_id == 2:
-                        str_inner += "<td><code>{}</code></td>".format(column)
-                    else:
-                        str_inner += "<td>{}</td>".format(column)
-                str_inner += "</tr>"
-            str_inner += """</table>
-                      </div>"""
-        else:
-            str_inner = "<br><h1 align='center'>No logs registered.</h1>"
-
-        template_return = flask.render_template('_blank.html',
-                                                str_to_display=str_page.format(str_inner))
-    else:
-        utils.debug("Rendering '/login' page.")
-
-        template_return = flask.redirect('/login')
-        flask.session['next_url'] = flask.request.path
-
-    utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
-
-    return template_return
-
-
 @app.errorhandler(404)
 def page_not_found(error):
     """

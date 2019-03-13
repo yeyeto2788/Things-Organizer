@@ -12,87 +12,8 @@ from os import urandom
 from base64 import b64encode
 
 
-DB_PATH = os.path.normpath(os.path.join(os.path.dirname(__file__), "db"))
-
-
-def convert_lists_to_assignment(lst_columns, lst_values):
-    """
-    For a given list of values convert it into SQL string assignment.
-
-    Args:
-        lst_columns: List of columns to which values will be assigned.
-        lst_values: List of values to be assigned.
-
-    Returns:
-        String with the SQL assignment like <column>='<value>'.
-
-    """
-
-    str_assignment = ""
-
-    for int_counter, (column, value) in enumerate(zip(lst_columns, lst_values)):
-
-        if isinstance(value, int):
-            str_value = "{}".format(value)
-        else:
-            str_value = "'{}'".format(value)
-
-        if int_counter != (len(lst_columns) - 1):
-            str_assignment += "{}={}, ".format(column, str_value)
-        else:
-            str_assignment += "{}={} ".format(column, str_value)
-
-    return str_assignment
-
-
-def convert_list_to_columns(lst_columns):
-    """
-    Convert list type into string for sql column purposes.
-
-    Args:
-        lst_columns: columns to be converted.
-
-    Returns:
-        String with the columns converted.
-
-    """
-
-    str_columns = ""
-
-    for int_counter, str_column in enumerate(lst_columns):
-        if int_counter != (len(lst_columns) - 1):
-            str_columns += "{}, ".format(str_column)
-        else:
-            str_columns += "{} ".format(str_column)
-
-    return str_columns
-
-
-def convert_list_to_values(lst_values):
-    """
-    Convert list type into string values for sql purposes.
-
-    Args:
-        lst_values: values to be converted.
-
-    Returns:
-        String with the values converted.
-
-    """
-
-    str_values = ""
-
-    for int_counter, value in enumerate(lst_values):
-
-        if int_counter != (len(lst_values) - 1):
-            if not isinstance(value, int):
-                str_values += "'{}', ".format(value)
-            else:
-                str_values += "{}, ".format(value)
-        else:
-            str_values += "{} ".format(value)
-
-    return str_values
+DB_PATH = os.path.normpath(os.path.join(os.path.dirname(__file__), 'data', 'db'))
+REPORT_PATH = os.path.normpath(os.path.join(os.path.dirname(__file__), 'data', 'reports'))
 
 
 def debug(*args, **kargs):
