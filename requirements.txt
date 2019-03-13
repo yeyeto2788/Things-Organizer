@@ -1,8 +1,10 @@
-Flask>=1.0.2
-Flask-RESTful>=0.3.6
-flask-sqlalchemy>=2.3.2
-flask-login>=0.4.1
-flask-wtf>=0.14.2
+Flask==1.0.2
+Flask-RESTful==0.3.7
+flask-sqlalchemy==2.3.2
+flask-login==0.4.1
+flask-wtf==0.14.2
+Flask-Script==2.0.6
+Flask-Migrate==2.4.0
 ujson==1.35
 pylint>=2.2.2
 waitress>=1.2.1

@@ -22,6 +22,7 @@ from things_organizer.api import categories, storages, tags
 app = flask.Flask(__name__, static_url_path="/static")
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///{}".format(os.path.join(utils.DB_PATH,
                                                                            "test.db"))
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = os.urandom(16)
 
 DB = SQLAlchemy(app)
