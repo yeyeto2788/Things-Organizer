@@ -33,14 +33,15 @@ Main Repository Folder(Thing-Organizer)
         └── Scripts - Folder(Some scripts for automate some things.)
         └── Module - Folder(things_organizer)
         |       └── api - Module(API for the application)
-        |       └── data - Folder(Database storage)
-        |       └── db - Module(Manage Database Errors and Operation.)
+        |       └── data - Folder(Database and reports storage)
+        |       └── db - Module(Models of Database)
+        |       └── reports - Module(Report generator modules)
         |       └── static - Folder(Static files to be served)
         |       └── templates - Folder(Flask templates to be used.)
         |       └── test - Folder(All application tests)
-        |       └── data_management - Module(Manage data from table.)
-        |       └── main_app.py
+        |       └── forms.py
         |       └── utils.py
+        |       └── views.py
         └── run_app.py
 ```
 
