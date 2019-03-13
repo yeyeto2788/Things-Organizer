@@ -142,7 +142,7 @@ class Category(database.Model):
     """
 
     id = database.Column(database.Integer, primary_key=True)
-    name = database.Column(database.String(50), nullable=False)
+    name = database.Column(database.String(50), unique=True, nullable=False)
 
     def __repr__(self):
         return '<Category %r>' % self.name
@@ -155,7 +155,7 @@ class Storage(database.Model):
     """
 
     id = database.Column(database.Integer, primary_key=True)
-    name = database.Column(database.String(50), nullable=False)
+    name = database.Column(database.String(50), unique=True, nullable=False)
     location = database.Column(database.String(120), nullable=False)
 
     def __repr__(self):

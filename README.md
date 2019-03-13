@@ -55,43 +55,33 @@ For tables in the database we have use the Pascal Case
 (a.k.a [Upper Camel Case](https://en.wikipedia.org/wiki/Camel_case)) and the tables on the database
 are the following:
 
-* **Thing**
-    * ID `int`
-    * Name `str`
-    * Description `str`
-    * Unit `str`
-    * Quantity `int`
-    * StorageID `int`
-    * CategoryID `int`
-* **Category**
-    * ID `int`
-    * Name `str`
-* **Session**
-    * ID  `int`
-    * UserID `int`
-    * SessionKey `str`
-    * Timestamp `int`
-* **Storage**
-    * ID  `int`
-    * Name `str`
-    * Location `str`
-* **Tag**
-    * ID `int`
-    * Name `str`
-* **ThingTag**
-    * ThingID `int`
-    * TagID `int`
-* **User**
-    * ID `int`
-    * Name `str`
-    * Lastname `str`
-    * Email `str`
-    * Password `str`
-    * LastLogin `str`
-    * Active `bln`
-* **UserThing**
-    * ID `int`
-    * ThingID `int`
+* **thing**
+    * id `int`
+    * name `str`
+    * description `str`
+    * unit `str`
+    * quantity `int`
+    * storage_id `int`
+    * category_id `int`
+    * date `date`
+* **category**
+    * id `int`
+    * name `str`
+* **storage**
+    * id  `int`
+    * name `str`
+    * location `str`
+* **tag**
+    * id `int`
+    * name `str`
+* **thing_tag**
+    * thing_id `int`
+    * tag_id `int`
+* **user**
+    * id `int`
+    * username `str`
+    * email `str`
+    * password_hash `str`
 
 #### Database Schema:
 
@@ -114,24 +104,20 @@ As you can see in the image above there are some uniques columns on tables, whic
       <th>Column</th>
     </tr>
     <tr>
-      <td><code>Storage</code></td>
-      <td>Name</td>
+      <td><code>storage</code></td>
+      <td>name</td>
     </tr>
     <tr>
-      <td><code>Category</code></td>
-      <td>Name</td>
+      <td><code>category</code></td>
+      <td>name</td>
     </tr>
     <tr>
-      <td><code>User</code></td>
-      <td>Email</td>
+      <td><code>user</code></td>
+      <td>email</td>
     </tr>
     <tr>
-      <td><code>Session</code></td>
-      <td>SessionKey</td>
-    </tr>
-    <tr>
-      <td><code>Session</code></td>
-      <td>UserID</td>
+      <td><code>user</code></td>
+      <td>username</td>
     </tr>
   </table>
 </center>

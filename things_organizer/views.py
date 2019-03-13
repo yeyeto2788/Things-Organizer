@@ -83,7 +83,7 @@ def handle_add_thing():
                                     unit=unit, quantity=quantity)
         DB.session.add(thing_obj)
         DB.session.commit()
-        flask.flash("Stored '{}'".format(thing_obj.description))
+        flask.flash("Stored '{}'".format(thing_obj.name))
         template_return = flask.redirect(flask.url_for('handle_things'))
     else:
         template_return = flask.render_template('add_thing.html', form=form)
