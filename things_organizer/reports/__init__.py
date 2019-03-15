@@ -5,4 +5,5 @@ more options can be added in the future.
 
 """
 
-from things_organizer.reports.csv_report import CSV
+from things_organizer.reports.csv_report import CSV as CSV_Report
+from things_organizer.reports.txt_report import TXT as TXT_Report

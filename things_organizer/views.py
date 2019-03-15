@@ -10,9 +10,12 @@ import flask_login
 
 from things_organizer import app, login_manager, DB
 from things_organizer import utils
-from things_organizer.forms import LoginForm, SignupForm, ThingForm
+from things_organizer.forms import LoginForm, SignupForm, ThingForm, ReportForm
 from things_organizer.forms import CategoryForm, StorageForm, TagForm
 from things_organizer.db import db_models
+from things_organizer.labels import QRLabel
+
+from things_organizer.reports import CSV_Report, TXT_Report
 
 
 _CONTAINER = """
@@ -93,73 +96,37 @@ def handle_add_thing():
     return template_return
 
 
-@app.route('/edit/<string:str_to_edit>/<int:int_id>', methods=['POST', 'GET'])
+@app.route('/categories', methods=['POST', 'GET'])
 @flask_login.login_required
-def handle_edit(str_to_edit, int_id):
+def handle_categories():
     """
-    Edit records depending of the type of table is being requested.
-
-    Args:
-        str_to_edit:
-        int_id:
+    Handles the categories creation and rendering on the page.
 
     Returns:
         Flask template based on the request method.
 
     """
 
-    lst_to_edit = ['category', 'storage', 'thing', 'tag']
-
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
                                               time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
-    if (str_to_edit in lst_to_edit) and flask_login.current_user.is_authenticated:
+    form = CategoryForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        category_obj = db_models.Category(name=name)
+        DB.session.add(category_obj)
+        DB.session.commit()
+        flask.flash("Category {} stored.".format(category_obj.name))
 
-        if str_to_edit == "category":
-            table_object = db_models.Category.query.get_or_404(int_id)
-            form = CategoryForm(obj=table_object)
-            str_redirect = 'handle_categories'
-        elif str_to_edit == "storage":
-            table_object = db_models.Storage.query.get_or_404(int_id)
-            form = StorageForm(obj=table_object)
-            str_redirect = 'handle_storage'
-        elif str_to_edit == "tag":
-            table_object = db_models.Tag.query.get_or_404(int_id)
-            form = TagForm(obj=table_object)
-            str_redirect = 'handle_tags'
-        else:
-            table_object = db_models.Thing.query.get_or_404(int_id)
-            form = ThingForm(obj=table_object)
-            categories = [(cat.id, cat.name) for cat in db_models.Category.query.all()]
-            form.category.choices = categories
-            storages = [(s.id, s.name) for s in db_models.Storage.query.all()]
-            form.storage.choices = storages
-            str_redirect = 'handle_things'
+    categories = db_models.Category.query.filter().all()
+    if not categories:
+        categories = None
 
-            if flask_login.current_user != table_object.user:
-                flask.abort(403)
-
-        if form.validate_on_submit():
-
-            if str_to_edit == 'thing':
-                table_object.category_id = form.category.data
-                table_object.storage_id = form.storage.data
-                table_object.quantity = form.quantity.data
-                table_object.unit = form.unit.data
-                table_object.name = form.name.data
-                table_object.description = form.description.data
-
-            else:
-                form.populate_obj(table_object)
-            DB.session.commit()
-            template_return = flask.redirect(flask.url_for(str_redirect))
-        else:
-            template_return = flask.render_template('edit.html', form=form)
-    else:
-        template_return = flask.redirect(flask.url_for('root'))
+    template_return = flask.render_template('categories.html', table_data=categories, form=form)
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
                                               time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+
     return template_return
 
 
@@ -228,6 +195,111 @@ def handle_delete(str_to_edit, int_id):
     return template_return
 
 
+@app.route('/edit/<string:str_to_edit>/<int:int_id>', methods=['POST', 'GET'])
+@flask_login.login_required
+def handle_edit(str_to_edit, int_id):
+    """
+    Edit records depending of the type of table is being requested.
+
+    Args:
+        str_to_edit: Type of item to be edited.
+        int_id: ID of the item.
+
+    Returns:
+        Flask template based on the request method.
+
+    """
+
+    lst_to_edit = ['category', 'storage', 'thing', 'tag']
+
+    utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+
+    if (str_to_edit in lst_to_edit) and flask_login.current_user.is_authenticated:
+
+        if str_to_edit == "category":
+            table_object = db_models.Category.query.get_or_404(int_id)
+            form = CategoryForm(obj=table_object)
+            str_redirect = 'handle_categories'
+        elif str_to_edit == "storage":
+            table_object = db_models.Storage.query.get_or_404(int_id)
+            form = StorageForm(obj=table_object)
+            str_redirect = 'handle_storage'
+        elif str_to_edit == "tag":
+            table_object = db_models.Tag.query.get_or_404(int_id)
+            form = TagForm(obj=table_object)
+            str_redirect = 'handle_tags'
+        else:
+            table_object = db_models.Thing.query.get_or_404(int_id)
+            form = ThingForm(obj=table_object)
+            categories = [(cat.id, cat.name) for cat in db_models.Category.query.all()]
+            form.category.choices = categories
+            storages = [(s.id, s.name) for s in db_models.Storage.query.all()]
+            form.storage.choices = storages
+            str_redirect = 'handle_things'
+
+            if flask_login.current_user != table_object.user:
+                flask.abort(403)
+
+        if form.validate_on_submit():
+
+            if str_to_edit == 'thing':
+                table_object.category_id = form.category.data
+                table_object.storage_id = form.storage.data
+                table_object.quantity = form.quantity.data
+                table_object.unit = form.unit.data
+                table_object.name = form.name.data
+                table_object.description = form.description.data
+
+            else:
+                form.populate_obj(table_object)
+            DB.session.commit()
+            template_return = flask.redirect(flask.url_for(str_redirect))
+        else:
+            template_return = flask.render_template('edit.html', form=form)
+    else:
+        template_return = flask.redirect(flask.url_for('root'))
+
+    utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+    return template_return
+
+
+@app.route('/label/<int:int_id>', methods=['POST', 'GET'])
+@flask_login.login_required
+def handle_label(int_id):
+    """
+    Generate the label for a given item.
+
+    Args:
+        int_id: ID of the item
+
+    Returns:
+        Flask template based on the request method.
+
+    """
+
+    utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+
+    thing = db_models.Thing.query.filter_by(user_id=flask_login.current_user.id, id=int_id).first()
+
+    if thing:
+        label = QRLabel(thing.name, thing.description)
+        label.generate_label()
+
+        template_return = flask.send_from_directory(
+            label.file_directory, label.file_name, as_attachment=True)
+        flask.flash("Label '{}' generated.".format(label.file_name))
+
+    else:
+        template_return = flask.redirect(flask.url_for('handle_things'))
+
+    utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+    return template_return
+
+
 @app.route("/login", methods=['POST', 'GET'])
 def handle_login():
     """
@@ -263,7 +335,7 @@ def handle_login():
 @app.route('/logout')
 def handle_logout():
     """
-    Remove the user sessionkey from database and remove email from the flask session.
+    Remove the user's flask session.
 
     Returns:
         It will redirect the user to home.
@@ -279,40 +351,6 @@ def handle_logout():
                                               time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     return flask.redirect(flask.url_for('root'))
-
-
-@app.route('/categories', methods=['POST', 'GET'])
-@flask_login.login_required
-def handle_categories():
-    """
-    Handles the categories creation and rendering on the page.
-
-    Returns:
-        Flask template based on the request method.
-
-    """
-
-    utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
-
-    form = CategoryForm()
-    if form.validate_on_submit():
-        name = form.name.data
-        category_obj = db_models.Category(name=name)
-        DB.session.add(category_obj)
-        DB.session.commit()
-        flask.flash("Category {} stored.".format(category_obj.name))
-
-    categories = db_models.Category.query.filter().all()
-    if not categories:
-        categories = None
-
-    template_return = flask.render_template('categories.html', table_data=categories, form=form)
-
-    utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
-
-    return template_return
 
 
 @app.route("/search", methods=['POST'])
@@ -419,17 +457,73 @@ def handle_register():
     return flask_template
 
 
+@app.route('/reports', methods=['POST', 'GET'])
+@flask_login.login_required
+def handle_report():
+    """
+    Use for generating the reports through a page.
+
+    Returns:
+        Flask template '_blank' modified based on the request.
+
+    """
+    utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+
+    form = ReportForm()
+    report_types = [(1, 'CSV (.csv)'), (2, 'TXT (.txt)')]
+    form.report_type.choices = report_types
+    data_types = [(1, 'All items'), (2, 'All items by Category'), (3, 'All items by Storage')]
+    form.data_type.choices = data_types
+    categories = [(cat.id, cat.name) for cat in db_models.Category.query.all()]
+    form.category.choices = categories
+    storages = [(s.id, s.name) for s in db_models.Storage.query.all()]
+    form.storage.choices = storages
+
+    if form.validate_on_submit():
+        report_type = form.report_type.data
+        data_type = form.data_type.data
+        category = form.category.data
+        storage = form.storage.data
+
+        report_name = '{}'.format(str(int(time.time())))
+        print(report_name)
+
+        if report_type == 1:
+            report = CSV_Report(report_name, flask_login.current_user.id)
+        else:
+            report = TXT_Report(report_name, flask_login.current_user.id)
+
+        if data_type == 1:
+            report.get_all_things()
+        else:
+            if data_type == 2:
+                report.get_by_category(category)
+            else:
+                report.get_by_storage(storage)
+
+        template_return = flask.send_from_directory(report.file_directory,
+                                                    report.file_name,
+                                                    as_attachment=True)
+    else:
+        template_return = flask.render_template('reports.html', form=form)
+
+    utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
+                                              time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+    return template_return
+
+
 @app.route("/tags", methods=['POST', 'GET'])
 @app.route("/tags.html", methods=['POST', 'GET'])
 @flask_login.login_required
 def handle_tags():
     """
-        Handles the showing or not of the tags on the system.
+    Handles the showing or not of the tags on the system.
 
-        Returns:
-            flask template.
+    Returns:
+        flask template.
 
-        """
+    """
 
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
                                               time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))

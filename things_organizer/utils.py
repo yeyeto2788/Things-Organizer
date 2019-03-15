@@ -14,6 +14,7 @@ from base64 import b64encode
 
 DB_PATH = os.path.normpath(os.path.join(os.path.dirname(__file__), 'data', 'db'))
 REPORT_PATH = os.path.normpath(os.path.join(os.path.dirname(__file__), 'data', 'reports'))
+LABEL_PATH = os.path.normpath(os.path.join(os.path.dirname(__file__), 'data', 'labels'))
 
 
 def debug(*args, **kargs):
