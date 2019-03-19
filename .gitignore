@@ -21,5 +21,10 @@ unittests.xml
 Scripts/generate_doc.py
 Scripts/testing_gendoc.py
 
-# Databases
+# Databases:
 ./things_organizer/data/*.db
+
+# Execution files not needed:
+./things_organizer/data/reports/CSV/*.csv
+./things_organizer/data/reports/TXT/*.txt
+./things_organizer/data/reports/labels/*.*

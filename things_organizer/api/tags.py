@@ -5,7 +5,6 @@ API end point for the things categories.
 """
 import flask_login
 
-
 from flask import jsonify
 from flask_restful import Resource, abort
 
@@ -13,7 +12,7 @@ import things_organizer
 from things_organizer import utils
 
 
-class CategoriesAPI(Resource):
+class TagsAPI(Resource):
     """
     Class wrapper for the flask_restful.Resource in order to create the API.
 
@@ -25,11 +24,11 @@ class CategoriesAPI(Resource):
     @flask_login.login_required
     def get(int_id=None):
         """
-        Find a category for a given ID, if no ID is provided it will return all available
-        categories on table.
+        Find a tag for a given ID, if no ID is provided it will return all available
+        tags on table.
 
         Args:
-            int_id: Id of the category to be searched.
+            int_id: Id of the tag to be searched.
 
         Returns:
             Response from jsonify function of flask.
@@ -40,10 +39,10 @@ class CategoriesAPI(Resource):
         lst_values = []
 
         if int_id is not None:
-            lst_values = things_organizer.db_models.Category.query.filter_by(id=int_id).first()
+            lst_values = things_organizer.db_models.Tag.query.filter_by(id=int_id).first()
 
         elif int_id is None:
-            lst_values = things_organizer.db_models.Category.query.all()
+            lst_values = things_organizer.db_models.Tag.query.all()
 
         try:
             if lst_values:
@@ -54,7 +53,7 @@ class CategoriesAPI(Resource):
                         dict_inner[int_inner] = {'id': value.id,
                                                  'name': value.name}
 
-                    dict_convert['categories'] = dict_inner
+                    dict_convert['tags'] = dict_inner
                     dict_convert['data'] = len(lst_values)
                 else:
                     dict_convert['id'] = lst_values.id
@@ -67,5 +66,5 @@ class CategoriesAPI(Resource):
             return jsonify(str(dict_convert))
 
         except Exception as excerror:
-            utils.debug("Error occurred on Category API.\nError: {}".format(excerror.__str__()))
-            abort(404, error_message="Not found category '{}'.".format(int_id))
+            utils.debug("Error occurred on Tags API.\nError: {}".format(excerror.__str__()))
+            abort(404, error_message="Not found tag '{}'.".format(int_id))

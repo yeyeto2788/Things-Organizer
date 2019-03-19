@@ -31,4 +31,4 @@ EXPOSE 8080
 ENV LANG en
 
 # Execute the application
-CMD ["python3", "run_app.py"]
+CMD ["python3", "run_app.py", "run_development"]

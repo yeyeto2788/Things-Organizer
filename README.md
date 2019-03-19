@@ -7,7 +7,7 @@ Simple and "lightweight" web application for organizing that disaster or room/ga
 <img src="Doc/img/animation.gif" />
 </div>
 
-The idea came from a day I was looking a SOC board like the Raspberry Pi and I could find it
+The idea came from a day I was looking a SOC board like the Raspberry Pi and I could not find it
 due to the mess I had, all boards, cables, equipment, etc. where all around in different boxes and
 different places all over my house from my room lab to the garage.
 
@@ -33,14 +33,15 @@ Main Repository Folder(Thing-Organizer)
         └── Scripts - Folder(Some scripts for automate some things.)
         └── Module - Folder(things_organizer)
         |       └── api - Module(API for the application)
-        |       └── data - Folder(Database storage)
-        |       └── db - Module(Manage Database Errors and Operation.)
+        |       └── data - Folder(Database and reports storage)
+        |       └── db - Module(Models of Database)
+        |       └── reports - Module(Report generator modules)
         |       └── static - Folder(Static files to be served)
         |       └── templates - Folder(Flask templates to be used.)
         |       └── test - Folder(All application tests)
-        |       └── data_management - Module(Manage data from table.)
-        |       └── main_app.py
+        |       └── forms.py
         |       └── utils.py
+        |       └── views.py
         └── run_app.py
 ```
 
@@ -55,43 +56,33 @@ For tables in the database we have use the Pascal Case
 (a.k.a [Upper Camel Case](https://en.wikipedia.org/wiki/Camel_case)) and the tables on the database
 are the following:
 
-* **Thing**
-    * ID `int`
-    * Name `str`
-    * Description `str`
-    * Unit `str`
-    * Quantity `int`
-    * StorageID `int`
-    * CategoryID `int`
-* **Category**
-    * ID `int`
-    * Name `str`
-* **Session**
-    * ID  `int`
-    * UserID `int`
-    * SessionKey `str`
-    * Timestamp `int`
-* **Storage**
-    * ID  `int`
-    * Name `str`
-    * Location `str`
-* **Tag**
-    * ID `int`
-    * Name `str`
-* **ThingTag**
-    * ThingID `int`
-    * TagID `int`
-* **User**
-    * ID `int`
-    * Name `str`
-    * Lastname `str`
-    * Email `str`
-    * Password `str`
-    * LastLogin `str`
-    * Active `bln`
-* **UserThing**
-    * ID `int`
-    * ThingID `int`
+* **thing**
+    * id `int`
+    * name `str`
+    * description `str`
+    * unit `str`
+    * quantity `int`
+    * storage_id `int`
+    * category_id `int`
+    * date `date`
+* **category**
+    * id `int`
+    * name `str`
+* **storage**
+    * id  `int`
+    * name `str`
+    * location `str`
+* **tag**
+    * id `int`
+    * name `str`
+* **thing_tag**
+    * thing_id `int`
+    * tag_id `int`
+* **user**
+    * id `int`
+    * username `str`
+    * email `str`
+    * password_hash `str`
 
 #### Database Schema:
 
@@ -114,24 +105,20 @@ As you can see in the image above there are some uniques columns on tables, whic
       <th>Column</th>
     </tr>
     <tr>
-      <td><code>Storage</code></td>
-      <td>Name</td>
+      <td><code>storage</code></td>
+      <td>name</td>
     </tr>
     <tr>
-      <td><code>Category</code></td>
-      <td>Name</td>
+      <td><code>category</code></td>
+      <td>name</td>
     </tr>
     <tr>
-      <td><code>User</code></td>
-      <td>Email</td>
+      <td><code>user</code></td>
+      <td>email</td>
     </tr>
     <tr>
-      <td><code>Session</code></td>
-      <td>SessionKey</td>
-    </tr>
-    <tr>
-      <td><code>Session</code></td>
-      <td>UserID</td>
+      <td><code>user</code></td>
+      <td>username</td>
     </tr>
   </table>
 </center>
@@ -146,16 +133,18 @@ All logs are accessible from the route `<ip:port>/logs`
 
 ## TODO:
  - [ ] Scripts for automate some repetitive work.
-   <ul><li> - [ ] Script for Linux.</li>
-   <li> - [ ] Script generating DB.</li>
-      <ul><li> - [X] Create tables.</li>
-      <li> - [X] Insert dummy data on tables.</li>
-      <li> - [ ] Clear all tables.</li></ul>
+   <ul><li> - [ ] Add more functionalities on the `run_app.py`.</li>
    </ul>
  - [ ] Features to add:
-   <ul><li> - [ ] API.</li>
-   <li> - [ ] Tags.</li>
-   <li> - [ ] Print labels.</li>
-   <li> - [ ] Generate PDF/Text file of view.</li>
-   <li> - [X] Create Docker image to run the application.</li>
+   <li> - [x] Generate reports.
+     <ul><li> - [ ] PDF</li>
+     <li> - [x] CSV</li>
+     <li> - [x] TXT</li>
+     </ul>
+   </li>
    </ul>
+ - [ ] Documentation.
+  <ul>
+    <li> - [ ] `run_app.py` options.</li>
+    <li> - [ ] API.</li>
+  </ul>

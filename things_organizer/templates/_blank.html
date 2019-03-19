@@ -1,6 +1,9 @@
-{% include "_header.html" %}
-{% include "_sidebar.html" %}
+{% extends "_base.html" %}
 
+{% block title %}
+  Things Organizer - Home
+{% endblock %}
+
+{% block content %}
 {{ str_to_display | safe}}
-
-{% include "_footer.html" %}
+{% endblock %}
