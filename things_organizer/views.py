@@ -32,9 +32,24 @@ def load_user(userid):
     return db_models.User.query.get(int(userid))
 
 
-@app.route('/')
-@app.route('/home')
-def root():
+@app.route('/about')
+def handle_about():
+    """
+    Shows information about the project.
+
+    Returns:
+        Template of the different tools hosted.
+
+    """
+
+    template_return = flask.render_template('about.html')
+
+    return template_return
+
+
+@app.route('/', endpoint='handle_root')
+@app.route('/home', endpoint='handle_root')
+def handle_root():
     """
     Main site where user goes to see available tools on the server and the description of them.
 
@@ -188,7 +203,7 @@ def handle_delete(str_to_edit, int_id):
             template_return = flask.render_template("confirm_deletion.html", form=form)
 
     else:
-        template_return = flask.redirect(flask.url_for('root'))
+        template_return = flask.redirect(flask.url_for('handle_root'))
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
                                               time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
@@ -258,7 +273,7 @@ def handle_edit(str_to_edit, int_id):
         else:
             template_return = flask.render_template('edit.html', form=form)
     else:
-        template_return = flask.redirect(flask.url_for('root'))
+        template_return = flask.redirect(flask.url_for('handle_root'))
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
                                               time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
@@ -320,7 +335,7 @@ def handle_login():
             flask_login.login_user(user_obj, form.remember_me.data)
             flask.flash("Welcome, {}!.".format(user_obj.username))
             flask_template = flask.redirect(flask.request.args.get('next') or flask.url_for(
-                'root', username=user_obj.username))
+                'handle_root', username=user_obj.username))
         else:
             flask.flash('Incorrect username or password.')
             flask_template = flask.render_template("login.html", form=form)
@@ -350,7 +365,7 @@ def handle_logout():
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
                                               time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
-    return flask.redirect(flask.url_for('root'))
+    return flask.redirect(flask.url_for('handle_root'))
 
 
 @app.route("/search", methods=['POST'])
@@ -387,6 +402,14 @@ def handle_search():
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
                                               time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
     return flask_template
+
+
+@app.route('/settings', methods=['POST', 'GET'])
+@flask_login.login_required
+def handle_settings():
+    template_return = flask.render_template('settings.html')
+
+    return template_return
 
 
 @app.route('/storages', methods=['POST', 'GET'])
@@ -440,7 +463,7 @@ def handle_register():
                                               time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     form = SignupForm()
-    if form.validate_on_submit():
+    if form.validate_on_submit() and flask.request.method == "POST":
         user_obj = db_models.User(email=form.email.data,
                                   username=form.username.data,
                                   password=form.password.data,)
@@ -449,7 +472,9 @@ def handle_register():
         flask.flash('Welcome, {}! Please login.'.format(user_obj.username))
         flask_template = flask.redirect(flask.url_for('handle_login'))
     else:
-        flask.flash('Hmmm, seems like something happened.')
+        if flask.request.method == "POST":
+            flask.flash('Hmmm, seems like there was an error registering you account.')
+
         flask_template = flask.render_template("register.html", form=form)
 
     utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],

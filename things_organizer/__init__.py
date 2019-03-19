@@ -16,7 +16,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 
 from things_organizer import utils
-from things_organizer.api import categories, storages, tags
+from things_organizer.api import categories, storages, tags, things
 
 
 app = flask.Flask(__name__, static_url_path="/static")
@@ -37,6 +37,7 @@ API = flask_restful.Api(app)
 API.add_resource(categories.CategoriesAPI, '/api/categories', '/api/categories/<int:int_id>')
 API.add_resource(storages.StoragesAPI, '/api/storages', '/api/storages/<int:int_id>')
 API.add_resource(tags.TagsAPI, '/api/tags', '/api/tags/<int:int_id>')
+API.add_resource(things.ThingsAPI, '/api/things', '/api/things/<int:int_id>')
 
 from things_organizer import views
 from things_organizer.db import db_models
@@ -44,7 +45,7 @@ from things_organizer.db import db_models
 VERSION_INFO = {
     'MAJOR': 0,
     'MINOR': 0,
-    'PATCH': 1,
+    'PATCH': 2,
 }
 __version__ = '{MAJOR:d}.{MINOR:d}.{PATCH:d}'.format(**VERSION_INFO)
 __author__ = 'Juan Biondi'

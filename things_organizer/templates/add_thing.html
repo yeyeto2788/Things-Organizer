@@ -6,28 +6,43 @@
 
 {% block content %}
   {% if current_user.is_authenticated %}
-    <div>
+    <div class="container">
+        <h3 class="lead">Please, fill the following form and click on the <code>Add</code> button.</h3>
         <form action="" method="post">
             {{ form.hidden_tag() }}
           <div class="form-group">
             {{ form.name.label }}
-            {{ form.name(class_="form-control") }}
+            {{ form.name(class_="form-control", placeholder="Enter item name") }}
+          </div>
+          <div class="form-group">
             {{ form.description.label }}
-            {{ form.description(class_="form-control") }}
+            {{ form.description(class_="form-control", placeholder="Enter description") }}
+          </div>
+          <div class="form-group">
             {{ form.category.label }}
-            {{ form.category(class_="form-control") }}
+            {{ form.category(class_="form-control", placeholder="Select a category") }}
+          </div>
+          <div class="form-group">
             {{ form.storage.label }}
-            {{ form.storage(class_="form-control") }}
+            {{ form.storage(class_="form-control", placeholder="Select a storage") }}
+          </div>
+          <div class="form-group">
             {{ form.unit.label }}
-            {{ form.unit(class_="form-control") }}
+            {{ form.unit(class_="form-control", placeholder="Enter unit used for this item") }}
+          </div>
+          <div class="form-group">
             {{ form.quantity.label }}
-            {{ form.quantity(class_="form-control") }}
+            {{ form.quantity(class_="form-control", placeholder="Enter quantity") }}
+          </div>
+          <div class="form-group">
             {{ form.tags.label }}
-            {{ form.tags(class_="form-control") }}
+            {{ form.tags(class_="form-control", placeholder="Enter tags separated by comma") }}
           </div>
           <div class="form-group row">
+            <div class="col-sm-2">
+              <button type="submit" class="btn btn-primary btn-block">Add</button>
+            </div>
             <div class="col-sm-10">
-              <button type="submit" class="btn btn-primary">Add</button>
             </div>
           </div>
         </form>
