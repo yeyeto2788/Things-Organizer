@@ -7,7 +7,7 @@ Simple and "lightweight" web application for organizing that disaster or room/ga
 <img src="Doc/img/animation.gif" />
 </div>
 
-The idea came from a day I was looking a SOC board like the Raspberry Pi and I could find it
+The idea came from a day I was looking a SOC board like the Raspberry Pi and I could not find it
 due to the mess I had, all boards, cables, equipment, etc. where all around in different boxes and
 different places all over my house from my room lab to the garage.
 
@@ -133,16 +133,18 @@ All logs are accessible from the route `<ip:port>/logs`
 
 ## TODO:
  - [ ] Scripts for automate some repetitive work.
-   <ul><li> - [ ] Script for Linux.</li>
-   <li> - [x] Script generating DB.</li>
-      <ul><li> - [X] Create tables.</li>
-      <li> - [X] Insert dummy data on tables.</li>
-      <li> - [x] Clear all tables.</li></ul>
+   <ul><li> - [ ] Add more functionalities on the `run_app.py`.</li>
    </ul>
  - [ ] Features to add:
-   <ul><li> - [ ] API.</li>
-   <li> - [x] Tags.</li>
-   <li> - [x] Print labels.</li>
-   <li> - [x] Generate PDF/Text file of view.</li>
-   <li> - [X] Create Docker image to run the application.</li>
+   <li> - [x] Generate reports.
+     <ul><li> - [ ] PDF</li>
+     <li> - [x] CSV</li>
+     <li> - [x] TXT</li>
+     </ul>
+   </li>
    </ul>
+ - [ ] Documentation.
+  <ul>
+    <li> - [ ] `run_app.py` options.</li>
+    <li> - [ ] API.</li>
+  </ul>
