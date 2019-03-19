@@ -8,8 +8,7 @@ Common conversions and so on.
 import os
 import re
 
-from os import urandom
-from base64 import b64encode
+from zipfile import ZipFile
 
 
 DB_PATH = os.path.normpath(os.path.join(os.path.dirname(__file__), 'data', 'db'))
@@ -75,14 +74,45 @@ def str_to_bln(str_value):
     return bln_return
 
 
-def generate_session():
+def zip_dir(zip_directory, zip_name, str_directory, bln_delete=0):
     """
-    Generate a seudo random session key for database filling.
+    Generate a `.zip` folder with all content on a directory.
+
+    Args:
+        zip_directory: Directory where `.zip` file will be saved.
+        zip_name: Name for the `.zip` folder.
+        str_directory: Directory to look files from.
+        bln_delete:
 
     Returns:
-        String with the session key.
+        Name of the `.zip` folder if generated, else empty string.
 
     """
 
-    str_return = b64encode(urandom(16)).decode('utf-8')
-    return str_return
+    file_paths = []
+
+    if not zip_name.endswith('.zip'):
+        zip_name = '{}.zip'.format(zip_name)
+
+    for root, directories, files in os.walk(str_directory):
+        for filename in files:
+            file_dir = os.path.join(root, filename)
+            file_paths.append(file_dir)
+
+    if file_paths:
+        zip_filename = os.path.join(zip_directory, zip_name)
+
+        with ZipFile(zip_filename, 'w') as zip_file:
+            for file in file_paths:
+                folder_name = os.path.basename(os.path.dirname(file))
+                zip_location = os.path.join(folder_name, os.path.basename(file))
+                zip_file.write(file, zip_location)
+        zip_file.close()
+
+        if bln_delete:
+            for str_file in file_paths:
+                os.remove(str_file)
+    else:
+        zip_filename = ''
+
+    return zip_filename
