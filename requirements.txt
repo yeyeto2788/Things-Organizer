@@ -10,5 +10,4 @@ pylint>=2.2.2
 waitress>=1.2.1
 PrettyTable==0.7.2
 qrcode==6.1
-git+http://github.com/ojii/pymaging.git@master#egg=pymaging
-git+http://github.com/ojii/pymaging-png.git@master#egg=pymaging-png
+pillow==5.4.1

@@ -12,7 +12,7 @@ import things_organizer
 from things_organizer import utils
 
 
-class StoragesAPI(Resource):
+class ThingsAPI(Resource):
     """
     Class wrapper for the flask_restful.Resource in order to create the API.
 
@@ -24,11 +24,11 @@ class StoragesAPI(Resource):
     @flask_login.login_required
     def get(int_id=None):
         """
-        Find a storage for a given ID, if no ID is provided it will return all available
-        storage on table.
+        Find a thing for a given ID, if no ID is provided it will return all available
+        thing data on table.
 
         Args:
-            int_id: Id of the category to be searched.
+            int_id: Id of the thing to be searched.
 
         Returns:
             Response from jsonify function of flask.
@@ -39,10 +39,12 @@ class StoragesAPI(Resource):
         lst_values = []
 
         if int_id is not None:
-            lst_values = things_organizer.db_models.Storage.query.filter_by(id=int_id).first()
+            lst_values = things_organizer.db_models.Thing.query.filter_by(
+                id=int_id, user_id=flask_login.current_user.id).first()
 
         elif int_id is None:
-            lst_values = things_organizer.db_models.Storage.query.all()
+            lst_values = things_organizer.db_models.Thing.query.filter_by(
+                user_id=flask_login.current_user.id).all()
 
         try:
             if lst_values:
@@ -52,14 +54,23 @@ class StoragesAPI(Resource):
                     for int_inner, value in enumerate(lst_values):
                         dict_inner[int_inner] = {'id': value.id,
                                                  'name': value.name,
-                                                 'location': value.location}
+                                                 'description': value.description,
+                                                 'unit': value.unit,
+                                                 'quantity': value.quantity,
+                                                 'category': value.category_id,
+                                                 'storage': value.storage_id
+                        }
 
-                    dict_convert['storage'] = dict_inner
+                    dict_convert['things'] = dict_inner
                     dict_convert['data'] = len(lst_values)
                 else:
                     dict_convert['id'] = lst_values.id
                     dict_convert['name'] = lst_values.name
-                    dict_convert['location'] = lst_values.location
+                    dict_convert['description'] = lst_values.description
+                    dict_convert['unit'] = lst_values.unit
+                    dict_convert['quantity'] = lst_values.quantity
+                    dict_convert['category'] = lst_values.category_id
+                    dict_convert['storage'] = lst_values.storage_id
                     dict_convert['data'] = 1
 
             else:
@@ -68,5 +79,5 @@ class StoragesAPI(Resource):
             return jsonify(str(dict_convert))
 
         except Exception as excerror:
-            utils.debug("Error occurred on Storage API.\nError: {}".format(excerror.__str__()))
+            utils.debug("Error occurred on Things API.\nError: {}".format(excerror.__str__()))
             abort(404, error_message="Not found storage '{}'.".format(int_id))

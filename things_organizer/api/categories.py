@@ -3,6 +3,9 @@
 API end point for the things categories.
 
 """
+import flask_login
+
+
 from flask import jsonify
 from flask_restful import Resource, abort
 
@@ -19,6 +22,7 @@ class CategoriesAPI(Resource):
     """
 
     @staticmethod
+    @flask_login.login_required
     def get(int_id=None):
         """
         Find a category for a given ID, if no ID is provided it will return all available

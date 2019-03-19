@@ -134,15 +134,15 @@ All logs are accessible from the route `<ip:port>/logs`
 ## TODO:
  - [ ] Scripts for automate some repetitive work.
    <ul><li> - [ ] Script for Linux.</li>
-   <li> - [ ] Script generating DB.</li>
+   <li> - [x] Script generating DB.</li>
       <ul><li> - [X] Create tables.</li>
       <li> - [X] Insert dummy data on tables.</li>
-      <li> - [ ] Clear all tables.</li></ul>
+      <li> - [x] Clear all tables.</li></ul>
    </ul>
  - [ ] Features to add:
    <ul><li> - [ ] API.</li>
-   <li> - [ ] Tags.</li>
-   <li> - [ ] Print labels.</li>
-   <li> - [ ] Generate PDF/Text file of view.</li>
+   <li> - [x] Tags.</li>
+   <li> - [x] Print labels.</li>
+   <li> - [x] Generate PDF/Text file of view.</li>
    <li> - [X] Create Docker image to run the application.</li>
    </ul>
