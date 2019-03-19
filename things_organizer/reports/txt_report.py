@@ -13,7 +13,6 @@ Once report is generate it should return the directory of the file.
 import os
 
 from prettytable import PrettyTable
-from sqlalchemy import func
 
 from things_organizer import utils
 from things_organizer.db import db_models
@@ -119,26 +118,27 @@ class TXT:
             lst_columns.remove('user_id')
 
         table_data = PrettyTable(lst_columns)
-        total_data = PrettyTable(['Total Items'])
+        int_total = 0
 
         for row in things:
             data = row.__dict__
             data.pop('_sa_instance_state', None)
             data.pop('user_id', None)
             column_lst = []
+            int_total += row.quantity
             for column_name in lst_columns:
                 column_lst.append(data[column_name])
             table_data.add_row(column_lst)
-
-        total_data.add_row([
-            db_models.database.session.query(
-                func.sum(db_models.Thing.quantity)).scalar()])
 
         with open('{}'.format(file_dir), mode='w') as txt_file:
             txt_file.write('\n\n{}\n\n'.format(str_title))
             file_data = table_data.get_string(title=str_title)
             txt_file.write(file_data)
             txt_file.write('\n\n')
-            txt_file.write(str(total_data))
+            if things:
+                total_data = PrettyTable(['Total Items'])
+                total_data.add_row([int_total])
+                txt_file.write(str(total_data))
 
         txt_file.close()
+        print(int_total)
