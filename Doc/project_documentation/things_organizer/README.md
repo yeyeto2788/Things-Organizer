@@ -14,18 +14,31 @@ It also have an API that is enable for IOT purposes.
 
 ## PACKAGE CONTENTS
 api (package)
-data_management (package)
 db (package)
+forms
+labels (package)
 main_app
+reports (package)
 test (package)
 utils
+views
+
+SUBMODULES
+categories
+db_models
+storages
+tags
 
 ## DATA
-VERSION_INFO = {'MAJOR': 0, 'MINOR': 0, 'PATCH': 1}
+API = <flask_restful.Api object>
+DB = <SQLAlchemy engine=sqlite:///C:\Users\F59JBP0\Do...hings-Organize...
+VERSION_INFO = {'MAJOR': 0, 'MINOR': 1, 'PATCH': 0}
 __email__ = 'juanernestobiondi@gmail.com'
+app = <Flask 'things_organizer'>
+login_manager = <flask_login.login_manager.LoginManager object>
 
 ## VERSION
-0.0.1
+0.1.0
 
 ## AUTHOR
 Juan Biondi

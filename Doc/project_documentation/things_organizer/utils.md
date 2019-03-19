@@ -11,50 +11,13 @@ Common conversions and so on.
 
 ## FUNCTIONS
 
-### `convert_list_to_columns(lst_columns)`
-Convert list type into string for sql column purposes.
-
-**Args:**
-
- * **`lst_columns`**  columns to be converted.
-
-**Returns:** String with the columns converted.
-
-
-### `convert_list_to_values(lst_values)`
-Convert list type into string values for sql purposes.
-
-**Args:**
-
- * **`lst_values`**  values to be converted.
-
-**Returns:** String with the values converted.
-
-
-### `convert_lists_to_assignment(lst_columns, lst_values)`
-For a given list of values convert it into SQL string assignment.
-
-**Args:**
-
- * **`lst_columns`**  List of columns to which values will be assigned.
- * **`lst_values`**  List of values to be assigned.
-
-**Returns:** String with the SQL assignment like <column>='<value>'.
-
-
 ### `debug(*args, **kargs)`
 wrapper to print values on the terminal in case debug mode is enable.
 
 **Args:**
 
- * **`*args`**  Arguments for the print function.
- * **`**kargs`**  Keyword arguments to the print function.
-
-
-### `generate_session()`
-Generate a seudo random session key for database filling.
-
-**Returns:** String with the session key.
+*args: Arguments for the print function.
+**kargs: Keyword arguments to the print function.
 
 
 ### `sort_alphanumeric_list(lst_unsorted)`
@@ -79,5 +42,19 @@ An `ValueError` might be raised if not possible to convert string to boolean.
 **Returns:** True if possible to convert. otherwise False.
 
 
-### `urandom(size, /)`
-Return a bytes object containing random bytes suitable for cryptographic use.
+### `zip_dir(zip_directory, zip_name, str_directory, bln_delete=0)`
+Generate a `.zip` folder with all content on a directory.
+
+**Args:**
+
+ * **`zip_directory`**  Directory where `.zip` file will be saved.
+ * **`zip_name`**  Name for the `.zip` folder.
+ * **`str_directory`**  Directory to look files from.
+bln_delete:
+
+**Returns:** Name of the `.zip` folder if generated, else empty string.
+
+## DATA
+DB_PATH = r'C:\Users\F59JBP0\Downloads\Things-Organizer\things_organiz...
+LABEL_PATH = r'C:\Users\F59JBP0\Downloads\Things-Organizer\things_orga...
+REPORT_PATH = r'C:\Users\F59JBP0\Downloads\Things-Organizer\things_org...
