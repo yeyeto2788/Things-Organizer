@@ -23,18 +23,22 @@ class QRLabel:
 
     """
 
-    def __init__(self, str_name, str_description):
+    def __init__(self, str_name, str_description, s_name, s_location):
         """
         Constructor method for the QRLabel object.
 
         Args:
             str_name: Name of the label
             str_description: Description of the label.
+            s_name:
+            s_location:
 
         """
 
         self.thing_name = str_name
         self.thing_description = str_description
+        self.storage_name = s_name
+        self.storage_location = s_location
         self.file_name = '{}.png'.format(str_name)
         self.file_directory = os.path.realpath(utils.LABEL_PATH)
 
@@ -47,7 +51,12 @@ class QRLabel:
 
         """
 
-        str_data = "Name: {}\nDescription: {}"
+        str_data = """
+        Name:             {}
+        Description:      {}
+        Storage name:     {}
+        Storage location: {}
+        """.format(self.thing_name, self.thing_description, self.storage_name, self.storage_name)
 
         final_file_name = os.path.join(self.file_directory, self.file_name)
 

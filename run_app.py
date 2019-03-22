@@ -1,4 +1,6 @@
 
+import flask
+
 from flask_script import Manager, prompt_bool
 from flask_migrate import Migrate, MigrateCommand
 from waitress import serve
@@ -61,7 +63,33 @@ def run_production():
     Runs the server as WSGI.
 
     """
-    serve(app, listen='{}:{}'.format(config['ip'], config['port']))
+    serve(app, listen='{}:{}'.format(config['ip'], config['port']))\
+
+
+@manager.command
+def show_endpoints():
+    """
+    Show all possible endpoints where requests can be done.
+
+    """
+
+    print('\nThis are the possible endpoints of the application:\n')
+
+    rules = [rule for rule in app.url_map._rules]
+
+    for rule in rules:
+
+        options = {}
+        for arg in rule.arguments:
+            options[arg] = "[{0}]".format(arg)
+
+        try:
+            rule_url = flask.url_for(rule.endpoint)
+            rule_methods = ','.join(rule.methods)
+
+            print('{:30s} - {:50s}'.format(rule_methods, rule_url))
+        except Exception as exerror:
+            print('{:30s} - {:50s}'.format(rule_methods, rule.endpoint))
 
 
 if __name__ == '__main__':
