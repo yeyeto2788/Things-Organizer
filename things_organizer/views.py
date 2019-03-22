@@ -299,8 +299,10 @@ def handle_label(int_id):
 
     thing = db_models.Thing.query.filter_by(user_id=flask_login.current_user.id, id=int_id).first()
 
+    storage = db_models.Storage.query.filter_by(id=thing.storage_id).first()
+
     if thing:
-        label = QRLabel(thing.name, thing.description)
+        label = QRLabel(thing.name, thing.description, storage.name, storage.location)
         label.generate_label()
 
         template_return = flask.send_from_directory(
