@@ -1,4 +1,4 @@
-
+#!/usr/bin/env python3
 import flask
 
 from flask_script import Manager, prompt_bool
