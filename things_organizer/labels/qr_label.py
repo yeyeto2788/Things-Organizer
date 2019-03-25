@@ -7,6 +7,8 @@ import os
 
 import qrcode
 
+from PIL import Image, ImageDraw
+
 from things_organizer import utils
 
 
@@ -58,12 +60,12 @@ class QRLabel:
 
         """
 
-        str_data = """
-        Name:             {}
+        str_data = """Name:             {}
         Description:      {}
         Storage name:     {}
         Storage location: {}
-        """.format(self.thing_name, self.thing_description, self.storage_name, self.storage_name)
+        """.format(self.thing_name, self.thing_description,
+                   self.storage_name, self.storage_location)
 
         final_file_name = os.path.join(self.file_directory, self.file_name)
 
@@ -78,3 +80,33 @@ class QRLabel:
 
         with open('{}'.format(final_file_name), 'wb') as qr_img_file:
             img.save(qr_img_file)
+
+        qr_image = Image.open(final_file_name)
+
+        # Calculate new values for the label
+        basewidth = 350
+        width_percent = (basewidth / float(qr_image.size[0]))
+        height_size = int((float(qr_image.size[1]) * float(width_percent)))
+
+        # Resize qr image since default gives 570x570px
+        qr_image = qr_image.resize((basewidth, height_size), Image.ANTIALIAS)
+
+        lst_data = str_data.split('\n')
+
+        # Final image with text
+        bg_width = 384
+        bg_height = basewidth + (len(lst_data) * 10)
+        bg_image = Image.new("1", [bg_width, bg_height], "white")
+        drawing = ImageDraw.Draw(bg_image)
+
+        # Fill background image with the text on the label.
+        for int_index, line in enumerate(lst_data):
+            add_height = int_index * 10
+            final_text = line.replace('\n', '').lstrip()
+            drawing.text((10, basewidth + add_height), final_text, fill='black')
+
+        final_position = int((bg_width - basewidth) / 2)
+        # Add qr image on background image and save it.
+        bg_image.paste(qr_image, (final_position, 0))
+        self.file_name = 'label-{}'.format(self.file_name)
+        bg_image.save(os.path.join(self.file_directory, self.file_name))
