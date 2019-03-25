@@ -8,7 +8,7 @@ from flask_wtf import FlaskForm
 from wtforms.fields import StringField, PasswordField, BooleanField, SelectField, IntegerField
 from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo, ValidationError
 
-from things_organizer.db.db_models import User, Category, Storage, Tag, Thing
+from things_organizer.db.db_models import User, Category, Storage
 
 
 class CategoryForm(FlaskForm):
@@ -20,6 +20,16 @@ class CategoryForm(FlaskForm):
     name = StringField(label='Category Name')
 
     def validate_name(self, name_field):
+        """
+        Validate that the category name does not exists on the database.
+
+        Args:
+            name_field: Name of the category to be checked.
+
+        Returns:
+            True if name does not exists, else False.
+
+        """
         if Category.query.filter_by(name=name_field.data).first():
             raise ValidationError('This category already exists.')
 
@@ -66,10 +76,32 @@ class SignupForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Length(1, 120), Email()])
 
     def validate_email(self, email_field):
+        """
+        Check whether the user's email exists on the database.
+
+        Args:
+            email_field: email to be checked.
+
+        Returns:
+            True if not found, else False.
+
+        """
+
         if User.query.filter_by(email=email_field.data).first():
             raise ValidationError('There already is a user with this email address.')
 
     def validate_username(self, username_field):
+        """
+        Check whether the username exists on the database.
+
+        Args:
+            username_field: username to be checked.
+
+        Returns:
+            True if not found, else False.
+
+        """
+
         if User.query.filter_by(username=username_field.data).first():
             raise ValidationError('This username is already taken.')
 
@@ -84,6 +116,14 @@ class StorageForm(FlaskForm):
     location = StringField(label='Location')
 
     def validate(self):
+        """
+        Validation of the Storage form checking whether the storage name and location pair
+        already exists or not.
+
+        Returns:
+            True if the pair does not exists, else False.
+
+        """
 
         bln_return = True
 
@@ -123,6 +163,12 @@ class ThingForm(FlaskForm):
                            message="Tags can only contain letters and numbers")])
 
     def validate(self):
+        """
+        Validation of the Things form checking for tags separated by comma.
+
+        Returns:
+            True if the form is validated by it parent, else False.
+        """
 
         if not FlaskForm.validate(self):
             return False
@@ -134,4 +180,3 @@ class ThingForm(FlaskForm):
         self.tags.data = ",".join(tagset)
 
         return True
-

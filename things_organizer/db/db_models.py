@@ -11,9 +11,9 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from things_organizer import DB as database
 
 tags = database.Table('thing_tag',
-    database.Column('tag_id', database.Integer, database.ForeignKey('tag.id')),
-    database.Column('thing_id', database.Integer, database.ForeignKey('thing.id'))
-)
+                      database.Column('tag_id', database.Integer, database.ForeignKey('tag.id')),
+                      database.Column('thing_id', database.Integer, database.ForeignKey('thing.id'))
+                      )
 
 
 class Thing(database.Model):
@@ -61,10 +61,24 @@ class Thing(database.Model):
 
     @property
     def tags(self):
+        """
+        Tags of the thing to be requested.
+
+        Returns:
+            All thing tags separated by coma.
+        """
         return ",".join([t.name for t in self._tags])
 
     @tags.setter
     def tags(self, string):
+        """
+        Setter for thing tags splitting the text given as argument to generate a new tag
+        for each slice on the string.
+
+        Args:
+            string: string to be split.
+
+        """
         if string:
             self._tags = [Tag.get_or_create(name) for name in string.split(',')]
 
@@ -86,6 +100,13 @@ class User(database.Model, UserMixin):
 
     @property
     def password(self):
+        """
+        Property which is write-only so it will raise an exception if trying to access to it.
+
+        Raises:
+            AttributeError.
+
+        """
         raise AttributeError('password: write-only field')
 
     @password.setter
@@ -186,7 +207,7 @@ class Tag(database.Model):
 
         try:
             return Tag.query.filter_by(name=name).one()
-        except:
+        except Exception:
             return Tag(name=name)
 
     @staticmethod

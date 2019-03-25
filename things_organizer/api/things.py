@@ -59,7 +59,7 @@ class ThingsAPI(Resource):
                                                  'quantity': value.quantity,
                                                  'category': value.category_id,
                                                  'storage': value.storage_id
-                        }
+                                                 }
 
                     dict_convert['things'] = dict_inner
                     dict_convert['data'] = len(lst_values)

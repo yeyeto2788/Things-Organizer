@@ -29,6 +29,15 @@ _CONTAINER = """
 
 @login_manager.user_loader
 def load_user(userid):
+    """
+    Retrieve the user from the database from a given id.
+
+    Args:
+        userid: id of the user.
+
+    Returns:
+        User object.
+    """
     return db_models.User.query.get(int(userid))
 
 
@@ -374,6 +383,14 @@ def handle_logout():
 @app.route("/search.html", methods=['POST'])
 @flask_login.login_required
 def handle_search():
+    """
+    This function is meant to be used for searching a text within the database.
+
+    Returns:
+        Flask template.
+
+    """
+
     utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
                                               time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
@@ -386,8 +403,8 @@ def handle_search():
         if form_text.startswith('thing:'):
             search_txt = form_text.split(':')[1].lstrip()
             things = db_models.Thing.query.filter_by(
-                user_id=flask_login.current_user.id).filter(
-                db_models.Thing.name.like("%" + search_txt + "%")).first()
+                user_id=flask_login.current_user.id).filter(db_models.Thing.name.like(
+                "%" + search_txt + "%")).first()
 
             if things:
                 template_text += str(things)
@@ -409,6 +426,14 @@ def handle_search():
 @app.route('/settings', methods=['POST', 'GET'])
 @flask_login.login_required
 def handle_settings():
+    """
+    Set all setting of the application (Stil under development).
+
+    Returns:
+        Flask template based on the request.
+
+    """
+
     template_return = flask.render_template('settings.html')
 
     return template_return
