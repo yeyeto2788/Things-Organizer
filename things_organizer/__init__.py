@@ -21,14 +21,13 @@ from things_organizer.api import categories, storages, tags, things
 
 
 app = flask.Flask(__name__, static_url_path="/static")
+database_path = os.path.abspath(os.path.join(utils.DB_PATH, "things_organizer.db"))
 
 if sys.platform == 'linux':
-    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////{}".format(os.path.join(
-        utils.DB_PATH, "things_organizer.db"))
+    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////{}".format(database_path)
     print(os.path.join(utils.DB_PATH, "things_organizer.db"))
 else:
-    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///{}".format(os.path.join(
-        utils.DB_PATH, "things_organizer.db"))
+    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///{}".format(database_path)
     print(os.path.join(utils.DB_PATH, "things_organizer.db"))
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
