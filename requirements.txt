@@ -11,6 +11,7 @@ pylint-flask==0.6
 waitress>=1.2.1
 PrettyTable==0.7.2
 qrcode==6.1
+pyzbar==0.1.8
 pillow==5.4.1
 pytest==4.3.1
 pytest-cov==2.6.1
