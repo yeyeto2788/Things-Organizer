@@ -8,6 +8,8 @@ import inspect
 import flask
 import flask_login
 
+from sqlalchemy import or_
+
 from things_organizer import app, login_manager, DB
 from things_organizer import utils
 from things_organizer.forms import LoginForm, SignupForm, ThingForm, ReportForm
@@ -397,21 +399,47 @@ def handle_search():
     if flask_login.current_user.is_authenticated:
 
         form_text = flask.request.form.get('search-text')
-        template_text = "Results for '{}' > ".format(form_text)
+        template_text = "Results for <b>'{}'</b>. ".format(form_text)
         print(form_text)
 
         if form_text.startswith('thing:'):
             search_txt = form_text.split(':')[1].lstrip()
-            things = db_models.Thing.query.filter_by(
-                user_id=flask_login.current_user.id).filter(db_models.Thing.name.like(
-                "%" + search_txt + "%")).first()
+            print(search_txt)
+            things = db_models.Thing.query.filter(
+                db_models.User.id == flask_login.current_user.id, or_(
+                    db_models.Thing.name.contains('{}%'.format(search_txt)),
+                    db_models.Thing.description.contains('{}%'.format(search_txt)))
+                ).all()
 
             if things:
-                template_text += str(things)
-            else:
-                template_text += "NOT FOUND"
+                template_text += 'Found <b>{}</b> items.\n\n'.format(len(things))
 
-        flask_template = flask.render_template('_blank.html', str_to_display=str(template_text))
+                for int_index, thing in enumerate(things):
+                    int_index += 1
+                    template_text += '<b>Item {:02}</b>\n'.format(int_index)
+                    template_text += '<b>Name:</b> {}\n'.format(str(thing.name))
+                    template_text += '<b>Description:</b> {}\n'.format(str(thing.description))
+                    storage = db_models.Storage.query.filter_by(id=thing.storage_id).first()
+                    template_text += '<b>Storage:</b> {}\n'.format(storage.name)
+                    template_text += '<b>Location:</b> {}\n'.format(storage.location)
+                    category = db_models.Category.query.filter_by(id=thing.category_id).first()
+                    template_text += '<b>Category:</b> {}\n\n'.format(category.name)
+
+                template_text = template_text.replace('\n', '<br>')
+            else:
+                template_text += "<b>No items found.</b>"
+
+        else:
+            template_text += "<b>No items found.</b>"
+
+        container = """
+        <div class="container-fluid lead">
+        {}
+        <p class="lead" align="center">You can <a href="javascript:history.back()">
+        go back</a>
+        to the previous page, or <a href="/home">home</a>.</p>
+        </div>""".format(template_text)
+        flask_template = flask.render_template('_blank.html', str_to_display=str(container))
 
     else:
         utils.debug("Redirecting to 'login' page.")

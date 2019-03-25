@@ -44,8 +44,8 @@ from things_organizer.db import db_models
 
 VERSION_INFO = {
     'MAJOR': 0,
-    'MINOR': 0,
-    'PATCH': 2,
+    'MINOR': 1,
+    'PATCH': 0,
 }
 __version__ = '{MAJOR:d}.{MINOR:d}.{PATCH:d}'.format(**VERSION_INFO)
 __author__ = 'Juan Biondi'
