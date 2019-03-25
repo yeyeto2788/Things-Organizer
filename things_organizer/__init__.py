@@ -9,6 +9,7 @@ It also have an API that is enable for IOT purposes.
 **Note:** we are using Semantic Version, for more information go to http://semver.org/
 """
 import os
+import sys
 
 import flask
 import flask_restful
@@ -20,8 +21,16 @@ from things_organizer.api import categories, storages, tags, things
 
 
 app = flask.Flask(__name__, static_url_path="/static")
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////{}".format(os.path.join(utils.DB_PATH,
-                                                                            "things_organizer.db"))
+
+if sys.platform == 'linux':
+    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////{}".format(os.path.join(
+        utils.DB_PATH, "things_organizer.db"))
+    print(os.path.join(utils.DB_PATH, "things_organizer.db"))
+else:
+    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///{}".format(os.path.join(
+        utils.DB_PATH, "things_organizer.db"))
+    print(os.path.join(utils.DB_PATH, "things_organizer.db"))
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = os.urandom(16)
 
