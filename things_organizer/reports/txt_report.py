@@ -19,6 +19,32 @@ from things_organizer.db import db_models
 
 
 class TXT:
+    """
+        `.txt` generator class to be use when creating reports.
+
+        Attributes:
+            file_directory: Directory where report will be saved.
+            file_name: Name to be used for the file.1
+            user_id: User id to query all things from that id.
+
+        Examples:
+            ```
+            from things_organizer.reports import TXT_Report
+
+            txt_report = TXT_Report('all_things', 1)
+            txt_report.get_all_things()
+
+            # Change name of the file for not overwriting it.
+            txt_report.file_name('all_by_category.txt', 2)
+            txt_report.get_by_category()
+
+            # Change name of the file for not overwriting it.
+            txt_report.file_name('all_by_storage.txt', 2)
+            txt_report.get_by_storage()
+
+            ```
+
+        """
 
     def __init__(self, file_name, int_user):
         """

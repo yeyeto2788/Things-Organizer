@@ -1,3 +1,8 @@
+"""
+
+Module to generate QR labels with the data of a given Thing in the database.
+
+"""
 import os
 
 import qrcode
@@ -14,6 +19,8 @@ class QRLabel:
         thing_description = Description to add on the label.
         file_name = Name for the image generated.
         file_directory = Directory where labels are stored.
+        storage_name = name of the storage.
+        storage_location = Location of the storage.
 
     Quick example:
     ```
@@ -30,8 +37,8 @@ class QRLabel:
         Args:
             str_name: Name of the label
             str_description: Description of the label.
-            s_name:
-            s_location:
+            s_name: Storage name.
+            s_location: Storage Location.
 
         """
 
@@ -47,7 +54,7 @@ class QRLabel:
 
     def generate_label(self):
         """
-        Method to generate the label from class properties using the qrcode module.
+        Method to generate the label from class properties using the qr-code module.
 
         """
 

@@ -94,7 +94,7 @@ def zip_dir(zip_directory, zip_name, str_directory, bln_delete=0):
     if not zip_name.endswith('.zip'):
         zip_name = '{}.zip'.format(zip_name)
 
-    for root, directories, files in os.walk(str_directory):
+    for root, _directories, files in os.walk(str_directory):
         for filename in files:
             file_dir = os.path.join(root, filename)
             file_paths.append(file_dir)
