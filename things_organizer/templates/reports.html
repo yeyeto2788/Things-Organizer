@@ -43,17 +43,24 @@
     <script type="text/javascript">
         document.querySelector('#category_div').style.display = 'none';
         document.querySelector('#storage_div').style.display = 'none';
-        var el = document.getElementById("data_type");
-        el.addEventListener("change", function() {
-          var elems = document.querySelectorAll('#category_div,storage_div')
-          for (var i = 0; i < elems.length; i++) {
-            elems[i].style.display = 'none'
+        var selector = document.getElementById("data_type");
+        selector.addEventListener("change", function(event) {
+          var elements = document.querySelectorAll('#category_div,storage_div')
+          for (var int_index = 0; int_index < elements.length; int_index++)
+          {
+            elements[int_index].style.display = 'none'
           }
-          if (this.selectedIndex === 1) {
+
+          if (event.target.selectedIndex === 1)
+          {
             document.querySelector('#category_div').style.display = 'block';
-          } else if (this.selectedIndex === 2) {
+          }
+          else if (event.target.selectedIndex === 2)
+          {
             document.querySelector('#storage_div').style.display = 'block';
-          } else {
+          }
+          else
+          {
             document.querySelector('#category_div').style.display = 'none';
             document.querySelector('#storage_div').style.display = 'none';
           }
