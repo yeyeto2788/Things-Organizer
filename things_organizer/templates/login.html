@@ -50,15 +50,21 @@
               </div>
             </div>
             <div class="form-group">
-              {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                  <div class="alert alert-danger" role="alert">
-                  {% for message in messages %}
-                    <li>{{ message }}</li>
-                  {% endfor %}
-                  </div>
-                {% endif %}
-              {% endwith %}
+                {% with messages = get_flashed_messages() %}
+                  {% if messages %}
+                    {% for message in messages %}
+                      {% if message.startswith('ERROR:') %}
+                        <div class="alert alert-danger" role="alert">
+                          <li>{{ message.replace('ERROR:', '') }}</li>
+                        </div>
+                      {% else %}
+                        <div class="alert alert-primary" role="alert">
+                          <li>{{ message }}</li>
+                        </div>
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
+                {% endwith %}
             </div>
           <button type="submit" class="btn btn-primary btn-block">Login</button>
           </form>

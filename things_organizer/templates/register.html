@@ -76,11 +76,17 @@
             <div class="form-group">
               {% with messages = get_flashed_messages() %}
                 {% if messages %}
-                  <div class="alert alert-danger" role="alert">
-                  {% for message in messages %}
-                    <li>{{ message }}</li>
+                  {% for message in messages: %}
+                    {% if message.startswith('ERROR:') %}
+                      <div class="alert alert-danger" role="alert">
+                        <li>{{ message.replace('ERROR:', '') }}</li>
+                      </div>
+                    {% else %}
+                      <div class="alert alert-primary" role="alert">
+                        <li>{{ message }}</li>
+                      </div>
+                    {% endif %}
                   {% endfor %}
-                  </div>
                 {% endif %}
               {% endwith %}
             </div>
