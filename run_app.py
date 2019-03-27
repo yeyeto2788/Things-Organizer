@@ -1,3 +1,4 @@
+import os
 import flask
 
 from flask_script import Manager, prompt_bool
@@ -5,6 +6,7 @@ from flask_migrate import Migrate, MigrateCommand
 from waitress import serve
 
 from things_organizer import app, DB
+from things_organizer.utils import DB_PATH
 
 # TODO: Put all application related configuration into a file.
 config = {'ip': '0.0.0.0', 'port': 8080}
@@ -24,6 +26,9 @@ def create_db():
     Creates database tables from sqlalchemy models
 
     """
+    if not os.path.exists(DB_PATH):
+        os.makedirs(DB_PATH)
+
     DB.create_all()
 
 
