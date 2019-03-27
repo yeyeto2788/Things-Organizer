@@ -350,7 +350,7 @@ def handle_login():
             flask_template = flask.redirect(flask.request.args.get('next') or flask.url_for(
                 'handle_root', username=user_obj.username))
         else:
-            flask.flash('Incorrect username or password.')
+            flask.flash('ERROR:Incorrect username or password.')
             flask_template = flask.render_template("login.html", form=form)
     else:
         flask_template = flask.render_template("login.html", form=form)
@@ -528,7 +528,7 @@ def handle_register():
         flask_template = flask.redirect(flask.url_for('handle_login'))
     else:
         if flask.request.method == "POST":
-            flask.flash('Hmmm, seems like there was an error registering you account.')
+            flask.flash('ERROR: Hmmm, seems like there was an error registering you account.')
 
         flask_template = flask.render_template("register.html", form=form)
 

@@ -15,19 +15,28 @@ RUN apt-get update && apt-get upgrade -y
 RUN apt-get install --yes --force-yes sqlite3
 
 # Install Python related
-RUN apt-get install -y git python3 python3-dev python3-pip
+RUN apt-get install -y git nano python3 python3-dev python3-pip
 
 # Copy files over the container
 RUN git clone https://github.com/yeyeto2788/Things-Organizer.git
 
 # Make all files writables
-RUN chmod -R 777 ./Things-Organizer
+RUN chmod -R 777 /Things-Organizer
 
 # Move into clone repository
-RUN cd ./Things-Organizer
+RUN cd /Things-Organizer/things_organizer
+
+# Add database and db directory
+RUN mkdir /Things-Organizer/things_organizer/data
+RUN mkdir /Things-Organizer/things_organizer/data/db
+RUN touch /Things-Organizer/things_organizer/data/db/things_organizer.db
+RUN chmod -R 755 /Things-Organizer/things_organizer/data
+
+# Return to base dir
+RUN cd  /Things-Organizer
 
 # Set working directory
-WORKDIR ./Things-Organizer
+WORKDIR /Things-Organizer
 
 # Install pip requirements
 # If you're behind proxy uncomment and edit line below.
@@ -46,4 +55,5 @@ ENV LANG en
 
 # Execute the application
 CMD ["python3", "run_app.py", "create_db"]
+CMD ["python3", "run_app.py", "db"]
 CMD ["python3", "run_app.py", "run_production"]
