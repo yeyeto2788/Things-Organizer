@@ -88,7 +88,7 @@ class TestAppEndPoints(unittest.TestCase):
 
     def test_root(self):
         """
-        Check wheter the root path is enable.
+        Check whether the root path is enable.
 
         """
         response = self.app.get('/', follow_redirects=True)
@@ -132,7 +132,7 @@ class TestAppEndPoints(unittest.TestCase):
 
         """
         user_name = 'testuser{}'.format(str(int(time.time())))
-        response = self.register('{}@gmail.com'.format(user_name), user_name, 'psk', 'psk')
+        response = self.register('{}@mail.com'.format(user_name), user_name, 'psk', 'psk')
         self.assertEqual(response.status_code, 200)
         str_search = 'Welcome, {}! Please login.'.format(user_name)
         self.assertIn(str_search.encode('utf-8'), response.data)
@@ -145,7 +145,7 @@ class TestAppEndPoints(unittest.TestCase):
         user_name = 'testuser{}'.format(str(int(time.time())))
         int_psswd = 548273
         response = self.register(
-            '{}@gmail.com'.format(user_name), user_name, str(int_psswd), str(int_psswd + 1))
+            '{}@mail.com'.format(user_name), user_name, str(int_psswd), str(int_psswd + 1))
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'Hmmm, seems like there was an error registering you account.',
                       response.data)
