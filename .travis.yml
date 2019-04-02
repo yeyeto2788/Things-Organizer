@@ -1,9 +1,12 @@
 dist: xenial
 language: python
 python:
+  - "3.6"
   - "3.7"
 # Install dependencies
 install:
   - pip install -r requirements.txt
 # Run tests
-script: pytest
+script:
+  pytest --cov=things_organizer
+  - echo "Done"
