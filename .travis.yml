@@ -11,5 +11,5 @@ install:
 # Execute the tests and the linter
 script:
   - pytest --cov=things_organizer
-  - pylint -f parseable --rcfile=.pylintrc
+  - pylint -f parseable --rcfile=.pylintrc things_organizer
   - echo "Done"
