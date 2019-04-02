@@ -8,5 +8,5 @@ install:
   - pip install -r requirements.txt
 # Run tests
 script:
-  pytest --cov=things_organizer
+  pytest && pylint
   - echo "Done"
