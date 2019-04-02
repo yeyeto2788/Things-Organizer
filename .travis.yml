@@ -4,10 +4,12 @@ python:
   - "3.6"
   - "3.7"
 # Install dependencies
+before_install:
+  - python --version
 install:
   - pip install -r requirements.txt
 # Execute the tests and the linter
 script:
-  - pytest
+  - pytest --cov=things_organizer
   - pylint -f parseable --rcfile=.pylintrc
   - echo "Done"
