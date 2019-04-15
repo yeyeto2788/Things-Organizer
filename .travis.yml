@@ -6,10 +6,12 @@ python:
 # Install dependencies
 before_install:
   - python --version
+  - uname -a
 install:
   - pip install -r requirements.txt
+  - pip install flake8
 # Execute the tests and the linter
 script:
   - pytest --cov=things_organizer
-  - pylint -f parseable --rcfile=.pylintrc things_organizer
+  - flake8 things_organizer
   - echo "Done"
