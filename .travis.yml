@@ -9,9 +9,8 @@ before_install:
   - uname -a
 install:
   - pip install -r requirements.txt
-  - pip install flake8
 # Execute the tests and the linter
 script:
   - pytest --cov=things_organizer
-  - flake8 things_organizer
+  - pylint --output-format=text things_organizer
   - echo "Done"
