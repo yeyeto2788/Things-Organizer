@@ -12,5 +12,5 @@ install:
 # Execute the tests and the linter
 script:
   - pytest --cov=things_organizer
-  - pylint --output-format=text things_organizer
+  - pylint --output-format=text --rcfile=.pylintrc --errors-only things_organizer
   - echo "Done"
