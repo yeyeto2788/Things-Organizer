@@ -1,22 +1,23 @@
-# categories.py
+# storages.py
 
 
 ## NAME
-categories - API end point for the things categories.
+storages - API end point for the things categories.
 
 ## CLASSES
 
-### `class CategoriesAPI(flask_restful.Resource)`
+
+### `class StoragesAPI(flask_restful.Resource)`
 Class wrapper for the flask_restful.Resource in order to create the API.
 
 **NOTE:** By now the only method allow is `GET`, probably more methods will be added.
 
+
 **Static methods defined here:**
 
-
 ### `get(int_id=None)`
-Find a category for a given ID, if no ID is provided it will return all available
-categories on table.
+Find a storage for a given ID, if no ID is provided it will return all available
+storage on table.
 
 **Args:**
 

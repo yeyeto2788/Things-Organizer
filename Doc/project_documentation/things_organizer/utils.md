@@ -16,8 +16,8 @@ wrapper to print values on the terminal in case debug mode is enable.
 
 **Args:**
 
-*args: Arguments for the print function.
-**kargs: Keyword arguments to the print function.
+ * **`*args`** Arguments for the print function.
+ * **`**kargs`** Keyword arguments to the print function.
 
 
 ### `sort_alphanumeric_list(lst_unsorted)`
@@ -50,11 +50,13 @@ Generate a `.zip` folder with all content on a directory.
  * **`zip_directory`**  Directory where `.zip` file will be saved.
  * **`zip_name`**  Name for the `.zip` folder.
  * **`str_directory`**  Directory to look files from.
-bln_delete:
+ * **`bln_delete`**  Delete previous runs.
 
 **Returns:** Name of the `.zip` folder if generated, else empty string.
 
 ## DATA
-DB_PATH = r'C:\Users\F59JBP0\Downloads\Things-Organizer\things_organiz...
-LABEL_PATH = r'C:\Users\F59JBP0\Downloads\Things-Organizer\things_orga...
-REPORT_PATH = r'C:\Users\F59JBP0\Downloads\Things-Organizer\things_org...
+DB_PATH
+
+LABEL_PATH
+
+REPORT_PATH

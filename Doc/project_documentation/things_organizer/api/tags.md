@@ -1,26 +1,27 @@
-# categories.py
+# tags.py
 
 
 ## NAME
-categories - API end point for the things categories.
+tags - API end point for the things categories.
 
 ## CLASSES
 
-### `class CategoriesAPI(flask_restful.Resource)`
+### `class TagsAPI(flask_restful.Resource)`
 Class wrapper for the flask_restful.Resource in order to create the API.
 
 **NOTE:** By now the only method allow is `GET`, probably more methods will be added.
+
 
 **Static methods defined here:**
 
 
 ### `get(int_id=None)`
-Find a category for a given ID, if no ID is provided it will return all available
-categories on table.
+Find a tag for a given ID, if no ID is provided it will return all available
+tags on table.
 
 **Args:**
 
- * **`int_id`**  Id of the category to be searched.
+ * **`int_id`**  Id of the tag to be searched.
 
 **Returns:** Response from jsonify function of flask.
 

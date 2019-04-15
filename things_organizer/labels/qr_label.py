@@ -17,12 +17,12 @@ class QRLabel:
     Class for generating the thing labels in QR code.
 
     Attributes:
-        thing_name = Name to add on the label.
-        thing_description = Description to add on the label.
-        file_name = Name for the image generated.
-        file_directory = Directory where labels are stored.
-        storage_name = name of the storage.
-        storage_location = Location of the storage.
+        thing_name: Name to add on the label.
+        thing_description: Description to add on the label.
+        file_name: Name for the image generated.
+        file_directory: Directory where labels are stored.
+        storage_name: name of the storage.
+        storage_location: Location of the storage.
 
     Quick example:
     ```
