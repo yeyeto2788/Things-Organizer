@@ -64,14 +64,17 @@ are the following:
     * quantity `int`
     * storage_id `int`
     * category_id `int`
+    * user_id `int`
     * date `date`
 * **category**
     * id `int`
     * name `str`
+    * user_id `int`
 * **storage**
     * id  `int`
     * name `str`
     * location `str`
+    * user_id `int`
 * **tag**
     * id `int`
     * name `str`

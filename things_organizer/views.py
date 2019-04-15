@@ -93,9 +93,11 @@ def handle_add_thing():
                                               time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     form = ThingForm()
-    categories = [(cat.id, cat.name) for cat in db_models.Category.query.all()]
+    categories = [(cat.id, cat.name) for cat in db_models.Category.query.filter_by(
+        user_id=flask_login.current_user.id).all()]
     form.category.choices = categories
-    storages = [(s.id, s.name) for s in db_models.Storage.query.all()]
+    storages = [(s.id, s.name) for s in db_models.Storage.query.filter_by(
+        user_id=flask_login.current_user.id).all()]
     form.storage.choices = storages
 
     if form.validate_on_submit():
@@ -139,12 +141,13 @@ def handle_categories():
     form = CategoryForm()
     if form.validate_on_submit():
         name = form.name.data
-        category_obj = db_models.Category(name=name)
+        user_id = flask_login.current_user.id
+        category_obj = db_models.Category(name=name, user_id=user_id)
         DB.session.add(category_obj)
         DB.session.commit()
         flask.flash("Category {} stored.".format(category_obj.name))
 
-    categories = db_models.Category.query.filter().all()
+    categories = db_models.Category.query.filter_by(user_id=flask_login.current_user.id).all()
     if not categories:
         categories = None
 
@@ -193,9 +196,11 @@ def handle_delete(str_to_edit, int_id):
         else:
             table_object = db_models.Thing.query.get_or_404(int_id)
             form = ThingForm(obj=table_object)
-            categories = [(cat.id, cat.name) for cat in db_models.Category.query.all()]
+            categories = [(cat.id, cat.name) for cat in db_models.Category.query.filter_by(
+                user_id=flask_login.current_user.id).all()]
             form.category.choices = categories
-            storages = [(s.id, s.name) for s in db_models.Storage.query.all()]
+            storages = [(s.id, s.name) for s in db_models.Storage.query.filter_by(
+                user_id=flask_login.current_user.id).all()]
             form.storage.choices = storages
             str_redirect = 'handle_things'
 
@@ -258,9 +263,15 @@ def handle_edit(str_to_edit, int_id):
         else:
             table_object = db_models.Thing.query.get_or_404(int_id)
             form = ThingForm(obj=table_object)
-            categories = [(cat.id, cat.name) for cat in db_models.Category.query.all()]
+
+            categories = [(cat.id, cat.name) for cat in db_models.Category.query.filter_by(
+                user_id=flask_login.current_user.id).all()]
+
             form.category.choices = categories
-            storages = [(s.id, s.name) for s in db_models.Storage.query.all()]
+
+            storages = [(s.id, s.name) for s in db_models.Storage.query.filter_by(
+                user_id=flask_login.current_user.id).all()]
+
             form.storage.choices = storages
             str_redirect = 'handle_things'
 
@@ -485,7 +496,8 @@ def handle_storage():
     if form.validate_on_submit():
         name = form.name.data
         location = form.location.data
-        storage_obj = db_models.Storage(name=name, location=location)
+        user_id = flask_login.current_user.id
+        storage_obj = db_models.Storage(name=name, location=location, user_id=user_id)
         DB.session.add(storage_obj)
         DB.session.commit()
         flask.flash("Storage {} stored with location {}.".format(storage_obj.name,
@@ -555,9 +567,11 @@ def handle_report():
     form.report_type.choices = report_types
     data_types = [(1, 'All items'), (2, 'All items by Category'), (3, 'All items by Storage')]
     form.data_type.choices = data_types
-    categories = [(cat.id, cat.name) for cat in db_models.Category.query.all()]
+    categories = [(cat.id, cat.name) for cat in db_models.Category.query.filter_by(
+        user_id=flask_login.current_user.id).all()]
     form.category.choices = categories
-    storages = [(s.id, s.name) for s in db_models.Storage.query.all()]
+    storages = [(s.id, s.name) for s in db_models.Storage.query.filter_by(
+        user_id=flask_login.current_user.id).all()]
     form.storage.choices = storages
 
     if form.validate_on_submit():
