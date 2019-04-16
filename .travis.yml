@@ -9,6 +9,7 @@ before_install:
   - uname -a
 install:
   - pip install -r requirements.txt
+  - pip freeze
 # Execute the tests and the linter
 script:
   - pytest --cov=things_organizer
