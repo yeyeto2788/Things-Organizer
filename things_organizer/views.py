@@ -139,9 +139,9 @@ def handle_categories():
                                               time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     form = CategoryForm()
+    user_id = flask_login.current_user.id
     if form.validate_on_submit():
         name = form.name.data
-        user_id = flask_login.current_user.id
         category_obj = db_models.Category(name=name, user_id=user_id)
         DB.session.add(category_obj)
         DB.session.commit()
@@ -466,7 +466,7 @@ def handle_search():
 @flask_login.login_required
 def handle_settings():
     """
-    Set all setting of the application (Stil under development).
+    Set all setting of the application (Still under development).
 
     Returns:
         Flask template based on the request.
@@ -493,16 +493,16 @@ def handle_storage():
                                               time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
     form = StorageForm()
+    user_id = flask_login.current_user.id
     if form.validate_on_submit():
         name = form.name.data
         location = form.location.data
-        user_id = flask_login.current_user.id
         storage_obj = db_models.Storage(name=name, location=location, user_id=user_id)
         DB.session.add(storage_obj)
         DB.session.commit()
         flask.flash("Storage {} stored with location {}.".format(storage_obj.name,
                                                                  storage_obj.location))
-    storages = db_models.Storage.query.filter().all()
+    storages = db_models.Storage.query.filter_by(user_id=user_id).all()
     if not storages:
         storages = None
 
