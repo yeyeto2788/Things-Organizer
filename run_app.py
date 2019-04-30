@@ -1,3 +1,7 @@
+"""
+Simple script to manage server actions through CLI
+
+"""
 import os
 import flask
 

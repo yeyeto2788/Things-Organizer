@@ -30,17 +30,17 @@ _CONTAINER = """
 
 
 @login_manager.user_loader
-def load_user(userid):
+def load_user(user_id):
     """
     Retrieve the user from the database from a given id.
 
     Args:
-        userid: id of the user.
+        user_id: id of the user.
 
     Returns:
         User object.
     """
-    return db_models.User.query.get(int(userid))
+    return db_models.User.query.get(int(user_id))
 
 
 @app.route('/about')
@@ -540,7 +540,7 @@ def handle_register():
         flask_template = flask.redirect(flask.url_for('handle_login'))
     else:
         if flask.request.method == "POST":
-            flask.flash('ERROR: Hmmm, seems like there was an error registering you account.')
+            flask.flash('ERROR: Hhmm, seems like there was an error registering you account.')
 
         flask_template = flask.render_template("register.html", form=form)
 
