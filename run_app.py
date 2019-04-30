@@ -71,7 +71,7 @@ def run_production():
     Runs the server as WSGI.
 
     """
-    serve(app, listen='{}:{}'.format(config['ip'], config['port']))\
+    serve(app, listen='{}:{}'.format(config['ip'], config['port']))
 
 
 @manager.command
