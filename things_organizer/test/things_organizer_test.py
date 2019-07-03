@@ -147,7 +147,7 @@ class TestAppEndPoints(unittest.TestCase):
         response = self.register(
             '{}@mail.com'.format(user_name), user_name, str(int_psswd), str(int_psswd + 1))
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b'Hmmm, seems like there was an error registering you account.',
+        self.assertIn(b' Hhmm, seems like there was an error registering you account.',
                       response.data)
 
     def test_get_routes(self):
