@@ -23,6 +23,11 @@ I have on different locations(**e.g.** Garage, Room, etc.).
 This tool is using the bootstrap template from @BlackrockDigital
 [Start Bootstrap - SB Admin](https://github.com/BlackrockDigital/startbootstrap-sb-admin)
 
+## Build status
+|Master|Development|
+|---|---|
+|![Master build](https://travis-ci.com/yeyeto2788/Things-Organizer.svg?branch=master)|![Development build](https://travis-ci.com/yeyeto2788/Things-Organizer.svg?branch=development)|
+
 ## Project Structure
 
 Below you can see a basic layout of the repository and a quick and short description of each folder.
@@ -64,14 +69,17 @@ are the following:
     * quantity `int`
     * storage_id `int`
     * category_id `int`
+    * user_id `int`
     * date `date`
 * **category**
     * id `int`
     * name `str`
+    * user_id `int`
 * **storage**
     * id  `int`
     * name `str`
     * location `str`
+    * user_id `int`
 * **tag**
     * id `int`
     * name `str`

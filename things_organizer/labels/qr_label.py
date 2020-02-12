@@ -17,12 +17,12 @@ class QRLabel:
     Class for generating the thing labels in QR code.
 
     Attributes:
-        thing_name = Name to add on the label.
-        thing_description = Description to add on the label.
-        file_name = Name for the image generated.
-        file_directory = Directory where labels are stored.
-        storage_name = name of the storage.
-        storage_location = Location of the storage.
+        thing_name: Name to add on the label.
+        thing_description: Description to add on the label.
+        file_name: Name for the image generated.
+        file_directory: Directory where labels are stored.
+        storage_name: name of the storage.
+        storage_location: Location of the storage.
 
     Quick example:
     ```
@@ -84,18 +84,18 @@ class QRLabel:
         qr_image = Image.open(final_file_name)
 
         # Calculate new values for the label
-        basewidth = 350
-        width_percent = (basewidth / float(qr_image.size[0]))
+        base_width = 350
+        width_percent = (base_width / float(qr_image.size[0]))
         height_size = int((float(qr_image.size[1]) * float(width_percent)))
 
         # Resize qr image since default gives 570x570px
-        qr_image = qr_image.resize((basewidth, height_size), Image.ANTIALIAS)
+        qr_image = qr_image.resize((base_width, height_size), Image.ANTIALIAS)
 
         lst_data = str_data.split('\n')
 
         # Final image with text
         bg_width = 384
-        bg_height = basewidth + (len(lst_data) * 10)
+        bg_height = base_width + (len(lst_data) * 10)
         bg_image = Image.new("1", [bg_width, bg_height], "white")
         drawing = ImageDraw.Draw(bg_image)
 
@@ -103,9 +103,9 @@ class QRLabel:
         for int_index, line in enumerate(lst_data):
             add_height = int_index * 10
             final_text = line.replace('\n', '').lstrip()
-            drawing.text((10, basewidth + add_height), final_text, fill='black')
+            drawing.text((10, base_width + add_height), final_text, fill='black')
 
-        final_position = int((bg_width - basewidth) / 2)
+        final_position = int((bg_width - base_width) / 2)
         # Add qr image on background image and save it.
         bg_image.paste(qr_image, (final_position, 0))
         self.file_name = 'label-{}'.format(self.file_name)

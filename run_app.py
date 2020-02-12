@@ -1,3 +1,7 @@
+"""
+Simple script to manage server actions through CLI
+
+"""
 import os
 import flask
 
@@ -43,13 +47,13 @@ def drop_db():
 
 
 @manager.command
-def recreate_db(default_data=True, sample_data=False):
+def recreate_db():
     """
     Recreates database tables (same as issuing 'drop' and then 'create')
 
     """
     drop_db()
-    create_db(default_data, sample_data)
+    create_db()
 
 
 @manager.command
@@ -67,7 +71,7 @@ def run_production():
     Runs the server as WSGI.
 
     """
-    serve(app, listen='{}:{}'.format(config['ip'], config['port']))\
+    serve(app, listen='{}:{}'.format(config['ip'], config['port']))
 
 
 @manager.command

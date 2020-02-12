@@ -1,0 +1,17 @@
+dist: xenial
+language: python
+python:
+  - "3.6"
+  - "3.7"
+# Install dependencies
+before_install:
+  - python --version
+  - uname -a
+install:
+  - pip install -r requirements.txt
+  - pip freeze
+# Execute the tests and the linter
+script:
+  - pytest --cov=things_organizer
+  - pylint --output-format=text --rcfile=.pylintrc --errors-only things_organizer
+  - echo "Done"

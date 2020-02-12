@@ -82,7 +82,7 @@ def zip_dir(zip_directory, zip_name, str_directory, bln_delete=0):
         zip_directory: Directory where `.zip` file will be saved.
         zip_name: Name for the `.zip` folder.
         str_directory: Directory to look files from.
-        bln_delete:
+        bln_delete: Delete previous runs.
 
     Returns:
         Name of the `.zip` folder if generated, else empty string.

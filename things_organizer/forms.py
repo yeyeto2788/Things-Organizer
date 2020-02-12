@@ -66,9 +66,10 @@ class SignupForm(FlaskForm):
     username = StringField(
         label='Username',
         validators=[DataRequired(),
-        Length(3, 80),
-        Regexp('^[A-Za-z0-9_]{3,}$',
-               message='Username should consist of numbers, letters, and underscores.')])
+                    Length(3, 80),
+                    Regexp('^[A-Za-z0-9_]{3,}$',
+                           message='Username should consist of numbers, letters, and underscores.')]
+    )
     password = PasswordField(
         'Password',
         validators=[DataRequired(), EqualTo('password2', message='Passwords must match.')])
