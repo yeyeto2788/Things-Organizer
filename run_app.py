@@ -88,6 +88,7 @@ def show_endpoints():
     for rule in rules:
 
         options = {}
+
         for arg in rule.arguments:
             options[arg] = "[{0}]".format(arg)
 
@@ -96,6 +97,7 @@ def show_endpoints():
             rule_methods = ','.join(rule.methods)
 
             print('{:30s} - {:50s}'.format(rule_methods, rule_url))
+
         except Exception as exerror:
             print('{:30s} - {:50s}'.format(rule_methods, rule.endpoint))
 
