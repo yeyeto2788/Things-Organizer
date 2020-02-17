@@ -11,7 +11,7 @@ INSERT INTO category (name, user_id) VALUES('Resistors Through-hole', 1);
 INSERT INTO category (name, user_id) VALUES('Capacitors SMD', 1);
 INSERT INTO category (name, user_id) VALUES('Capacitors Through-hole', 1);
 INSERT INTO category (name, user_id) VALUES('Diodes Through-hole', 1);
-INSERT INTO category (name, user_id) VALUES('Diodes Through-hole', 1);
+INSERT INTO category (name, user_id) VALUES('Diodes SMD', 1);
 INSERT INTO category (name, user_id) VALUES('Boards', 1);
 INSERT INTO category (name, user_id) VALUES('Microcontrollers', 1);
 INSERT INTO category (name, user_id) VALUES('Cables', 1);
