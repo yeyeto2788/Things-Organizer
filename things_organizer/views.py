@@ -252,28 +252,40 @@ def handle_edit(str_to_edit, int_id):
             table_object = db_models.Category.query.get_or_404(int_id)
             form = CategoryForm(obj=table_object)
             str_redirect = 'handle_categories'
+
         elif str_to_edit == "storage":
             table_object = db_models.Storage.query.get_or_404(int_id)
             form = StorageForm(obj=table_object)
             str_redirect = 'handle_storage'
+
         elif str_to_edit == "tag":
             table_object = db_models.Tag.query.get_or_404(int_id)
             form = TagForm(obj=table_object)
             str_redirect = 'handle_tags'
-        else:
+
+        elif str_to_edit == "thing":
             table_object = db_models.Thing.query.get_or_404(int_id)
             form = ThingForm(obj=table_object)
 
             categories = [(cat.id, cat.name) for cat in db_models.Category.query.filter_by(
                 user_id=flask_login.current_user.id).all()]
-
             form.category.choices = categories
 
             storages = [(s.id, s.name) for s in db_models.Storage.query.filter_by(
                 user_id=flask_login.current_user.id).all()]
-
             form.storage.choices = storages
+
             str_redirect = 'handle_things'
+
+            if flask.request.method == 'GET':
+                selected_storage = table_object.storage_id if table_object.storage_id else 0
+                form.storage.default = selected_storage
+                form.storage.process_data(selected_storage)
+
+                selected_categry = table_object.category_id if table_object.category_id else 0
+                form.category.default = selected_categry
+                form.category.process_data(selected_categry)
+
 
             if flask_login.current_user != table_object.user:
                 flask.abort(403)
@@ -287,6 +299,7 @@ def handle_edit(str_to_edit, int_id):
                 table_object.unit = form.unit.data
                 table_object.name = form.name.data
                 table_object.description = form.description.data
+                table_object.tags = form.tags.data
 
             else:
                 form.populate_obj(table_object)
