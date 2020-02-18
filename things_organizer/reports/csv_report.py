@@ -10,11 +10,13 @@ Once report is generate it should return the directory of the file.
 
 """
 
-import os
 import csv
+import os
 
+import things_organizer.categories.models
+import things_organizer.storages.models
+import things_organizer.things.models
 from things_organizer import utils
-from things_organizer.db import db_models
 
 
 class CSV:
@@ -70,8 +72,8 @@ class CSV:
 
         """
 
-        things = db_models.Thing.query.filter_by(user_id=self.user_id).all()
-        column_names = [str(name).split('.')[1] for name in db_models.Thing.__table__.columns]
+        things = things_organizer.things.models.Thing.query.filter_by(user_id=self.user_id).all()
+        column_names = [str(name).split('.')[1] for name in things_organizer.things.models.Thing.__table__.columns]
 
         things_refined = self._remove_data([row.__dict__ for row in things])
 
@@ -95,12 +97,12 @@ class CSV:
         """
 
         lst_remove = ['category_id']
-        category = db_models.Category.query.filter_by(id=int_id).first()
-        things = db_models.Thing.query.filter_by(user_id=self.user_id, category=category).all()
+        category = things_organizer.categories.models.Category.query.filter_by(id=int_id).first()
+        things = things_organizer.things.models.Thing.query.filter_by(user_id=self.user_id, category=category).all()
 
         things_refined = self._remove_data([row.__dict__ for row in things], lst_remove)
 
-        column_names = [str(name).split('.')[1] for name in db_models.Thing.__table__.columns]
+        column_names = [str(name).split('.')[1] for name in things_organizer.things.models.Thing.__table__.columns]
 
         for str_remove in lst_remove:
             column_names.remove(str_remove)
@@ -125,12 +127,12 @@ class CSV:
         """
 
         lst_remove = ['storage_id']
-        storage = db_models.Storage.query.filter_by(id=int_id).first()
-        things = db_models.Thing.query.filter_by(user_id=self.user_id, storage=storage).all()
+        storage = things_organizer.storages.models.Storage.query.filter_by(id=int_id).first()
+        things = things_organizer.things.models.Thing.query.filter_by(user_id=self.user_id, storage=storage).all()
 
         things_refined = self._remove_data([row.__dict__ for row in things], lst_remove)
 
-        column_names = [str(name).split('.')[1] for name in db_models.Thing.__table__.columns]
+        column_names = [str(name).split('.')[1] for name in things_organizer.things.models.Thing.__table__.columns]
 
         for str_remove in lst_remove:
             column_names.remove(str_remove)

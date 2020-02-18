@@ -9,6 +9,7 @@ from flask import jsonify
 from flask_restful import Resource, abort
 
 import things_organizer
+from things_organizer.things import models
 from things_organizer import utils
 
 
@@ -39,11 +40,11 @@ class ThingsAPI(Resource):
         lst_values = []
 
         if int_id is not None:
-            lst_values = things_organizer.db_models.Thing.query.filter_by(
+            lst_values = things_organizer.things.models.Thing.query.filter_by(
                 id=int_id, user_id=flask_login.current_user.id).first()
 
         elif int_id is None:
-            lst_values = things_organizer.db_models.Thing.query.filter_by(
+            lst_values = things_organizer.things.models.Thing.query.filter_by(
                 user_id=flask_login.current_user.id).all()
 
         try:

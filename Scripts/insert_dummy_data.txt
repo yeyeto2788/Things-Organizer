@@ -1,5 +1,5 @@
 /*Users*/
-INSERT INTO user (username, email, password_hash) VALUES('Admin', 'admin@test.com', 'pbkdf2:sha256:50000$fwB7ETQ5$bba1c1ad24e792570b99b8ea59bad7ba58d15f81e0d6c29d49eab65df2fbd9c4');
+/*DO IT THOUGH THE WEB*/
 
 /*Categories*/
 INSERT INTO category (name, user_id) VALUES('Electronics', 1);
