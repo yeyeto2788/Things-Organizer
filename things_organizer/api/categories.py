@@ -4,13 +4,11 @@ API end point for the things categories.
 
 """
 import flask_login
-
-
 from flask import jsonify
 from flask_restful import Resource, abort
 
-import things_organizer
 from things_organizer import utils
+from things_organizer.categories.models import Category
 
 
 class CategoriesAPI(Resource):
@@ -40,10 +38,10 @@ class CategoriesAPI(Resource):
         lst_values = []
 
         if int_id is not None:
-            lst_values = things_organizer.db_models.Category.query.filter_by(id=int_id).first()
+            lst_values = Category.query.filter_by(id=int_id).first()
 
         elif int_id is None:
-            lst_values = things_organizer.db_models.Category.query.all()
+            lst_values = Category.query.all()
 
         try:
             if lst_values:

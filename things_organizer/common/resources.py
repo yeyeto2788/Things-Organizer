@@ -110,7 +110,11 @@ class RegisterResource(Resource):
         return flask.Response(flask_template, mimetype='text/html')
 
     def post(self):
+        """
 
+        Returns:
+
+        """
         form = SignupForm()
 
         if form.validate_on_submit():

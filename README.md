@@ -4,7 +4,7 @@ Simple and "lightweight" web application for organizing that disaster or room/ga
 (I suppose) we all have.
 
 <div style="text-align:center">
-  <img src="Doc/img/animation.gif" />
+  <img src="documentation/img/animation.gif" />
 </div>
 
 The idea came from a day I was looking a SOC board like the Raspberry Pi and I could not find it
@@ -51,7 +51,7 @@ Main Repository Folder(Thing-Organizer)
 ```
 
 If you want to know more in depth what each single file does go to the
-application [documentation](Doc/project_documentation/things_organizer).
+application [documentation](documentation/project_documentation/things_organizer).
 
 ## DataBase information.
 
@@ -96,7 +96,7 @@ are the following:
 
 In the image below you can see the relationship of each table created on the database.
 
-<p align="center"><img src="Doc/img/sql_diagram.png" alt="SQL schema Diagram"  width="500"/></p>
+<p align="center"><img src="documentation/img/sql_diagram.png" alt="SQL schema Diagram"  width="500"/></p>
 <p align="center">Image done with <a href="https://www.dbschema.com/download.html">dbschema</a>.</p>
 <p align="center">Pending to use <a href="https://github.com/schemacrawler/SchemaCrawler">SchemaCrawler</a> since it is open source.</p>
 
@@ -163,6 +163,9 @@ All logs are accessible from the route `<ip:port>/logs`
     <li> - [ ] Rename all module `routes.py` into `resources.py`.</li>
     <li> - [ ] Move all modules logic into a `Controller` object to separate logic.</li>
     <li> - [ ] Fix tests.</li>
+    <li> - [ ] Extract `data` into a separate folder and outside of the application.</li>
+    <li> - [ ] Use JSON configuration for `constants` or create a module for it.</li>
+    <li> - [ ] Get database creation path from config file.</li>
   </ul>
  - [ ] Documentation.
   <ul>

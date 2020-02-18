@@ -1,19 +1,18 @@
 from flask import Flask
-from flask_migrate import Migrate, MigrateCommand
-from flask_script import Manager
+from flask_migrate import Migrate
 
 from things_organizer.api import categories, storages, things, tags
-from things_organizer.categories.routes import CategoryResource, EditCategoryResource
-from things_organizer.common.routes import (
+from things_organizer.categories.resources import CategoryResource, EditCategoryResource
+from things_organizer.common.resources import (
     HomeResource, LoginResource, RegisterResource, SearchResource,
     AboutResource, LabelResource, LogoutResource
 )
 from things_organizer.extensions import database, login_manager, api
 from things_organizer.login_utils import load_user
-from things_organizer.reports.routes import ReportResource
-from things_organizer.storages.routes import StorageResource, EditStorageResource
-from things_organizer.tags.routes import TagResource, EditTagResource
-from things_organizer.things.routes import AddThingResource, ThingResource, EditThingResource
+from things_organizer.reports.resources import ReportResource
+from things_organizer.storages.resources import StorageResource, EditStorageResource
+from things_organizer.tags.resources import TagResource, EditTagResource
+from things_organizer.things.resources import AddThingResource, ThingResource, EditThingResource
 
 
 def create_app(debug: bool) -> Flask:
