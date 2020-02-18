@@ -1,6 +1,9 @@
+import os
+
 from flask import Flask
 from flask_migrate import Migrate
 
+from things_organizer import utils
 from things_organizer.api import categories, storages, things, tags
 from things_organizer.categories.resources import CategoryResource, EditCategoryResource
 from things_organizer.common.resources import (
@@ -31,12 +34,25 @@ def create_app(debug: bool) -> Flask:
     if debug:
         app.config["DEBUG"] = True
 
+    create_dirs()
     configure_db(app)
     configure_migrations(app)
     configure_api(app)
     configure_login(app)
 
     return app
+
+
+def create_dirs():
+    """
+
+    Returns:
+
+    """
+    dirs = [utils.DB_PATH, utils.LABEL_PATH, utils.REPORT_PATH]
+
+    for directory in dirs:
+        os.makedirs(directory, exist_ok=True)
 
 
 def configure_db(app: Flask):
@@ -52,7 +68,9 @@ def configure_migrations(app: Flask):
         app:
 
     """
-    Migrate(app, database, compare_type=True)
+    migrations_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'migrations')
+    print(migrations_dir)
+    Migrate(app, database, compare_type=True, directory=migrations_dir)
 
 
 def configure_login(app: Flask):

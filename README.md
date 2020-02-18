@@ -160,10 +160,8 @@ All logs are accessible from the route `<ip:port>/logs`
     <li> - [ ] Move report types into a separate module inherited from a based object</li>
     <li> - [ ] Move `labels` logic and its resources into a separate module.</li>
     <li> - [ ] See if we can move the `utils.py` into `common` module.</li>
-    <li> - [ ] Rename all module `routes.py` into `resources.py`.</li>
     <li> - [ ] Move all modules logic into a `Controller` object to separate logic.</li>
     <li> - [ ] Fix tests.</li>
-    <li> - [ ] Extract `data` into a separate folder and outside of the application.</li>
     <li> - [ ] Use JSON configuration for `constants` or create a module for it.</li>
     <li> - [ ] Get database creation path from config file.</li>
   </ul>
