@@ -17,7 +17,6 @@ from things_organizer.things.models import Thing
 
 
 class HomeResource(Resource):
-    @flask_login.login_required
     def get(self):
         """Main site where user goes to see available tools on the server
         and the description of them.
