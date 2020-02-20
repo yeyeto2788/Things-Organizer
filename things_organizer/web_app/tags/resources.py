@@ -155,7 +155,7 @@ class DeleteTagResource(Resource):
             database.session.commit()
 
         except IntegrityError:
-            database.session.rollback()
+            database.session.rollback()  # pylint:disable=E1101
             form = TagForm(obj=table_object)
 
             flask.flash("You can't delete '{}' tag since it is assigned to an item.".format(table_object.name))
