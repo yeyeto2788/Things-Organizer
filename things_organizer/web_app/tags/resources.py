@@ -4,11 +4,12 @@ import time
 import flask
 import flask_login
 from flask_restful import Resource
+from sqlalchemy.exc import IntegrityError
 
 from things_organizer import utils
 from things_organizer.extensions import database
-from things_organizer.tags.forms import TagForm
-from things_organizer.tags.models import Tag
+from things_organizer.web_app.tags.forms import TagForm
+from things_organizer.web_app.tags.models import Tag
 
 
 class TagResource(Resource):
@@ -87,7 +88,7 @@ class EditTagResource(Resource):
         form = TagForm(obj=table_object)
         template_return = flask.render_template('edit.html', form=form)
 
-        return flask.Response(template_return, mimetype='text/html')
+        return template_return
 
     @flask_login.login_required
     def post(self, int_id):
@@ -111,3 +112,59 @@ class EditTagResource(Resource):
 
         template_return = flask.redirect(flask.url_for('handle_categories'))
         return flask.Response(template_return, mimetype='text/html')
+
+
+class DeleteTagResource(Resource):
+    @flask_login.login_required
+    def get(self, int_id):
+        """
+
+        Args:
+            int_id:
+
+        Returns:
+
+        """
+        utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
+                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+
+        table_object = Tag.query.get_or_404(int_id)
+        form = TagForm(obj=table_object)
+
+        flask.flash("Please confirm deleting the tag '{}'.".format(table_object.name))
+        template_return = flask.render_template("confirm_deletion.html", form=form)
+
+        return flask.Response(template_return, mimetype='text/html')
+
+    @flask_login.login_required
+    def post(self, int_id):
+        """
+
+        Args:
+            int_id:
+
+        Returns:
+
+        """
+        utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
+                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+        table_object = Tag.query.get_or_404(int_id)
+
+        try:
+            database.session.delete(table_object)
+            database.session.commit()
+
+        except IntegrityError:
+            database.session.rollback()
+            form = TagForm(obj=table_object)
+
+            flask.flash("You can't delete '{}' tag since it is assigned to an item.".format(table_object.name))
+            template_return = flask.Response(flask.render_template("confirm_deletion.html", form=form),
+                                             mimetype='text/html')
+
+        else:
+            flask.flash("Deleted '{}' tag".format(table_object.name))
+            template_return = flask.redirect(
+                flask.url_for('handle_tags', username=flask_login.current_user.username))
+
+        return template_return

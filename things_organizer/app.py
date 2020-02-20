@@ -4,18 +4,22 @@ from flask import Flask
 from flask_migrate import Migrate
 
 from things_organizer import utils
-from things_organizer.api import categories, storages, things, tags
-from things_organizer.categories.resources import CategoryResource, EditCategoryResource
-from things_organizer.common.resources import (
-    HomeResource, LoginResource, RegisterResource, SearchResource,
-    AboutResource, LabelResource, LogoutResource
-)
 from things_organizer.extensions import database, login_manager, api
 from things_organizer.login_utils import load_user
-from things_organizer.reports.resources import ReportResource
-from things_organizer.storages.resources import StorageResource, EditStorageResource
-from things_organizer.tags.resources import TagResource, EditTagResource
-from things_organizer.things.resources import AddThingResource, ThingResource, EditThingResource
+from things_organizer.web_app.about.resources import AboutResource
+from things_organizer.web_app.auth.resources import LoginResource, RegisterResource, LogoutResource
+from things_organizer.web_app.categories.resources import (
+    CategoryResource, EditCategoryResource,
+    DeleteCategoryResource)
+from things_organizer.web_app.index.resources import HomeResource
+from things_organizer.web_app.labels.resources import LabelResource
+from things_organizer.web_app.reports.resources import ReportResource
+from things_organizer.web_app.search.resources import SearchResource
+from things_organizer.web_app.storages.resources import StorageResource, EditStorageResource, DeleteStorageResource
+from things_organizer.web_app.tags.resources import TagResource, EditTagResource, DeleteTagResource
+from things_organizer.web_app.things.resources import (
+    AddThingResource, ThingResource, EditThingResource,
+    DeleteThingResource)
 
 
 def create_app(debug: bool) -> Flask:
@@ -108,18 +112,17 @@ def configure_api(app: Flask):
     api.add_resource(ThingResource, '/things', endpoint='handle_things')
     api.add_resource(AddThingResource, '/add_thing', endpoint='handle_add_thing')
     api.add_resource(EditThingResource, '/edit/thing/<int:int_id>', endpoint='handle_edit_thing')
+    api.add_resource(DeleteThingResource, '/delete/thing/<int:int_id>', endpoint='handle_delete_thing')
     api.add_resource(CategoryResource, '/categories', endpoint='handle_categories')
     api.add_resource(EditCategoryResource, '/edit/category/<int:int_id>', endpoint='handle_edit_category')
+    api.add_resource(DeleteCategoryResource, '/delete/category/<int:int_id>', endpoint='handle_delete_category')
     api.add_resource(StorageResource, '/storages', endpoint='handle_storage')
     api.add_resource(EditStorageResource, '/edit/storage/<int:int_id>', endpoint='handle_edit_storage')
+    api.add_resource(DeleteStorageResource, '/delete/storage/<int:int_id>', endpoint='handle_delete_storage')
     api.add_resource(ReportResource, '/reports', endpoint='handle_report')
     api.add_resource(TagResource, '/tags', endpoint='handle_tags')
     api.add_resource(EditTagResource, '/edit/tag/<int:int_id>', endpoint='handle_edit_tag')
+    api.add_resource(DeleteTagResource, '/delete/tag/<int:int_id>', endpoint='handle_delete_tag')
     api.add_resource(LabelResource, '/label/<int:int_id>', endpoint='handle_label')
-
-    # API Resources
-    api.add_resource(categories.CategoriesAPI, '/api/categories', '/api/categories/<int:int_id>')
-    api.add_resource(storages.StoragesAPI, '/api/storages', '/api/storages/<int:int_id>')
-    api.add_resource(tags.TagsAPI, '/api/tags', '/api/tags/<int:int_id>')
-    api.add_resource(things.ThingsAPI, '/api/things', '/api/things/<int:int_id>')
+    # Initialize api
     api.init_app(app)

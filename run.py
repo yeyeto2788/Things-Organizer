@@ -16,7 +16,7 @@ def run(debug: bool = False):
             debug: enables debug mode or not. Default is False so it is disabled.
 
     """
-    app = create_app(debug)
+    app = create_app(True)
     serve(
         app,
         port=os.getenv('APP_PORT', 8080)

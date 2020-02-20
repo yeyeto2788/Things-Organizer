@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField
 
-from things_organizer.storages.models import Storage
+from things_organizer.web_app.storages.models import Storage
 
 
 class StorageForm(FlaskForm):

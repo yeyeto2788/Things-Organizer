@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy import desc
 
 from things_organizer.extensions import database
-from things_organizer.tags.models import tags, Tag
+from things_organizer.web_app.tags.models import tags, Tag
 
 
 class Thing(database.Model):

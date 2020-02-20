@@ -8,17 +8,17 @@ import time
 import flask
 import flask_login
 
-import things_organizer.categories.models
-import things_organizer.common.models
-import things_organizer.storages.models
-import things_organizer.tags.models
-import things_organizer.things.models
+import things_organizer.app.categories.models
+import things_organizer.app.users.models
+import things_organizer.app.storages.models
+import things_organizer.app.tags.models
+import things_organizer.app.things.models
 from things_organizer import app, DB
 from things_organizer import utils
-from things_organizer.categories.forms import CategoryForm
-from things_organizer.storages.forms import StorageForm
-from things_organizer.tags.forms import TagForm
-from things_organizer.things.forms import ThingForm
+from things_organizer.app.categories.forms import CategoryForm
+from things_organizer.app.storages import StorageForm
+from things_organizer.app.tags.forms import TagForm
+from things_organizer.app.things import ThingForm
 
 @app.route('/delete/<string:str_to_edit>/<int:int_id>', methods=['POST', 'GET'])
 @flask_login.login_required
@@ -43,24 +43,24 @@ def handle_delete(str_to_edit, int_id):
     if (str_to_edit in lst_to_edit) and flask_login.current_user.is_authenticated:
 
         if str_to_edit == "category":
-            table_object = things_organizer.categories.models.Category.query.get_or_404(int_id)
+            table_object = things_organizer.app.categories.models.Category.query.get_or_404(int_id)
             form = CategoryForm(obj=table_object)
             str_redirect = 'handle_categories'
         elif str_to_edit == "storage":
-            table_object = things_organizer.storages.models.Storage.query.get_or_404(int_id)
+            table_object = things_organizer.app.storages.models.Storage.query.get_or_404(int_id)
             form = StorageForm(obj=table_object)
             str_redirect = 'handle_storage'
         elif str_to_edit == "tag":
-            table_object = things_organizer.tags.models.Tag.query.get_or_404(int_id)
+            table_object = things_organizer.app.tags.models.Tag.query.get_or_404(int_id)
             form = TagForm(obj=table_object)
             str_redirect = 'handle_tags'
         else:
-            table_object = things_organizer.things.models.Thing.query.get_or_404(int_id)
+            table_object = things_organizer.app.things.models.Thing.query.get_or_404(int_id)
             form = ThingForm(obj=table_object)
-            categories = [(cat.id, cat.name) for cat in things_organizer.categories.models.Category.query.filter_by(
+            categories = [(cat.id, cat.name) for cat in things_organizer.app.categories.models.Category.query.filter_by(
                 user_id=flask_login.current_user.id).all()]
             form.category.choices = categories
-            storages = [(s.id, s.name) for s in things_organizer.storages.models.Storage.query.filter_by(
+            storages = [(s.id, s.name) for s in things_organizer.app.storages.models.Storage.query.filter_by(
                 user_id=flask_login.current_user.id).all()]
             form.storage.choices = storages
             str_redirect = 'handle_things'

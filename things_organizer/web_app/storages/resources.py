@@ -4,11 +4,12 @@ import time
 import flask
 import flask_login
 from flask_restful import Resource
+from sqlalchemy.exc import IntegrityError
 
 from things_organizer import utils
 from things_organizer.extensions import database
-from things_organizer.storages.forms import StorageForm
-from things_organizer.storages.models import Storage
+from things_organizer.web_app.storages.forms import StorageForm
+from things_organizer.web_app.storages.models import Storage
 
 
 class StorageResource(Resource):
@@ -118,5 +119,58 @@ class EditStorageResource(Resource):
 
         database.session.commit()
 
-        template_return = flask.redirect(flask.url_for('handle_categories'))
+        template_return = flask.redirect(flask.url_for('handle_storage'))
+        return template_return
+
+class DeleteStorageResource(Resource):
+    @flask_login.login_required
+    def get(self, int_id):
+        """
+
+        Args:
+            int_id:
+
+        Returns:
+
+        """
+        utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
+                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+
+        table_object = Storage.query.get_or_404(int_id)
+        form = StorageForm(obj=table_object)
+
+        flask.flash("Please confirm deleting the category '{}'.".format(table_object.name))
+        template_return = flask.render_template("confirm_deletion.html", form=form)
+
         return flask.Response(template_return, mimetype='text/html')
+
+    @flask_login.login_required
+    def post(self, int_id):
+        """
+
+        Args:
+            int_id:
+
+        Returns:
+
+        """
+        utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
+                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+        table_object = Storage.query.get_or_404(int_id)
+
+        try:
+            database.session.delete(table_object)
+            database.session.commit()
+
+        except IntegrityError:
+            database.session.rollback()
+            form = StorageForm(obj=table_object)
+
+            flask.flash("You can't delete '{}' category since it is assigned to an item.".format(table_object.name))
+            template_return = flask.Response(flask.render_template("confirm_deletion.html", form=form), mimetype='text/html')
+
+        else:
+            flask.flash("Deleted '{}' storage".format(table_object.name))
+            template_return = flask.redirect(flask.url_for('handle_storage', username=flask_login.current_user.username))
+
+        return template_return

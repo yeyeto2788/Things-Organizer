@@ -1,8 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SelectField, ValidationError
+from wtforms import StringField, PasswordField, BooleanField, ValidationError
 from wtforms.validators import DataRequired, Length, Regexp, EqualTo, Email
 
-from things_organizer.common.models import User
+from things_organizer.web_app.users.models import User
 
 
 class LoginForm(FlaskForm):
@@ -14,18 +14,6 @@ class LoginForm(FlaskForm):
     username = StringField(label='Username', validators=[DataRequired()])
     password = PasswordField(label='Password', validators=[DataRequired()])
     remember_me = BooleanField(label='Keep me logged in')
-
-
-class ReportForm(FlaskForm):
-    """
-    FlaskForm for selecting the report to be printed.
-
-    """
-
-    report_type = SelectField(label="Select type of file", coerce=int)
-    data_type = SelectField(label="Select data for report", coerce=int)
-    category = SelectField(label="Select Category", coerce=int)
-    storage = SelectField(label="Select Storage", coerce=int)
 
 
 class SignupForm(FlaskForm):

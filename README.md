@@ -163,11 +163,10 @@ All logs are accessible from the route `<ip:port>/logs`
     <li> - [ ] Move all modules logic into a `Controller` object to separate logic.</li>
     <li> - [ ] Fix tests.</li>
     <li> - [ ] Use JSON configuration for `constants` or create a module for it.</li>
-    <li> - [ ] Get database creation path from config file.</li>
+    <li> - [ ] FINAL STEP put object into one resource for all CRUD operations.</li>
   </ul>
  - [ ] Documentation.
   <ul>
-    <li> - [ ] `migrations` options.</li>
     <li> - [ ] API.</li>
     <li> - [ ] Report Generation.</li>
     <li> - [ ] Final application file structure (THIS README).</li>

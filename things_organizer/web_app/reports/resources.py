@@ -6,11 +6,11 @@ import flask_login
 from flask_restful import Resource
 
 from things_organizer import utils
-from things_organizer.categories.models import Category
-from things_organizer.common.forms import ReportForm
+from things_organizer.web_app.categories.models import Category
+from things_organizer.web_app.reports.forms import ReportForm
 from things_organizer.reports.csv_report import CSV
 from things_organizer.reports.txt_report import TXT
-from things_organizer.storages.models import Storage
+from things_organizer.web_app.storages.models import Storage
 
 
 class ReportResource(Resource):

@@ -14,9 +14,9 @@ import os
 
 from prettytable import PrettyTable
 
-import things_organizer.categories.models
-import things_organizer.storages.models
-import things_organizer.things.models
+import things_organizer.web_app.categories.models
+import things_organizer.web_app.storages.models
+import things_organizer.web_app.things.models
 from things_organizer import utils
 
 
@@ -72,8 +72,8 @@ class TXT:
 
         """
 
-        things = things_organizer.things.models.Thing.query.filter_by(user_id=self.user_id).all()
-        column_names = [str(name).split('.')[1] for name in things_organizer.things.models.Thing.__table__.columns]
+        things = things_organizer.web_app.things.models.Thing.query.filter_by(user_id=self.user_id).all()
+        column_names = [str(name).split('.')[1] for name in things_organizer.web_app.things.models.Thing.__table__.columns]
         self.write_file(column_names, things, 'All things on database')
 
         file_dir = os.path.join(self.file_directory, self.file_name)
@@ -92,10 +92,10 @@ class TXT:
             Path of the file created.
 
         """
-        category = things_organizer.categories.models.Category.query.filter_by(id=int_id).first()
+        category = things_organizer.web_app.categories.models.Category.query.filter_by(id=int_id).first()
 
-        things = things_organizer.things.models.Thing.query.filter_by(user_id=self.user_id, category=category).all()
-        column_names = [str(name).split('.')[1] for name in things_organizer.things.models.Thing.__table__.columns]
+        things = things_organizer.web_app.things.models.Thing.query.filter_by(user_id=self.user_id, category=category).all()
+        column_names = [str(name).split('.')[1] for name in things_organizer.web_app.things.models.Thing.__table__.columns]
         column_names.remove('category_id')
         self.write_file(column_names, things,
                         'All things sorted by \'{}\' Category'.format(category.name))
@@ -117,10 +117,10 @@ class TXT:
 
         """
 
-        storage = things_organizer.storages.models.Storage.query.filter_by(id=int_id).first()
+        storage = things_organizer.web_app.storages.models.Storage.query.filter_by(id=int_id).first()
 
-        things = things_organizer.things.models.Thing.query.filter_by(user_id=self.user_id, storage=storage).all()
-        column_names = [str(name).split('.')[1] for name in things_organizer.things.models.Thing.__table__.columns]
+        things = things_organizer.web_app.things.models.Thing.query.filter_by(user_id=self.user_id, storage=storage).all()
+        column_names = [str(name).split('.')[1] for name in things_organizer.web_app.things.models.Thing.__table__.columns]
         column_names.remove('storage_id')
         self.write_file(column_names, things,
                         'All things sorted by \'{}\' Storage'.format(storage.name))

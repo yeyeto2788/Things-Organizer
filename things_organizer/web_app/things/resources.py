@@ -5,12 +5,12 @@ import flask
 import flask_login
 from flask_restful import Resource
 
-from things_organizer.categories.models import Category
-from things_organizer.storages.models import Storage
-from things_organizer.things.models import Thing
+from things_organizer.web_app.categories.models import Category
+from things_organizer.web_app.storages.models import Storage
+from things_organizer.web_app.things.models import Thing
 from things_organizer import utils
-from things_organizer.app import database
-from things_organizer.things.forms import ThingForm
+from things_organizer.extensions import database
+from things_organizer.web_app.things.forms import ThingForm
 
 
 class AddThingResource(Resource):
@@ -102,7 +102,18 @@ class EditThingResource(Resource):
     def post(self, int_id):
 
         table_object = Thing.query.get_or_404(int_id)
-        form = ThingForm(obj=table_object)
+        form = ThingForm(**flask.request.form)
+
+        categories = Category.get_user_categories(user_id=flask_login.current_user.id)
+
+        form.category.choices = categories
+
+        storages = Storage.get_user_storages(user_id=flask_login.current_user.id)
+
+        form.storage.choices = storages
+
+        if flask_login.current_user != table_object.user:
+            flask.abort(403)
 
         if form.validate_on_submit():
 
@@ -116,7 +127,7 @@ class EditThingResource(Resource):
 
             database.session.commit()
             template_return = flask.redirect(flask.url_for('handle_things'))
-            return flask.Response(template_return, mimetype='text/html')
+            return template_return
 
         else:
             template_return = flask.render_template('edit.html', form=form)
@@ -157,3 +168,48 @@ class ThingResource(Resource):
                                                   time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
         return flask.Response(template_return, mimetype='text/html')
+
+
+class DeleteThingResource(Resource):
+    @flask_login.login_required
+    def get(self, int_id):
+        """
+
+        Args:
+            int_id:
+
+        Returns:
+
+        """
+        utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
+                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+
+        table_object = Thing.query.get_or_404(int_id)
+        form = ThingForm(obj=table_object)
+
+        flask.flash("Please confirm deleting the category '{}'.".format(table_object.name))
+        template_return = flask.render_template("confirm_deletion.html", form=form)
+
+        return flask.Response(template_return, mimetype='text/html')
+
+    @flask_login.login_required
+    def post(self, int_id):
+        """
+
+        Args:
+            int_id:
+
+        Returns:
+
+        """
+        utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
+                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+        table_object = Thing.query.get_or_404(int_id)
+
+        database.session.delete(table_object)
+        database.session.commit()
+        flask.flash("Deleted '{}' category".format(table_object.name))
+        template_return = flask.redirect(
+            flask.url_for('handle_thing', username=flask_login.current_user.username))
+
+        return template_return

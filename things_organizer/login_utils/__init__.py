@@ -1,4 +1,4 @@
-from things_organizer.common.models import User
+from things_organizer.web_app.users.models import User
 
 
 def load_user(user_id):
