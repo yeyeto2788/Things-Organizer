@@ -156,14 +156,12 @@ All logs are accessible from the route `<ip:port>/logs`
    </ul>
  - [ ] Refactoring.
   <ul>
-    <li> - [ ] `views.py`.</li>
-    <li> - [ ] Move report types into a separate module inherited from a based object</li>
-    <li> - [ ] Move `labels` logic and its resources into a separate module.</li>
     <li> - [ ] See if we can move the `utils.py` into `common` module.</li>
     <li> - [ ] Move all modules logic into a `Controller` object to separate logic.</li>
     <li> - [ ] Fix tests.</li>
     <li> - [ ] Use JSON configuration for `constants` or create a module for it.</li>
     <li> - [ ] FINAL STEP put object into one resource for all CRUD operations.</li>
+    <li> - [ ] Catch general errors on app.</li>
   </ul>
  - [ ] Documentation.
   <ul>

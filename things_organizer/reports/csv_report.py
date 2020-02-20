@@ -13,13 +13,11 @@ Once report is generate it should return the directory of the file.
 import csv
 import os
 
-import things_organizer.web_app.categories.models
-import things_organizer.web_app.storages.models
-import things_organizer.web_app.things.models
 from things_organizer import utils
+from things_organizer.reports.base_report import BaseReport
 
 
-class CSV:
+class ReportCSV(BaseReport):
     """
     `.csv` generator class to be use when creating reports.
 
@@ -49,7 +47,7 @@ class CSV:
 
     def __init__(self, file_name, int_user):
         """
-        Constructor method for the CSV report generator.
+        Constructor method for the ReportCSV report generator.
 
         Args:
             file_name: Name for the `.csv` file.
@@ -63,111 +61,36 @@ class CSV:
         if not os.path.exists(self.file_directory):
             os.makedirs(self.file_directory)
 
-    def get_all_things(self):
-        """
-        Make a representation of the database to `.csv` file with all things in database.
-
-        Returns:
-            Path of the file created.
-
-        """
-
-        things = things_organizer.web_app.things.models.Thing.query.filter_by(user_id=self.user_id).all()
-        column_names = [str(name).split('.')[1] for name in things_organizer.web_app.things.models.Thing.__table__.columns]
-
-        things_refined = self._remove_data([row.__dict__ for row in things])
-
-        self.write_file(column_names, things_refined)
-
-        file_dir = os.path.join(self.file_directory, self.file_name)
-
-        return os.path.realpath(file_dir)
-
-    def get_by_category(self, int_id):
-        """
-        Make a representation of the database to `.csv` file with all things in database filtered
-        by category.
-
-        Args:
-            int_id: ID of the category to filter by.
-
-        Returns:
-            Path of the file created.
-
-        """
-
-        lst_remove = ['category_id']
-        category = things_organizer.web_app.categories.models.Category.query.filter_by(id=int_id).first()
-        things = things_organizer.web_app.things.models.Thing.query.filter_by(user_id=self.user_id, category=category).all()
-
+    def generate_by_category(self, category_id):
+        column_names, things = self.get_things_by_category(category_id)
+        lst_remove = ["category_id"]
         things_refined = self._remove_data([row.__dict__ for row in things], lst_remove)
-
-        column_names = [str(name).split('.')[1] for name in things_organizer.web_app.things.models.Thing.__table__.columns]
-
-        for str_remove in lst_remove:
-            column_names.remove(str_remove)
-
         self.write_file(column_names, things_refined)
 
         file_dir = os.path.join(self.file_directory, self.file_name)
 
         return os.path.realpath(file_dir)
 
-    def get_by_storage(self, int_id):
-        """
-        Make a representation of the database to `.csv` file with all things in database filtered
-        by storage.
-
-        Args:
-            int_id: ID of the storage to filter by.
-
-        Returns:
-            Path of the file created.
-
-        """
-
-        lst_remove = ['storage_id']
-        storage = things_organizer.web_app.storages.models.Storage.query.filter_by(id=int_id).first()
-        things = things_organizer.web_app.things.models.Thing.query.filter_by(user_id=self.user_id, storage=storage).all()
-
+    def generate_by_storage(self, storage_id):
+        column_names, things = self.get_things_by_category(storage_id)
+        lst_remove = ["storage_id"]
         things_refined = self._remove_data([row.__dict__ for row in things], lst_remove)
-
-        column_names = [str(name).split('.')[1] for name in things_organizer.web_app.things.models.Thing.__table__.columns]
-
-        for str_remove in lst_remove:
-            column_names.remove(str_remove)
         self.write_file(column_names, things_refined)
 
         file_dir = os.path.join(self.file_directory, self.file_name)
 
         return os.path.realpath(file_dir)
 
-    @staticmethod
-    def _remove_data(things, lst_remove=None):
-        """
-        Static method to remove not needed items from the report.
+    def generate_all(self):
+        column_names, things = self.get_things()
+        lst_remove = ["user_id"]
+        things_refined = self._remove_data([row.__dict__ for row in things], lst_remove)
+        self.write_file(column_names, things_refined)
+        file_dir = os.path.join(self.file_directory, self.file_name)
 
-        Args:
-            things: Thing items on which removal will be applied.
-            lst_remove: Items to be removed.
+        return os.path.realpath(file_dir)
 
-        Returns:
-            Modified things parameter.
-
-        """
-
-        for data in things:
-            data.pop('_sa_instance_state', None)
-            data.pop('user_id', None)
-
-            if lst_remove is not None:
-                for str_remove in lst_remove:
-                    if str_remove in data:
-                        data.pop(str_remove, None)
-
-        return things
-
-    def write_file(self, lst_columns, things):
+    def write_file(self, lst_columns, things, str_title: str = None):
         """
         Common method for writing data into the `.csv` file.
 

@@ -6,10 +6,9 @@ import flask_login
 from flask_restful import Resource
 
 from things_organizer import utils
+from things_organizer.reports import get_report
 from things_organizer.web_app.categories.models import Category
 from things_organizer.web_app.reports.forms import ReportForm
-from things_organizer.reports.csv_report import CSV
-from things_organizer.reports.txt_report import TXT
 from things_organizer.web_app.storages.models import Storage
 
 
@@ -27,6 +26,7 @@ class ReportResource(Resource):
                                                   time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
         form = ReportForm()
+        current_user = flask_login.current_user.id
         report_types = [(1, 'CSV (.csv)'), (2, 'TXT (.txt)')]
         form.report_type.choices = report_types
         data_types = [(1, 'All items'), (2, 'All items by Category'), (3, 'All items by Storage')]
@@ -56,6 +56,7 @@ class ReportResource(Resource):
                                                   time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
         form = ReportForm()
+        current_user = flask_login.current_user.id
         report_types = [(1, 'CSV (.csv)'), (2, 'TXT (.txt)')]
         form.report_type.choices = report_types
         data_types = [(1, 'All items'), (2, 'All items by Category'), (3, 'All items by Storage')]
@@ -72,25 +73,26 @@ class ReportResource(Resource):
             category = form.category.data
             storage = form.storage.data
 
-            report_name = '{}'.format(str(int(time.time())))
-
             if report_type == 1:
-                report = CSV(report_name, flask_login.current_user.id)
+                report_name = '{}.csv'.format(str(int(time.time())))
 
             else:
-                report = TXT(report_name, flask_login.current_user.id)
+                report_name = '{}.txt'.format(str(int(time.time())))
+
+            report = get_report(report_name)
+            final_repo = report(report_name, flask_login.current_user.id)
 
             if data_type == 1:
-                report.get_all_things()
+                final_repo.generate_all()
 
             else:
                 if data_type == 2:
-                    report.get_by_category(category)
+                    final_repo.generate_by_category(category)
                 else:
-                    report.get_by_storage(storage)
+                    final_repo.generate_by_storage(storage)
 
-            template_return = flask.send_from_directory(report.file_directory,
-                                                        report.file_name,
+            template_return = flask.send_from_directory(final_repo.file_directory,
+                                                        final_repo.file_name,
                                                         as_attachment=True)
             utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
                                                       time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
