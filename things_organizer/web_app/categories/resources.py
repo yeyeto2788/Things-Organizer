@@ -160,7 +160,7 @@ class DeleteCategoryResource(Resource):
             database.session.commit()
 
         except IntegrityError:
-            database.session.rollback()
+            database.session.rollback()  # pylint:disable=E1101
             form = CategoryForm(obj=table_object)
 
             flask.flash("You can't delete '{}' category since it is assigned to an item.".format(table_object.name))
