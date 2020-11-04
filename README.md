@@ -4,7 +4,7 @@ Simple and "lightweight" web application for organizing that disaster or room/ga
 (I suppose) we all have.
 
 <div style="text-align:center">
-<img src="Doc/img/animation.gif" />
+  <img src="documentation/img/animation.gif" />
 </div>
 
 The idea came from a day I was looking a SOC board like the Raspberry Pi and I could not find it
@@ -51,7 +51,7 @@ Main Repository Folder(Thing-Organizer)
 ```
 
 If you want to know more in depth what each single file does go to the
-application [documentation](Doc/project_documentation/things_organizer).
+application [documentation](documentation/project_documentation/things_organizer).
 
 ## DataBase information.
 
@@ -96,13 +96,9 @@ are the following:
 
 In the image below you can see the relationship of each table created on the database.
 
-<p align="center">
-<img src="Doc/img/sql_diagram.png" alt="SQL scheme Diagram"  width="500"/>
-</p>
-<p align="center">Image done with <a href="https://www.dbschema.com/download.html">dbschema</a>.
-</p>
-<p align="center">Pending to use <a href="https://github.com/schemacrawler/SchemaCrawler">SchemaCrawler</a> since it is open
-source.</p>
+<p align="center"><img src="documentation/img/sql_diagram.png" alt="SQL schema Diagram"  width="500"/></p>
+<p align="center">Image done with <a href="https://www.dbschema.com/download.html">dbschema</a>.</p>
+<p align="center">Pending to use <a href="https://github.com/schemacrawler/SchemaCrawler">SchemaCrawler</a> since it is open source.</p>
 
 As you can see in the image above there are some uniques columns on tables, which are the following:
 
@@ -141,18 +137,35 @@ All logs are accessible from the route `<ip:port>/logs`
 
 ## TODO:
  - [ ] Scripts for automate some repetitive work.
-   <ul><li> - [ ] Add more functionalities on the `run_app.py`.</li>
+   <ul>
+     <li> - [ ] Generate off-line labels.</li>
+     <li> - [ ] Generate off-line reports.</li>
+     <li> - [ ] Populate database from `sql` file.</li>
    </ul>
  - [ ] Features to add:
-   <li> - [x] Generate reports.
-     <ul><li> - [ ] PDF</li>
-     <li> - [x] CSV</li>
-     <li> - [x] TXT</li>
-     </ul>
-   </li>
+   <ul>
+     <li> - [] Generate reports.
+       <ul>
+         <li> - [ ] PDF</li>
+       </ul>
+     </li>
+     <li> - [ ] More API Operations</li>
+     <li> - [ ] Add link on labels.</li>
+     <li> - [ ] Barcode label.</li>
+     <li> - [ ] Add migrations.</li>
    </ul>
+ - [ ] Refactoring.
+  <ul>
+    <li> - [ ] See if we can move the `utils.py` into `common` module.</li>
+    <li> - [ ] Move all modules logic into a `Controller` object to separate logic.</li>
+    <li> - [ ] Fix tests.</li>
+    <li> - [ ] Use JSON configuration for `constants` or create a module for it.</li>
+    <li> - [ ] FINAL STEP put object into one resource for all CRUD operations.</li>
+    <li> - [ ] Catch general errors on app.</li>
+  </ul>
  - [ ] Documentation.
   <ul>
-    <li> - [ ] `run_app.py` options.</li>
     <li> - [ ] API.</li>
+    <li> - [ ] Report Generation.</li>
+    <li> - [ ] Final application file structure (THIS README).</li>
   </ul>
