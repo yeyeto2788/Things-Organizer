@@ -15,10 +15,10 @@ import os
 from prettytable import PrettyTable
 
 from things_organizer import utils
-from things_organizer.db import db_models
+from things_organizer.reports.base_report import BaseReport
 
 
-class TXT:
+class ReportTXT(BaseReport):
     """
         `.txt` generator class to be use when creating reports.
 
@@ -48,7 +48,7 @@ class TXT:
 
     def __init__(self, file_name, int_user):
         """
-        Constructor method for the TXT report generator.
+        Constructor method for the ReportTXT report generator.
 
         Args:
             file_name: Name for the `.txt` file.
@@ -61,73 +61,37 @@ class TXT:
         if not os.path.exists(self.file_directory):
             os.makedirs(self.file_directory)
 
-    def get_all_things(self):
-        """
-        Make a representation of the database to `.txt` file with all things in database.
+    def generate_by_category(self, category_id):
+        category_obj = self.get_category(category_id)
+        column_names, things = self.get_things_by_category(category_id)
 
-        Returns:
-            Path of the file created.
+        self.write_file(column_names, things,
+                        'All things sorted by \'{}\' Category'.format(category_obj.name))
 
-        """
+        file_dir = os.path.join(self.file_directory, self.file_name)
 
-        things = db_models.Thing.query.filter_by(user_id=self.user_id).all()
-        column_names = [str(name).split('.')[1] for name in db_models.Thing.__table__.columns]
+        return os.path.realpath(file_dir)
+
+    def generate_by_storage(self, storage_id):
+        storage_obj = self.get_storage(storage_id)
+        column_names, things = self.get_things_by_category(storage_id)
+
+        self.write_file(column_names, things,
+                        'All things sorted by \'{}\' Storage'.format(storage_obj.name))
+
+        file_dir = os.path.join(self.file_directory, self.file_name)
+
+        return os.path.realpath(file_dir)
+
+    def generate_all(self):
+        column_names, things = self.get_things()
         self.write_file(column_names, things, 'All things on database')
 
         file_dir = os.path.join(self.file_directory, self.file_name)
 
         return os.path.realpath(file_dir)
 
-    def get_by_category(self, int_id):
-        """
-        Make a representation of the database to `.txt` file with all things in database filtered
-        by category.
-
-        Args:
-            int_id: ID of the category to filter by.
-
-        Returns:
-            Path of the file created.
-
-        """
-        category = db_models.Category.query.filter_by(id=int_id).first()
-
-        things = db_models.Thing.query.filter_by(user_id=self.user_id, category=category).all()
-        column_names = [str(name).split('.')[1] for name in db_models.Thing.__table__.columns]
-        column_names.remove('category_id')
-        self.write_file(column_names, things,
-                        'All things sorted by \'{}\' Category'.format(category.name))
-
-        file_dir = os.path.join(self.file_directory, self.file_name)
-
-        return os.path.realpath(file_dir)
-
-    def get_by_storage(self, int_id):
-        """
-        Make a representation of the database to `.txt` file with all things in database filtered
-        by storage.
-
-        Args:
-            int_id: ID of the storage to filter by.
-
-        Returns:
-            Path of the file created.
-
-        """
-
-        storage = db_models.Storage.query.filter_by(id=int_id).first()
-
-        things = db_models.Thing.query.filter_by(user_id=self.user_id, storage=storage).all()
-        column_names = [str(name).split('.')[1] for name in db_models.Thing.__table__.columns]
-        column_names.remove('storage_id')
-        self.write_file(column_names, things,
-                        'All things sorted by \'{}\' Storage'.format(storage.name))
-
-        file_dir = os.path.join(self.file_directory, self.file_name)
-
-        return os.path.realpath(file_dir)
-
-    def write_file(self, lst_columns, things, str_title):
+    def write_file(self, lst_columns, things, str_title: str = None):
         """
         Common method for writing data into the `.txt` file.
 
@@ -139,6 +103,7 @@ class TXT:
         """
 
         file_dir = os.path.join(self.file_directory, self.file_name)
+
 
         if 'user_id' in lst_columns:
             lst_columns.remove('user_id')
@@ -152,6 +117,7 @@ class TXT:
             data.pop('user_id', None)
             column_lst = []
             int_total += row.quantity
+
             for column_name in lst_columns:
                 column_lst.append(data[column_name])
             table_data.add_row(column_lst)
@@ -161,10 +127,10 @@ class TXT:
             file_data = table_data.get_string(title=str_title)
             txt_file.write(file_data)
             txt_file.write('\n\n')
+
             if things:
                 total_data = PrettyTable(['Total Items'])
                 total_data.add_row([int_total])
                 txt_file.write(str(total_data))
 
         txt_file.close()
-        print(int_total)

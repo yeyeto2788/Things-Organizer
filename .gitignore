@@ -18,8 +18,8 @@ unittests.xml
 ./pylint.txt
 
 # Scripts with sensitive info
-Scripts/generate_doc.py
-Scripts/testing_gendoc.py
+scripts/generate_doc.py
+scripts/testing_gendoc.py
 
 # Databases:
 ./things_organizer/data/*.db

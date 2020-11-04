@@ -1,3 +1,4 @@
+waitress>=1.2.1
 Flask==1.0.2
 Flask-RESTful==0.3.7
 flask-sqlalchemy==2.3.2
@@ -8,11 +9,11 @@ Flask-Migrate==2.4.0
 ujson==1.35
 pylint>=2.2.2
 pylint-flask==0.6
-waitress>=1.2.1
 PrettyTable==0.7.2
 qrcode==6.1
 pyzbar==0.1.8
-pillow==5.4.1
+pillow>=7.1.0
 pytest==4.3.1
 pytest-cov==2.6.1
-mock==2.0.0
+werkzeug==0.16.0
+email-validator==1.1.1
