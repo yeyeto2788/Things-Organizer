@@ -135,6 +135,29 @@ different DataBase for logging.
 All logs are accessible from the route `<ip:port>/logs`
 **e.g.** [http://127.0.0.1/8080/logs](http://127.0.0.1/8080/logs)
 
+## Running the application
+
+### Create the virtual environment
+```console
+python3 -m virtualenv venv
+source ./venv/bin/activate
+```
+
+### Install dependencies
+```console
+pip3 install -r requirements.txt
+```
+
+### Initialize the db (If you haven't)
+```console
+python run_app.py db upgrade
+```
+
+### Finally run the application
+```console
+python run_app.py run_production
+```
+
 ## TODO:
  - [ ] Scripts for automate some repetitive work.
    <ul>
