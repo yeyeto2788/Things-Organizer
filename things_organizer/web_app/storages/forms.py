@@ -15,8 +15,8 @@ class StorageForm(FlaskForm):
 
     def validate(self):
         """
-        Validation of the Storage form checking whether the storage name and location pair
-        already exists or not.
+        Validation of the Storage form checking whether the storage name
+        and location pair already exists or not.
 
         Returns:
             True if the pair does not exists, else False.
@@ -28,7 +28,10 @@ class StorageForm(FlaskForm):
         if not FlaskForm.validate(self):
             bln_return = False
 
-        if Storage.query.filter_by(name=self.name.data, location=self.location.data).first():
+        if Storage.query.filter_by(
+                name=self.name.data,
+                location=self.location.data
+        ).first():
             bln_return = False
 
         return bln_return

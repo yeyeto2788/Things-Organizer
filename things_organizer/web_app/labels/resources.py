@@ -12,6 +12,7 @@ from things_organizer.labels import QRLabel
 
 
 class LabelResource(Resource):
+
     @flask_login.login_required
     def get(self, int_id):
         """
@@ -25,26 +26,45 @@ class LabelResource(Resource):
 
         """
 
-        utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+        utils.debug(
+            "** {} - INI\t{} **\n".format(
+                inspect.stack()[0][3],
+                time.strftime(
+                    "%Y-%m-%d %H:%M:%S",
+                    time.gmtime())
+            )
+        )
 
-        thing = Thing.query.filter_by(user_id=flask_login.current_user.id, id=int_id).first()
+        thing = Thing.query.filter_by(
+            user_id=flask_login.current_user.id,
+            id=int_id
+        ).first()
 
         storage = Storage.query.filter_by(id=thing.storage_id).first()
 
         if thing:
-            label = QRLabel(thing.name, thing.description, storage.name, storage.location)
+            label = QRLabel(thing.name, thing.description, storage.name,
+                            storage.location)
             label.generate_label()
 
             template_return = flask.send_from_directory(
-                label.file_directory, label.file_name, as_attachment=True)
+                label.file_directory,
+                label.file_name,
+                as_attachment=True
+            )
             flask.flash("Label '{}' generated.".format(label.file_name))
 
             return template_return
 
         else:
             template_return = flask.redirect(flask.url_for('handle_things'))
-            utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                                      time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+            utils.debug(
+                "** {} - END\t{} **\n".format(
+                    inspect.stack()[0][3],
+                    time.strftime(
+                        "%Y-%m-%d %H:%M:%S",
+                        time.gmtime())
+                )
+            )
 
             return flask.Response(template_return, mimetype='text/html')

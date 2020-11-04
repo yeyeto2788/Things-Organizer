@@ -8,9 +8,19 @@ class ReportForm(FlaskForm):
 
     """
 
-    report_type = SelectField(label="Select type of file", coerce=int)
-    data_type = SelectField(label="Select data for report", coerce=int)
-    category = SelectField(label="Select Category", coerce=int)
-    storage = SelectField(label="Select Storage", coerce=int)
-
-
+    report_type = SelectField(
+        label="Select type of file",
+        coerce=int
+    )
+    data_type = SelectField(
+        label="Select data for report",
+        coerce=int
+    )
+    category = SelectField(
+        label="Select Category",
+        coerce=int
+    )
+    storage = SelectField(
+        label="Select Storage",
+        coerce=int
+    )

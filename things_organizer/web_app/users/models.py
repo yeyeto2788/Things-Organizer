@@ -10,16 +10,34 @@ class User(database.Model, UserMixin):
 
     """
 
-    id = database.Column(database.Integer, primary_key=True)
-    username = database.Column(database.String(80), unique=True, nullable=False)
-    email = database.Column(database.String(120), unique=True, nullable=False)
-    things = database.relationship('Thing', backref='user', lazy='dynamic')
-    password_hash = database.Column(database.String)
+    id = database.Column(
+        database.Integer,
+        primary_key=True
+    )
+    username = database.Column(
+        database.String(80),
+        unique=True,
+        nullable=False
+    )
+    email = database.Column(
+        database.String(120),
+        unique=True,
+        nullable=False
+    )
+    things = database.relationship(
+        'Thing',
+        backref='user',
+        lazy='dynamic'
+    )
+    password_hash = database.Column(
+        database.String
+    )
 
     @property
     def password(self):
         """
-        Property which is write-only so it will raise an exception if trying to access to it.
+        Property which is write-only so it will raise an exception if trying
+        to access to it.
 
         Raises:
             AttributeError.

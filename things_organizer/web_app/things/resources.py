@@ -5,18 +5,50 @@ import flask
 import flask_login
 from flask_restful import Resource
 
-from things_organizer.web_app.categories.models import Category
-from things_organizer.web_app.storages.models import Storage
-from things_organizer.web_app.things.models import Thing
 from things_organizer import utils
 from things_organizer.extensions import database
+from things_organizer.web_app.categories.models import Category
+from things_organizer.web_app.storages.models import Storage
 from things_organizer.web_app.things.forms import ThingForm
+from things_organizer.web_app.things.models import Thing
 
 
 class AddThingResource(Resource):
 
     @flask_login.login_required
     def get(self):
+        utils.debug(
+            "** {} - INI\t{} **\n".format(
+                inspect.stack()[0][3],
+                time.strftime(
+                    "%Y-%m-%d %H:%M:%S",
+                    time.gmtime())
+            )
+        )
+
+        form = ThingForm()
+        current_user = flask_login.current_user.id
+        categories = Category.get_user_categories(user_id=current_user)
+        form.category.choices = categories
+        storages = Storage.get_user_storages(user_id=current_user)
+        form.storage.choices = storages
+
+        template_return = flask.render_template(
+            'add_thing.html',
+            form=form
+        )
+
+        utils.debug(
+            "** {} - END\t{} **\n".format(
+                inspect.stack()[0][3],
+                time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
+            )
+        )
+
+        return flask.Response(template_return, mimetype='text/html')
+
+    @flask_login.login_required
+    def post(self):
         """
             This will let the user add a new thing on the db.
 
@@ -24,8 +56,14 @@ class AddThingResource(Resource):
                 Flask template based on the request method.
 
             """
-        utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+        utils.debug(
+            "** {} - INI\t{} **\n".format(
+                inspect.stack()[0][3],
+                time.strftime(
+                    "%Y-%m-%d %H:%M:%S",
+                    time.gmtime())
+            )
+        )
 
         form = ThingForm()
         current_user = flask_login.current_user.id
@@ -58,16 +96,26 @@ class AddThingResource(Resource):
             flask.flash("Stored '{}'".format(thing_obj.name))
             template_return = flask.redirect(flask.url_for('handle_things'))
 
-        else:
-            template_return = flask.render_template('add_thing.html', form=form)
+            return template_return
 
-        utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+        else:
+            template_return = flask.render_template(
+                'add_thing.html',
+                form=form
+            )
+
+        utils.debug(
+            "** {} - END\t{} **\n".format(
+                inspect.stack()[0][3],
+                time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
+            )
+        )
 
         return flask.Response(template_return, mimetype='text/html')
 
 
 class EditThingResource(Resource):
+
     @flask_login.login_required
     def get(self, int_id):
         """
@@ -104,11 +152,13 @@ class EditThingResource(Resource):
         table_object = Thing.query.get_or_404(int_id)
         form = ThingForm(**flask.request.form)
 
-        categories = Category.get_user_categories(user_id=flask_login.current_user.id)
+        categories = Category.get_user_categories(
+            user_id=flask_login.current_user.id)
 
         form.category.choices = categories
 
-        storages = Storage.get_user_storages(user_id=flask_login.current_user.id)
+        storages = Storage.get_user_storages(
+            user_id=flask_login.current_user.id)
 
         form.storage.choices = storages
 
@@ -146,31 +196,48 @@ class ThingResource(Resource):
 
         """
 
-        utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+        utils.debug(
+            "** {} - INI\t{} **\n".format(
+                inspect.stack()[0][3],
+                time.strftime(
+                    "%Y-%m-%d %H:%M:%S",
+                    time.gmtime())
+            )
+        )
 
         if flask_login.current_user.is_authenticated:
             utils.debug("Redirecting to 'things' page.")
 
-            things = Thing.query.filter_by(user_id=flask_login.current_user.id).all()
+            things = Thing.query.filter_by(
+                user_id=flask_login.current_user.id).all()
 
             if not things:
                 things = None
 
-            template_return = flask.render_template('things.html', table_data=things)
+            template_return = flask.render_template(
+                'things.html',
+                table_data=things
+            )
 
         else:
             utils.debug("Redirecting to 'login' page.")
             template_return = flask.redirect(flask.url_for('handle_login'))
             flask.session['next_url'] = flask.request.path
 
-        utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+        utils.debug(
+            "** {} - END\t{} **\n".format(
+                inspect.stack()[0][3],
+                time.strftime(
+                    "%Y-%m-%d %H:%M:%S",
+                    time.gmtime())
+            )
+        )
 
         return flask.Response(template_return, mimetype='text/html')
 
 
 class DeleteThingResource(Resource):
+
     @flask_login.login_required
     def get(self, int_id):
         """
@@ -181,14 +248,25 @@ class DeleteThingResource(Resource):
         Returns:
 
         """
-        utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+        utils.debug(
+            "** {} - INI\t{} **\n".format(
+                inspect.stack()[0][3],
+                time.strftime(
+                    "%Y-%m-%d %H:%M:%S",
+                    time.gmtime())
+            )
+        )
 
         table_object = Thing.query.get_or_404(int_id)
         form = ThingForm(obj=table_object)
 
-        flask.flash("Please confirm deleting the category '{}'.".format(table_object.name))
-        template_return = flask.render_template("confirm_deletion.html", form=form)
+        flask.flash(
+            "Please confirm deleting the item '{}'.".format(
+                table_object.name
+            )
+        )
+        template_return = flask.render_template("confirm_deletion.html",
+                                                form=form)
 
         return flask.Response(template_return, mimetype='text/html')
 
@@ -202,14 +280,25 @@ class DeleteThingResource(Resource):
         Returns:
 
         """
-        utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+        utils.debug(
+            "** {} - INI\t{} **\n".format(
+                inspect.stack()[0][3],
+                time.strftime(
+                    "%Y-%m-%d %H:%M:%S",
+                    time.gmtime()
+                )
+            )
+        )
         table_object = Thing.query.get_or_404(int_id)
 
         database.session.delete(table_object)
         database.session.commit()
-        flask.flash("Deleted '{}' category".format(table_object.name))
+        flask.flash("Deleted '{}' item".format(table_object.name))
         template_return = flask.redirect(
-            flask.url_for('handle_thing', username=flask_login.current_user.username))
+            flask.url_for(
+                'handle_things',
+                username=flask_login.current_user.username
+            )
+        )
 
         return template_return

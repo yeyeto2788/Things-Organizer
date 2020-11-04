@@ -14,6 +14,7 @@ from things_organizer.web_app.users.models import User
 
 
 class SearchResource(Resource):
+
     @flask_login.login_required
     def get(self):
         """
@@ -24,8 +25,14 @@ class SearchResource(Resource):
 
         """
 
-        utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+        utils.debug(
+            "** {} - INI\t{} **\n".format(
+                inspect.stack()[0][3],
+                time.strftime(
+                    "%Y-%m-%d %H:%M:%S",
+                    time.gmtime())
+            )
+        )
 
         if flask_login.current_user.is_authenticated:
 
@@ -43,18 +50,27 @@ class SearchResource(Resource):
                 ).all()
 
                 if things:
-                    template_text += 'Found <b>{}</b> items.\n\n'.format(len(things))
+                    template_text += 'Found <b>{}</b> items.\n\n'.format(
+                        len(things))
 
                     for int_index, thing in enumerate(things):
                         int_index += 1
-                        template_text += '<b>Item {:02}</b>\n'.format(int_index)
-                        template_text += '<b>Name:</b> {}\n'.format(str(thing.name))
-                        template_text += '<b>Description:</b> {}\n'.format(str(thing.description))
-                        storage = Storage.query.filter_by(id=thing.storage_id).first()
-                        template_text += '<b>Storage:</b> {}\n'.format(storage.name)
-                        template_text += '<b>Location:</b> {}\n'.format(storage.location)
-                        category = Category.query.filter_by(id=thing.category_id).first()
-                        template_text += '<b>Category:</b> {}\n\n'.format(category.name)
+                        template_text += '<b>Item {:02}</b>\n'.format(
+                            int_index)
+                        template_text += '<b>Name:</b> {}\n'.format(
+                            str(thing.name))
+                        template_text += '<b>Description:</b> {}\n'.format(
+                            str(thing.description))
+                        storage = Storage.query.filter_by(
+                            id=thing.storage_id).first()
+                        template_text += '<b>Storage:</b> {}\n'.format(
+                            storage.name)
+                        template_text += '<b>Location:</b> {}\n'.format(
+                            storage.location)
+                        category = Category.query.filter_by(
+                            id=thing.category_id).first()
+                        template_text += '<b>Category:</b> {}\n\n'.format(
+                            category.name)
 
                     template_text = template_text.replace('\n', '<br>')
 
@@ -67,17 +83,28 @@ class SearchResource(Resource):
             container = """
                 <div class="container-fluid lead">
                 {}
-                <p class="lead" align="center">You can <a href="javascript:history.back()">
-                go back</a>
-                to the previous page, or <a href="/home">home</a>.</p>
+                <p class="lead" align="center">
+                You can <a href="javascript:history.back()">go back</a>
+                to the previous page, or <a href="/home">home</a>.
+                </p>
                 </div>""".format(template_text)
-            flask_template = flask.render_template('_blank.html', str_to_display=str(container))
+            flask_template = flask.render_template(
+                '_blank.html',
+                str_to_display=str(
+                    container)
+            )
 
         else:
             utils.debug("Redirecting to 'login' page.")
             flask_template = flask.redirect(flask.url_for('handle_login'))
             flask.session['next_url'] = flask.request.path
 
-        utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+        utils.debug(
+            "** {} - END\t{} **\n".format(
+                inspect.stack()[0][3],
+                time.strftime(
+                    "%Y-%m-%d %H:%M:%S",
+                    time.gmtime())
+            )
+        )
         return flask.Response(flask_template, mimetype='text/html')

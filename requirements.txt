@@ -12,6 +12,8 @@ pylint-flask==0.6
 PrettyTable==0.7.2
 qrcode==6.1
 pyzbar==0.1.8
-pillow==5.4.1
+pillow>=7.1.0
 pytest==4.3.1
 pytest-cov==2.6.1
+werkzeug==0.16.0
+email-validator==1.1.1

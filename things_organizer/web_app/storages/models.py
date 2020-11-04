@@ -7,12 +7,24 @@ class Storage(database.Model):
 
     """
 
-    id = database.Column(database.Integer, primary_key=True)
-    name = database.Column(database.String(50), unique=True, nullable=False)
-    location = database.Column(database.String(120), nullable=False)
-    user_id = database.Column(database.Integer,
-                              database.ForeignKey('user.id'),
-                              nullable=False)
+    id = database.Column(
+        database.Integer,
+        primary_key=True
+    )
+    name = database.Column(
+        database.String(50),
+        unique=True,
+        nullable=False
+    )
+    location = database.Column(
+        database.String(120),
+        nullable=False
+    )
+    user_id = database.Column(
+        database.Integer,
+        database.ForeignKey('user.id'),
+        nullable=False
+    )
 
     @classmethod
     def get_user_storages(cls, user_id):

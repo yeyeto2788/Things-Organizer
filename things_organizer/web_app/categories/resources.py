@@ -13,6 +13,7 @@ from things_organizer.extensions import database
 
 
 class CategoryResource(Resource):
+
     @flask_login.login_required
     def get(self):
         """
@@ -23,19 +24,35 @@ class CategoryResource(Resource):
 
         """
 
-        utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+        utils.debug(
+            "** {} - INI\t{} **\n".format(
+                inspect.stack()[0][3],
+                time.strftime(
+                    "%Y-%m-%d %H:%M:%S",
+                    time.gmtime())
+            )
+        )
 
         form = CategoryForm()
-        categories = Category.query.filter_by(user_id=flask_login.current_user.id).all()
+        categories = Category.query.filter_by(
+            user_id=flask_login.current_user.id).all()
 
         if not categories:
             categories = None
 
-        template_return = flask.render_template('categories.html', table_data=categories, form=form)
+        template_return = flask.render_template(
+            'categories.html',
+            table_data=categories,
+            form=form
+        )
 
-        utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+        utils.debug(
+            "** {} - END\t{} **\n".format(
+                inspect.stack()[0][3],
+                time.strftime(
+                    "%Y-%m-%d %H:%M:%S",
+                    time.gmtime()))
+        )
 
         return flask.Response(template_return, mimetype='text/html')
 
@@ -46,8 +63,14 @@ class CategoryResource(Resource):
         Returns:
 
         """
-        utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+        utils.debug(
+            "** {} - INI\t{} **\n".format(
+                inspect.stack()[0][3],
+                time.strftime(
+                    "%Y-%m-%d %H:%M:%S",
+                    time.gmtime())
+            )
+        )
 
         form = CategoryForm()
         user_id = flask_login.current_user.id
@@ -59,20 +82,32 @@ class CategoryResource(Resource):
             database.session.commit()
             flask.flash("Category {} stored.".format(category_obj.name))
 
-        categories = Category.query.filter_by(user_id=flask_login.current_user.id).all()
+        categories = Category.query.filter_by(
+            user_id=flask_login.current_user.id).all()
 
         if not categories:
             categories = None
 
-        template_return = flask.render_template('categories.html', table_data=categories, form=form)
+        template_return = flask.render_template(
+            'categories.html',
+            table_data=categories,
+            form=form
+        )
 
-        utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+        utils.debug(
+            "** {} - END\t{} **\n".format(
+                inspect.stack()[0][3],
+                time.strftime(
+                    "%Y-%m-%d %H:%M:%S",
+                    time.gmtime())
+            )
+        )
 
         return flask.Response(template_return, mimetype='text/html')
 
 
 class EditCategoryResource(Resource):
+
     @flask_login.login_required
     def get(self, int_id):
         """
@@ -83,8 +118,13 @@ class EditCategoryResource(Resource):
         Returns:
 
         """
-        utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+        utils.debug(
+            "** {} - INI\t{} **\n".format(
+                inspect.stack()[0][3],
+                time.strftime(
+                    "%Y-%m-%d %H:%M:%S",
+                    time.gmtime()))
+        )
 
         table_object = Category.query.get_or_404(int_id)
         form = CategoryForm(obj=table_object)
@@ -105,13 +145,19 @@ class EditCategoryResource(Resource):
         Returns:
 
         """
-        utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+        utils.debug(
+            "** {} - INI\t{} **\n".format(
+                inspect.stack()[0][3],
+                time.strftime(
+                    "%Y-%m-%d %H:%M:%S",
+                    time.gmtime())
+            )
+        )
         table_object = Category.query.get_or_404(int_id)
         form = CategoryForm(obj=table_object)
 
         if form.validate_on_submit():
-            form.populate_obj(table_object)
+            form.populate_obj(table_object)  # pylint:disable=E1101
 
         database.session.commit()
 
@@ -130,14 +176,27 @@ class DeleteCategoryResource(Resource):
         Returns:
 
         """
-        utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+        utils.debug(
+            "** {} - INI\t{} **\n".format(
+                inspect.stack()[0][3],
+                time.strftime(
+                    "%Y-%m-%d %H:%M:%S",
+                    time.gmtime())
+            )
+        )
 
         table_object = Category.query.get_or_404(int_id)
         form = CategoryForm(obj=table_object)
 
-        flask.flash("Please confirm deleting the category '{}'.".format(table_object.name))
-        template_return = flask.render_template("confirm_deletion.html", form=form)
+        flask.flash(
+            "Please confirm deleting the category '{}'.".format(
+                table_object.name
+            )
+        )
+        template_return = flask.render_template(
+            "confirm_deletion.html",
+            form=form
+        )
 
         return flask.Response(template_return, mimetype='text/html')
 
@@ -151,8 +210,14 @@ class DeleteCategoryResource(Resource):
         Returns:
 
         """
-        utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+        utils.debug(
+            "** {} - INI\t{} **\n".format(
+                inspect.stack()[0][3],
+                time.strftime(
+                    "%Y-%m-%d %H:%M:%S",
+                    time.gmtime())
+            )
+        )
         table_object = Category.query.get_or_404(int_id)
 
         try:
@@ -163,12 +228,18 @@ class DeleteCategoryResource(Resource):
             database.session.rollback()  # pylint:disable=E1101
             form = CategoryForm(obj=table_object)
 
-            flask.flash("You can't delete '{}' category since it is assigned to an item.".format(table_object.name))
-            template_return = flask.Response(flask.render_template("confirm_deletion.html", form=form), mimetype='text/html')
+            flask.flash(
+                f"You can't delete '{table_object.name}' category "
+                f"since it is assigned to an item."
+            )
+            template_return = flask.Response(
+                flask.render_template("confirm_deletion.html", form=form),
+                mimetype='text/html')
 
         else:
             flask.flash("Deleted '{}' category".format(table_object.name))
             template_return = flask.redirect(
-                flask.url_for('handle_categories', username=flask_login.current_user.username))
+                flask.url_for('handle_categories',
+                              username=flask_login.current_user.username))
 
         return template_return

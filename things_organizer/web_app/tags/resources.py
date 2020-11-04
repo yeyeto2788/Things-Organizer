@@ -13,6 +13,7 @@ from things_organizer.web_app.tags.models import Tag
 
 
 class TagResource(Resource):
+
     @flask_login.login_required
     def get(self):
         """
@@ -23,8 +24,14 @@ class TagResource(Resource):
 
         """
 
-        utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+        utils.debug(
+            "** {} - INI\t{} **\n".format(
+                inspect.stack()[0][3],
+                time.strftime(
+                    "%Y-%m-%d %H:%M:%S",
+                    time.gmtime())
+            )
+        )
 
         form = TagForm()
         tags = Tag.query.filter().all()
@@ -32,10 +39,18 @@ class TagResource(Resource):
         if not tags:
             tags = None
 
-        template_return = flask.render_template('tags.html', table_data=tags, form=form)
+        template_return = flask.render_template('tags.html', table_data=tags,
+                                                form=form)
 
-        utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+        utils.debug(
+            "** {} - END\t{} **\n".format(
+                inspect.stack()[0][3],
+                time.strftime(
+                    "%Y-%m-%d %H:%M:%S",
+                    time.gmtime())
+            )
+        )
+
         return flask.Response(template_return, mimetype='text/html')
 
     @flask_login.login_required
@@ -48,10 +63,17 @@ class TagResource(Resource):
 
         """
 
-        utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+        utils.debug(
+            "** {} - INI\t{} **\n".format(
+                inspect.stack()[0][3],
+                time.strftime(
+                    "%Y-%m-%d %H:%M:%S",
+                    time.gmtime())
+            )
+        )
 
         form = TagForm()
+
         if form.validate_on_submit():
             name = form.name.data
             tag_obj = Tag(name=name)
@@ -63,14 +85,26 @@ class TagResource(Resource):
         if not tags:
             tags = None
 
-        template_return = flask.render_template('tags.html', table_data=tags, form=form)
+        template_return = flask.render_template(
+            'tags.html',
+            table_data=tags,
+            form=form
+        )
 
-        utils.debug("** {} - END\t{} **\n".format(inspect.stack()[0][3],
-                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+        utils.debug(
+            "** {} - END\t{} **\n".format(
+                inspect.stack()[0][3],
+                time.strftime(
+                    "%Y-%m-%d %H:%M:%S",
+                    time.gmtime())
+            )
+        )
+
         return flask.Response(template_return, mimetype='text/html')
 
 
 class EditTagResource(Resource):
+
     @flask_login.login_required
     def get(self, int_id):
         """
@@ -81,8 +115,14 @@ class EditTagResource(Resource):
         Returns:
 
         """
-        utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+        utils.debug(
+            "** {} - INI\t{} **\n".format(
+                inspect.stack()[0][3],
+                time.strftime(
+                    "%Y-%m-%d %H:%M:%S",
+                    time.gmtime())
+            )
+        )
 
         table_object = Tag.query.get_or_404(int_id)
         form = TagForm(obj=table_object)
@@ -100,13 +140,19 @@ class EditTagResource(Resource):
         Returns:
 
         """
-        utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+        utils.debug(
+            "** {} - INI\t{} **\n".format(
+                inspect.stack()[0][3],
+                time.strftime(
+                    "%Y-%m-%d %H:%M:%S",
+                    time.gmtime())
+            )
+        )
         table_object = Tag.query.get_or_404(int_id)
         form = TagForm(obj=table_object)
 
         if form.validate_on_submit():
-            form.populate_obj(table_object)
+            form.populate_obj(table_object)  # pylint:disable=E1101
 
         database.session.commit()
 
@@ -115,6 +161,7 @@ class EditTagResource(Resource):
 
 
 class DeleteTagResource(Resource):
+
     @flask_login.login_required
     def get(self, int_id):
         """
@@ -125,14 +172,25 @@ class DeleteTagResource(Resource):
         Returns:
 
         """
-        utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+        utils.debug(
+            "** {} - INI\t{} **\n".format(
+                inspect.stack()[0][3],
+                time.strftime(
+                    "%Y-%m-%d %H:%M:%S",
+                    time.gmtime())
+            )
+        )
 
         table_object = Tag.query.get_or_404(int_id)
         form = TagForm(obj=table_object)
 
-        flask.flash("Please confirm deleting the tag '{}'.".format(table_object.name))
-        template_return = flask.render_template("confirm_deletion.html", form=form)
+        flask.flash(
+            "Please confirm deleting the tag '{}'.".format(table_object.name)
+        )
+        template_return = flask.render_template(
+            "confirm_deletion.html",
+            form=form
+        )
 
         return flask.Response(template_return, mimetype='text/html')
 
@@ -146,8 +204,14 @@ class DeleteTagResource(Resource):
         Returns:
 
         """
-        utils.debug("** {} - INI\t{} **\n".format(inspect.stack()[0][3],
-                                                  time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+        utils.debug(
+            "** {} - INI\t{} **\n".format(
+                inspect.stack()[0][3],
+                time.strftime(
+                    "%Y-%m-%d %H:%M:%S",
+                    time.gmtime())
+            )
+        )
         table_object = Tag.query.get_or_404(int_id)
 
         try:
@@ -158,13 +222,18 @@ class DeleteTagResource(Resource):
             database.session.rollback()  # pylint:disable=E1101
             form = TagForm(obj=table_object)
 
-            flask.flash("You can't delete '{}' tag since it is assigned to an item.".format(table_object.name))
-            template_return = flask.Response(flask.render_template("confirm_deletion.html", form=form),
-                                             mimetype='text/html')
+            flask.flash(
+                f"You can't delete '{table_object.name}' tag "
+                f"since it is assigned to an item."
+            )
+            template_return = flask.Response(
+                flask.render_template("confirm_deletion.html", form=form),
+                mimetype='text/html')
 
         else:
             flask.flash("Deleted '{}' tag".format(table_object.name))
             template_return = flask.redirect(
-                flask.url_for('handle_tags', username=flask_login.current_user.username))
+                flask.url_for('handle_tags',
+                              username=flask_login.current_user.username))
 
         return template_return

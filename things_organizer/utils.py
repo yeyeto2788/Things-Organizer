@@ -10,7 +10,9 @@ import re
 
 from zipfile import ZipFile
 
-DATA_PATH = os.path.join(os.path.abspath(os.path.dirname(os.path.dirname(__file__))), 'data')
+DATA_PATH = os.path.join(
+    os.path.abspath(os.path.dirname(os.path.dirname(__file__))), 'data'
+)
 DB_PATH = os.path.abspath(os.path.join(DATA_PATH, 'db'))
 REPORT_PATH = os.path.abspath(os.path.join(DATA_PATH, 'reports'))
 LABEL_PATH = os.path.abspath(os.path.join(DATA_PATH, 'labels'))
@@ -51,9 +53,11 @@ def sort_alphanumeric_list(lst_unsorted):
 
 def str_to_bln(str_value):
     """
-    Convert a given string based on ('y', 'yes', 't', 'true', 'on', '1') into a boolean.
+    Convert a given string based on ('y', 'yes', 't', 'true', 'on', '1') into
+    a boolean.
 
-    An `ValueError` might be raised if not possible to convert string to boolean.
+    An `ValueError` might be raised if not possible to convert string to
+    boolean.
 
     Args:
         str_value: Value to be converted
@@ -67,10 +71,14 @@ def str_to_bln(str_value):
 
     if val in ('y', 'yes', 't', 'true', 'on', '1'):
         bln_return = True
+
     elif val in ('n', 'no', 'f', 'false', 'off', '0'):
         bln_return = False
+
     else:
-        raise ValueError("{} is not compatible to convert into boolean.".format(str_value))
+        raise ValueError(
+            "{} is not compatible to convert into boolean.".format(str_value)
+        )
     return bln_return
 
 
@@ -105,7 +113,9 @@ def zip_dir(zip_directory, zip_name, str_directory, bln_delete=0):
         with ZipFile(zip_filename, 'w') as zip_file:
             for file in file_paths:
                 folder_name = os.path.basename(os.path.dirname(file))
-                zip_location = os.path.join(folder_name, os.path.basename(file))
+                zip_location = os.path.join(
+                    folder_name, os.path.basename(file)
+                )
                 zip_file.write(file, zip_location)
         zip_file.close()
 

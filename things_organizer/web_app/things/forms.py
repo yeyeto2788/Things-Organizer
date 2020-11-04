@@ -11,14 +11,27 @@ class ThingForm(FlaskForm):
 
     name = StringField('Name')
     description = StringField('Description (Optional)')
-    category = SelectField(label="Select a category", coerce=int)
-    storage = SelectField(label="Select a storage", coerce=int)
-    quantity = IntegerField(label="Please type how many items")
+    category = SelectField(
+        label="Select a category",
+        coerce=int
+    )
+    storage = SelectField(
+        label="Select a storage",
+        coerce=int
+    )
+    quantity = IntegerField(
+        label="Please type how many items"
+    )
     unit = StringField('Unit for the item')
     tags = StringField(
         'Tags',
-        validators=[Regexp(r'^[a-zA-Z0-9, ]*$',
-                           message="Tags can only contain letters and numbers")])
+        validators=[
+            Regexp(
+                r'^[a-zA-Z0-9, ]*$',
+                message="Tags can only contain letters and numbers"
+            )
+        ]
+    )
 
     def validate(self):
         """

@@ -12,29 +12,58 @@ class Thing(database.Model):
 
     """
 
-    id = database.Column(database.Integer, primary_key=True)
-    name = database.Column(database.Text, nullable=False)
-    description = database.Column(database.String(300))
-    unit = database.Column(database.String(100))
-    quantity = database.Column(database.Integer)
-    user_id = database.Column(database.Integer,
-                              database.ForeignKey('user.id'),
-                              nullable=False)
-    category_id = database.Column(database.Integer,
-                                  database.ForeignKey('category.id'),
-                                  nullable=False)
-    storage_id = database.Column(database.Integer,
-                                 database.ForeignKey('storage.id'),
-                                 nullable=False)
-    date = database.Column(database.DateTime,
-                           default=datetime.utcnow)
-    _tags = database.relationship('Tag',
-                                  secondary=tags,
-                                  backref=database.backref('things', lazy='dynamic'))
-    category = database.relationship('Category',
-                                     backref=database.backref('things', lazy='dynamic'))
-    storage = database.relationship('Storage',
-                                    backref=database.backref('things', lazy='dynamic'))
+    id = database.Column(
+        database.Integer,
+        primary_key=True
+    )
+    name = database.Column(
+        database.Text,
+        nullable=False
+    )
+    description = database.Column(
+        database.String(300)
+    )
+    unit = database.Column(
+        database.String(100)
+    )
+    quantity = database.Column(
+        database.Integer
+    )
+    user_id = database.Column(
+        database.Integer,
+        database.ForeignKey('user.id'),
+        nullable=False
+    )
+    category_id = database.Column(
+        database.Integer,
+        database.ForeignKey('category.id'),
+        nullable=False
+    )
+    storage_id = database.Column(
+        database.Integer,
+        database.ForeignKey('storage.id'),
+        nullable=False
+    )
+    date = database.Column(
+        database.DateTime,
+        default=datetime.utcnow
+    )
+    _tags = database.relationship(
+        'Tag',
+        secondary=tags,
+        backref=database.backref('things',
+                                 lazy='dynamic')
+    )
+    category = database.relationship(
+        'Category',
+        backref=database.backref('things',
+                                 lazy='dynamic')
+    )
+    storage = database.relationship(
+        'Storage',
+        backref=database.backref('things',
+                                 lazy='dynamic')
+    )
 
     @staticmethod
     def newest(num):
@@ -62,15 +91,16 @@ class Thing(database.Model):
     @tags.setter
     def tags(self, string):
         """
-        Setter for thing tags splitting the text given as argument to generate a new tag
-        for each slice on the string.
+        Setter for thing tags splitting the text given as argument to
+        generate a new tag for each slice on the string.
 
         Args:
             string: string to be split.
 
         """
         if string:
-            self._tags = [Tag.get_or_create(name) for name in string.split(',')]
+            self._tags = [Tag.get_or_create(name) for name in
+                          string.split(',')]
 
     def __repr__(self):
         return "<Thing %r>" % self.name

@@ -3,6 +3,7 @@ from flask_restful import Resource
 
 
 class AboutResource(Resource):
+
     def get(self):
         """
         Shows information about the project.

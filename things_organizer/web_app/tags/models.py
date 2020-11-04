@@ -1,9 +1,16 @@
 from things_organizer.extensions import database
 
-tags = database.Table('thing_tag',
-                      database.Column('tag_id', database.Integer, database.ForeignKey('tag.id')),
-                      database.Column('thing_id', database.Integer, database.ForeignKey('thing.id'))
-                      )
+tags = database.Table(
+    'thing_tag',
+    database.Column(
+        'tag_id', database.Integer,
+        database.ForeignKey('tag.id')
+    ),
+    database.Column(
+        'thing_id', database.Integer,
+        database.ForeignKey('thing.id')
+    )
+)
 
 
 class Tag(database.Model):
@@ -12,8 +19,16 @@ class Tag(database.Model):
 
     """
 
-    id = database.Column(database.Integer, primary_key=True)
-    name = database.Column(database.String(25), nullable=False, unique=True, index=True)
+    id = database.Column(
+        database.Integer,
+        primary_key=True
+    )
+    name = database.Column(
+        database.String(25),
+        nullable=False,
+        unique=True,
+        index=True
+    )
 
     @staticmethod
     def get_or_create(name):
@@ -30,6 +45,7 @@ class Tag(database.Model):
 
         try:
             return Tag.query.filter_by(name=name).one()
+
         except Exception:
             return Tag(name=name)
 

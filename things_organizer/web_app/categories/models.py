@@ -7,11 +7,20 @@ class Category(database.Model):
 
     """
 
-    id = database.Column(database.Integer, primary_key=True)
-    name = database.Column(database.String(50), unique=True, nullable=False)
-    user_id = database.Column(database.Integer,
-                              database.ForeignKey('user.id'),
-                              nullable=False)
+    id = database.Column(
+        database.Integer,
+        primary_key=True
+    )
+    name = database.Column(
+        database.String(50),
+        unique=True,
+        nullable=False
+    )
+    user_id = database.Column(
+        database.Integer,
+        database.ForeignKey('user.id'),
+        nullable=False
+    )
 
     def __repr__(self):
         return '<Category %r>' % self.name

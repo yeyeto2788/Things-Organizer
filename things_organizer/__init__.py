@@ -6,7 +6,8 @@ it is simple to use.
 
 It also have an API that is enable for IOT purposes.
 
-**Note:** we are using Semantic Version, for more information go to http://semver.org/
+**Note:** we are using Semantic Version, for more information go to
+http://semver.org/
 """
 
 VERSION_INFO = {
