@@ -6,6 +6,7 @@ import os
 from waitress import serve
 
 from things_organizer.app import create_app
+from things_organizer.utils import str_to_bln
 
 
 def run(debug: bool = False):
@@ -18,7 +19,7 @@ def run(debug: bool = False):
     """
     app = create_app(debug=debug)
 
-    if debug is False:
+    if debug is True:
         app.run(
             host='127.0.0.1',
             port=os.getenv('APP_PORT', 8080)
@@ -26,21 +27,17 @@ def run(debug: bool = False):
     else:
         serve(
             app,
+            host='0.0.0.0',
             port=os.getenv('APP_PORT', 8080),
             threads=10,
         )
 
 
 if __name__ == '__main__':
-    debug_string = os.getenv("DEBUG")
-    positive_options = [
-        'true', '1', 't', 'y',
-        'yes', 'yeah', 'yup', 'certainly',
-        'uh-huh'
-    ]
+    debug_string = os.getenv("DEBUG", "false")
     debug = False
 
-    if debug_string.lower() in positive_options:
+    if str_to_bln(debug_string):
         debug = True
 
     run(debug)
