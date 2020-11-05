@@ -2,8 +2,8 @@ from logging.config import dictConfig
 
 import flask_restful
 from flask_login import LoginManager
-from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy
 
 database = SQLAlchemy()
 login_manager = LoginManager()

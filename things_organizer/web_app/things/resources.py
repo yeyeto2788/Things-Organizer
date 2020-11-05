@@ -186,15 +186,6 @@ class ThingResource(Resource):
             template_return = flask.redirect(flask.url_for('handle_login'))
             flask.session['next_url'] = flask.request.path
 
-        utils.debug(
-            "** {} - END\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
-
         return flask.Response(template_return, mimetype='text/html')
 
 

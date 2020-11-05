@@ -10,30 +10,6 @@ import re
 
 from zipfile import ZipFile
 
-DATA_PATH = os.path.join(
-    os.path.abspath(os.path.dirname(os.path.dirname(__file__))),
-    'data'
-)
-DB_PATH = os.path.abspath(os.path.join(DATA_PATH, 'db'))
-REPORT_PATH = os.path.abspath(os.path.join(DATA_PATH, 'reports'))
-LABEL_PATH = os.path.abspath(os.path.join(DATA_PATH, 'labels'))
-
-
-def debug(*args, **kargs):
-    """
-    wrapper to print values on the terminal in case debug mode is enable.
-
-    Args:
-        *args: Arguments for the print function.
-        **kargs: Keyword arguments to the print function.
-
-    """
-    # TODO: change value of bln_print to take it from a config file.
-    bln_print = 1
-
-    if bln_print:
-        print(*args, **kargs)
-
 
 def sort_alphanumeric_list(lst_unsorted):
     """

@@ -77,15 +77,6 @@ class CategoryResource(Resource):
             form=form
         )
 
-        utils.debug(
-            "** {} - END\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
-
         return flask.Response(template_return, mimetype='text/html')
 
 

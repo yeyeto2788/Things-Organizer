@@ -14,7 +14,7 @@ import os
 
 from prettytable import PrettyTable
 
-from things_organizer import utils
+import things_organizer.constants
 from things_organizer.reports.base_report import BaseReport
 
 
@@ -54,7 +54,8 @@ class ReportTXT(BaseReport):
             file_name: Name for the `.txt` file.
 
         """
-        self.file_directory = os.path.join(utils.REPORT_PATH, 'TXT')
+        self.file_directory = os.path.join(
+            things_organizer.constants.REPORT_PATH, 'TXT')
         self.file_name = '{}.txt'.format(file_name)
         self.user_id = int_user
 

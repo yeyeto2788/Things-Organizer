@@ -1,13 +1,13 @@
 import os
 import sys
 
-from things_organizer import utils
+import things_organizer.constants
 
 SQLALCHEMY_TRACK_MODIFICATIONS = True
 SECRET_KEY = os.urandom(16)
 
 DATABASE_PATH = os.path.abspath(
-    os.path.join(utils.DB_PATH, "things_organizer.db")
+    os.path.join(things_organizer.constants.DB_PATH, "things_organizer.db")
 )
 
 if sys.platform == 'linux':

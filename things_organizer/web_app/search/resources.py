@@ -1,6 +1,3 @@
-import inspect
-import time
-
 import flask
 import flask_login
 from flask_restful import Resource
@@ -90,12 +87,4 @@ class SearchResource(Resource):
             flask_template = flask.redirect(flask.url_for('handle_login'))
             flask.session['next_url'] = flask.request.path
 
-        utils.debug(
-            "** {} - END\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
         return flask.Response(flask_template, mimetype='text/html')

@@ -13,7 +13,7 @@ Once report is generate it should return the directory of the file.
 import csv
 import os
 
-from things_organizer import utils
+import things_organizer.constants
 from things_organizer.reports.base_report import BaseReport
 
 
@@ -54,7 +54,8 @@ class ReportCSV(BaseReport):
 
         """
 
-        self.file_directory = os.path.join(utils.REPORT_PATH, 'CSV')
+        self.file_directory = os.path.join(
+            things_organizer.constants.REPORT_PATH, 'CSV')
         self.file_name = '{}.csv'.format(file_name)
         self.user_id = int_user
 

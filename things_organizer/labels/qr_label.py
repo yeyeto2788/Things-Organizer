@@ -8,7 +8,7 @@ import os
 import qrcode
 from PIL import Image, ImageDraw
 
-from things_organizer import utils
+import things_organizer.constants
 
 
 class QRLabel:
@@ -48,7 +48,8 @@ class QRLabel:
         self.storage_name = s_name
         self.storage_location = s_location
         self.file_name = '{}.png'.format(str_name)
-        self.file_directory = os.path.realpath(utils.LABEL_PATH)
+        self.file_directory = os.path.realpath(
+            things_organizer.constants.LABEL_PATH)
 
         if not os.path.exists(self.file_directory):
             os.makedirs(self.file_directory)
