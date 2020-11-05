@@ -1,5 +1,4 @@
-# Ubuntu 18.04
-FROM ubuntu:18.04
+FROM python:3.7.9-buster
 
 LABEL maintainer="juanernestobiondi@gmail.com"
 
@@ -8,43 +7,19 @@ LABEL maintainer="juanernestobiondi@gmail.com"
 # ENV http_proxy "http://<USER>:<PASSWORD>@<IP>:<PORT>"
 # ENV https_proxy "http://<USER>:<PASSWORD>@<IP>:<PORT>"
 
-# Update the system
-RUN apt-get update && apt-get upgrade -y
+# Copy application files.
+COPY . /app
 
-# Install SQLite3
-RUN apt-get install --yes --force-yes sqlite3
+# Setup working directory.
+WORKDIR /app
 
-# Install Python related
-RUN apt-get install -y git nano python3 python3-dev python3-pip
+# Update the system and install needed packages
+RUN apt-get update && \
+   apt-get upgrade -y && \
+   apt-get install --yes git && \
+   pip3 install -r ./requirements.txt
 
-# Copy files over the container
-RUN git clone https://github.com/yeyeto2788/Things-Organizer.git
-
-# Make all files writables
-RUN chmod -R 777 /Things-Organizer
-
-# Move into clone repository
-RUN cd /Things-Organizer/things_organizer
-
-# Add database and db directory
-RUN mkdir /Things-Organizer/things_organizer/data
-RUN mkdir /Things-Organizer/things_organizer/data/db
-RUN touch /Things-Organizer/things_organizer/data/db/things_organizer.db
-RUN chmod -R 755 /Things-Organizer/things_organizer/data
-
-# Return to base dir
-RUN cd  /Things-Organizer
-
-# Set working directory
-WORKDIR /Things-Organizer
-
-# Install pip requirements
-# If you're behind proxy uncomment and edit line below.
-# RUN pip3 install --proxy http://<IP>:<PORT> -r requirements.txt
-# Otherwise leave it as is
-RUN pip3 install -r requirements.txt
-
-# unblock port 8080 for the Flask app to run on
+# Expose port 8080 for the Flask app to run on
 EXPOSE 8080
 
 # Delete all the apt list files since they're big and get stale quickly
@@ -54,6 +29,4 @@ RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 ENV LANG en
 
 # Execute the application
-CMD ["python3", "run_app.py", "create_db"]
-CMD ["python3", "run_app.py", "db"]
-CMD ["python3", "run_app.py", "run_production"]
+CMD ["python3", "manage.py", "runserver"]

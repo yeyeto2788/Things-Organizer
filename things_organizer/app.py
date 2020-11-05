@@ -1,10 +1,12 @@
+import logging
 import os
 
-from flask import Flask
-from flask_migrate import Migrate
+from flask import Flask, request
 
 from things_organizer import utils
-from things_organizer.extensions import database, login_manager, api
+from things_organizer.extensions import (
+    database, login_manager, api, migrate
+)
 from things_organizer.login_utils import load_user
 from things_organizer.web_app.about.resources import AboutResource
 from things_organizer.web_app.auth.resources import (
@@ -29,31 +31,7 @@ from things_organizer.web_app.things.resources import (
     DeleteThingResource
 )
 
-
-def create_app(debug: bool) -> Flask:
-    """
-    Function that creates a Flask application. App configuration is set here.
-
-    Args:
-        debug: debug mode enabled or not.
-
-    Returns:
-        app: a Flask app already configured to run.
-    """
-    app = Flask(__name__, static_url_path="/static")
-    app.config.from_pyfile("config.py")
-
-    if debug:
-        app.config["DEBUG"] = True
-
-    with app.app_context():
-        create_dirs()
-        configure_db(app)
-        configure_migrations(app)
-        configure_api(app)
-        configure_login(app)
-
-    return app
+logger = logging.getLogger()
 
 
 def create_dirs():
@@ -87,7 +65,8 @@ def configure_migrations(app: Flask):
         'migrations'
     )
     print(migrations_dir)
-    Migrate(app, database, compare_type=True, directory=migrations_dir)
+    migrate.init_app(app, database, compare_type=True,
+                     directory=migrations_dir)
 
 
 def configure_login(app: Flask):
@@ -202,3 +181,30 @@ def configure_api(app: Flask):
     )
     # Initialize api
     api.init_app(app)
+
+
+def log_request():
+    """Simple logging function so all hits are recorded."""
+    logger.info("{}".format(str(request.__dict__)))
+
+
+def create_app() -> Flask:
+    """
+    Function that creates a Flask application. App configuration is set here.
+
+    Returns:
+        app: a Flask app already configured to run.
+    """
+    app = Flask(__name__, static_url_path="/static")
+    app.config.from_pyfile("config.py")
+
+    with app.app_context():
+        create_dirs()
+        configure_db(app)
+        configure_migrations(app)
+        configure_api(app)
+        configure_login(app)
+
+        app.before_request(log_request)
+
+    return app

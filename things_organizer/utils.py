@@ -11,7 +11,8 @@ import re
 from zipfile import ZipFile
 
 DATA_PATH = os.path.join(
-    os.path.abspath(os.path.dirname(os.path.dirname(__file__))), 'data'
+    os.path.abspath(os.path.dirname(os.path.dirname(__file__))),
+    'data'
 )
 DB_PATH = os.path.abspath(os.path.join(DATA_PATH, 'db'))
 REPORT_PATH = os.path.abspath(os.path.join(DATA_PATH, 'reports'))
@@ -69,7 +70,7 @@ def str_to_bln(str_value):
 
     val = str_value.lower()
 
-    if val in ('y', 'yes', 't', 'true', 'on', '1'):
+    if val in ('true', '1', 't', 'y', 'yes', 'on', 'yeah', 'yup', 'certainly'):
         bln_return = True
 
     elif val in ('n', 'no', 'f', 'false', 'off', '0'):
@@ -79,6 +80,7 @@ def str_to_bln(str_value):
         raise ValueError(
             "{} is not compatible to convert into boolean.".format(str_value)
         )
+
     return bln_return
 
 
