@@ -2,7 +2,7 @@
 *.pyc
 
 # Virtual environments:
-/venv/*
+venv/*
 
 # Pycharm related:
 .idea/
@@ -17,14 +17,9 @@ unittests.xml
 # PyLint related files:
 ./pylint.txt
 
-# Scripts with sensitive info
-scripts/generate_doc.py
-scripts/testing_gendoc.py
+# Databases and execution files not needed:
+data/*
 
-# Databases:
-./things_organizer/data/*.db
-
-# Execution files not needed:
-./things_organizer/data/reports/CSV/*.csv
-./things_organizer/data/reports/TXT/*.txt
-./things_organizer/data/reports/labels/*.*
+# Log files
+*.log
+*.log.?
