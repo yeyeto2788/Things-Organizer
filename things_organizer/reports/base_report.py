@@ -10,7 +10,8 @@ class BaseReport:
 
     def get_things(self):
         """
-        Make a representation of the database to `.txt` file with all things in database.
+        Make a representation of the database to `.txt` file with all things
+        in database.
 
         Returns:
             Path of the file created.
@@ -51,8 +52,8 @@ class BaseReport:
 
     def get_things_by_category(self, int_id):
         """
-        Make a representation of the database to `.txt` file with all things in database filtered
-        by category.
+        Make a representation of the database to `.txt` file with all things
+        in database filtered by category.
 
         Args:
             int_id: ID of the category to filter by.
@@ -63,8 +64,10 @@ class BaseReport:
         """
         category = self.get_category(int_id)
 
-        things = Thing.query.filter_by(user_id=self.user_id,
-                                       category=category).all()
+        things = Thing.query.filter_by(
+            user_id=self.user_id,
+            category=category
+        ).all()
         column_names = [str(name).split('.')[1] for name in
                         Thing.__table__.columns]
         column_names.remove('category_id')
@@ -73,8 +76,8 @@ class BaseReport:
 
     def get_things_by_storage(self, int_id):
         """
-        Make a representation of the database to `.txt` file with all things in database filtered
-        by storage.
+        Make a representation of the database to `.txt` file with all things
+        in database filtered by storage.
 
         Args:
             int_id: ID of the storage to filter by.

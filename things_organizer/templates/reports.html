@@ -13,6 +13,8 @@ Things Organizer - Print report
             click on the <code>Generate</code> button.</h3>
     </div>
     <div>
+        {% if form is not none %}
+
         <form action="" method="post">
             {{ form.hidden_tag() }}
             <div class="form-group">
@@ -39,7 +41,15 @@ Things Organizer - Print report
                 </div>
             </div>
         </form>
+        {% else %}
+        <strong>
+            <code>
+                <h3>Seems like there are not things on the system.</h3>
+            </code>
+        </strong>
+        {% endif %}
     </div>
+
 </div>
 <script type="text/javascript">
         document.querySelector('#category_div').style.display = 'none';
@@ -66,6 +76,7 @@ Things Organizer - Print report
             document.querySelector('#storage_div').style.display = 'none';
           }
         }, false);
+
 
 </script>
 {% endif %}
