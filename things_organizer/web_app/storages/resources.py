@@ -24,15 +24,6 @@ class StorageResource(Resource):
 
         """
 
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
-
         form = StorageForm()
         storages = Storage.query.filter_by(
             user_id=flask_login.current_user.id).all()
@@ -65,15 +56,6 @@ class StorageResource(Resource):
             Flask template based on the request method.
 
         """
-
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
 
         form = StorageForm()
         user_id = flask_login.current_user.id
@@ -128,14 +110,6 @@ class EditStorageResource(Resource):
         Returns:
 
         """
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
 
         table_object = Storage.query.get_or_404(int_id)
         form = StorageForm(obj=table_object)
@@ -156,14 +130,7 @@ class EditStorageResource(Resource):
         Returns:
 
         """
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
+
         table_object = Storage.query.get_or_404(int_id)
         form = StorageForm(obj=table_object)
 
@@ -188,14 +155,6 @@ class DeleteStorageResource(Resource):
         Returns:
 
         """
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
 
         table_object = Storage.query.get_or_404(int_id)
         form = StorageForm(obj=table_object)
@@ -219,14 +178,7 @@ class DeleteStorageResource(Resource):
         Returns:
 
         """
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
+
         table_object = Storage.query.get_or_404(int_id)
 
         try:

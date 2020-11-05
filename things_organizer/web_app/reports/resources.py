@@ -23,14 +23,6 @@ class ReportResource(Resource):
             Flask template '_blank' modified based on the request.
 
         """
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
 
         form = ReportForm()
         current_user = flask_login.current_user.id
@@ -71,14 +63,6 @@ class ReportResource(Resource):
             Flask template '_blank' modified based on the request.
 
         """
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
 
         form = ReportForm()
         current_user = flask_login.current_user.id

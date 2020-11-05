@@ -17,14 +17,7 @@ class HomeResource(Resource):
             Template of the different tools hosted.
 
         """
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
+
         utils.debug("Rendering 'Index' page.")
 
         template_return = flask.render_template('index.html')

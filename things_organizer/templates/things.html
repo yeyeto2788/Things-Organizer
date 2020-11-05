@@ -1,89 +1,90 @@
 {% extends "_base.html" %}
 
 {% block title %}
-  Things Organizer - Things
+Things Organizer - Things
 {% endblock %}
 
 {% block content %}
-  <h3 class="lead pb-3 pt-3">All items available on the application are shown below.</h3>
-  <div class="card mb-3">
+<h3 class="lead pb-3 pt-3">All items available on the application are shown below.</h3>
+<div class="card mb-3">
     <div class="card-header">
-      <i class="fas fa-table"></i>
-      Things table</div>
+        <i class="fas fa-table"></i>
+        Things table
+    </div>
     <div class="card-body">
-      {% if table_data is none %}
-        {% if current_user.is_authenticated  and table_data is none %}
-            <h2 align="center">Seems like table does not have data</h2>
-            <p align="center">Try <a href="{{ url_for('handle_add_thing') }}">adding</a> items into the table.</p>
+        {% if table_data is none %}
+        {% if current_user.is_authenticated and table_data is none %}
+        <h2 align="center">Seems like table does not have data</h2>
+        <p align="center">Try <a href="{{ url_for('handle_add_thing') }}">adding</a> items into the table.</p>
         {% else %}
-            <h2 align="center">Seems like you're not logged in.</h2>
-            <p align="center">
-                <a href="{{ url_for('handle_register') }}">Register</a> or
-                <a href="{{ url_for('handle_login') }}">Login</a>.
-            </p>
+        <h2 align="center">Seems like you're not logged in.</h2>
+        <p align="center">
+            <a href="{{ url_for('handle_register') }}">Register</a> or
+            <a href="{{ url_for('handle_login') }}">Login</a>.
+        </p>
         {% endif %}
-      {% else %}
+        {% else %}
         <div class="table-responsive">
-          <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Unit</th>
-                <th>Quantity</th>
-                <th>Category</th>
-                <th>Storage</th>
-                <th>Location</th>
-                <th>Tags</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tfoot>
-              <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Unit</th>
-                <th>Quantity</th>
-                <th>Category</th>
-                <th>Storage</th>
-                <th>Location</th>
-                <th>Tags</th>
-                <th>Actions</th>
-              </tr>
-            </tfoot>
-            <tbody>
-            {% for row in table_data %}
-              <tr>
-                <td>{{ row.name }}</td>
-                <td>{{ row.description }}</td>
-                <td>{{ row.unit }}</td>
-                <td>{{ row.quantity }}</td>
-                <td>{{ row.category.name }}</td>
-                <td>{{ row.storage.name }}</td>
-                <td>{{ row.storage.location }}</td>
-                <td>
-                  {% if row.tags %}
-                    {% for tag in row._tags %}
-                    <span class="badge badge-pill badge-primary">{{ tag.name }}</span>
-                    <!--<a href="#"></a>-->
-                    {% endfor %}
-                  {% else %}
-                    No tags.
-                  {% endif %}
-                </td>
-                <!--Edit and delete link icons-->
-                <td>
-                  <a href="/edit/thing/{{ row.id }}"><i class="fas fa-edit"></i></a>
-                  <a href="/delete/thing/{{ row.id }}"><i class="fas fa-trash" style="color:red"></i></a>
-                  <a href="/label/{{ row.id }}"><i class="fas fa-tags" style="color:black"></i></a>
-                </td>
-              </tr>
-            {% endfor %}
-          </tbody>
-          </table>
+            <table cellspacing="0" class="table table-bordered" id="dataTable" width="100%">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Unit</th>
+                    <th>Quantity</th>
+                    <th>Category</th>
+                    <th>Storage</th>
+                    <th>Location</th>
+                    <th>Tags</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Unit</th>
+                    <th>Quantity</th>
+                    <th>Category</th>
+                    <th>Storage</th>
+                    <th>Location</th>
+                    <th>Tags</th>
+                    <th>Actions</th>
+                </tr>
+                </tfoot>
+                <tbody>
+                {% for row in table_data %}
+                <tr>
+                    <td>{{ row.name }}</td>
+                    <td>{{ row.description }}</td>
+                    <td>{{ row.unit }}</td>
+                    <td>{{ row.quantity }}</td>
+                    <td>{{ row.category.name }}</td>
+                    <td>{{ row.storage.name }}</td>
+                    <td>{{ row.storage.location }}</td>
+                    <td>
+                        {% if row.tags %}
+                        {% for tag in row._tags %}
+                        <span class="badge badge-pill badge-primary">{{ tag.name }}</span>
+                        <!--<a href="#"></a>-->
+                        {% endfor %}
+                        {% else %}
+                        No tags.
+                        {% endif %}
+                    </td>
+                    <!--Edit and delete link icons-->
+                    <td>
+                        <a href="/edit/thing/{{ row.id }}"><i class="fas fa-edit"></i></a>
+                        <a href="/delete/thing/{{ row.id }}"><i class="fas fa-trash" style="color:red"></i></a>
+                        <a href="/label/{{ row.id }}"><i class="fas fa-tags" style="color:black"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
-      {% endif %}
+        {% endif %}
     </div>
     <!--<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>-->
-  </div>
+</div>
 {% endblock %}

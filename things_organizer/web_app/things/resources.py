@@ -17,14 +17,7 @@ class AddThingResource(Resource):
 
     @flask_login.login_required
     def get(self):
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
+        """Show the `add_thing` template on the site."""
 
         form = ThingForm()
         current_user = flask_login.current_user.id
@@ -38,32 +31,17 @@ class AddThingResource(Resource):
             form=form
         )
 
-        utils.debug(
-            "** {} - END\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
-            )
-        )
-
         return flask.Response(template_return, mimetype='text/html')
 
     @flask_login.login_required
     def post(self):
         """
-            This will let the user add a new thing on the db.
+        This will let the user add a new thing on the db.
 
-            Returns:
-                Flask template based on the request method.
+        Returns:
+            Flask template based on the request method.
 
-            """
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
+        """
 
         form = ThingForm()
         current_user = flask_login.current_user.id
@@ -103,13 +81,6 @@ class AddThingResource(Resource):
                 'add_thing.html',
                 form=form
             )
-
-        utils.debug(
-            "** {} - END\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
-            )
-        )
 
         return flask.Response(template_return, mimetype='text/html')
 
@@ -196,15 +167,6 @@ class ThingResource(Resource):
 
         """
 
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
-
         if flask_login.current_user.is_authenticated:
             utils.debug("Redirecting to 'things' page.")
 
@@ -248,14 +210,6 @@ class DeleteThingResource(Resource):
         Returns:
 
         """
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
 
         table_object = Thing.query.get_or_404(int_id)
         form = ThingForm(obj=table_object)

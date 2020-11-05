@@ -6,9 +6,9 @@ import flask_login
 from flask_restful import Resource
 
 from things_organizer import utils
+from things_organizer.extensions import database
 from things_organizer.web_app.auth.forms import LoginForm, SignupForm
 from things_organizer.web_app.users.models import User
-from things_organizer.extensions import database
 
 
 class LoginResource(Resource):
@@ -21,14 +21,6 @@ class LoginResource(Resource):
             Flask template based on the request method.
 
         """
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
 
         form = LoginForm()
         flask_template = flask.render_template("login.html", form=form)
@@ -100,15 +92,6 @@ class RegisterResource(Resource):
 
         """
 
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
-
         form = SignupForm()
         flask_template = flask.render_template("register.html", form=form)
 
@@ -173,14 +156,6 @@ class LogoutResource(Resource):
 
         """
 
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
         # Remove the username from the session if it's there
         flask_login.logout_user()
 

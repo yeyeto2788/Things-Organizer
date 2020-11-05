@@ -7,9 +7,9 @@ from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 
 from things_organizer import utils
+from things_organizer.extensions import database
 from things_organizer.web_app.categories.forms import CategoryForm
 from things_organizer.web_app.categories.models import Category
-from things_organizer.extensions import database
 
 
 class CategoryResource(Resource):
@@ -23,15 +23,6 @@ class CategoryResource(Resource):
             Flask template based on the request method.
 
         """
-
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
 
         form = CategoryForm()
         categories = Category.query.filter_by(
@@ -63,14 +54,6 @@ class CategoryResource(Resource):
         Returns:
 
         """
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
 
         form = CategoryForm()
         user_id = flask_login.current_user.id
@@ -145,14 +128,7 @@ class EditCategoryResource(Resource):
         Returns:
 
         """
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
+
         table_object = Category.query.get_or_404(int_id)
         form = CategoryForm(obj=table_object)
 
@@ -176,14 +152,6 @@ class DeleteCategoryResource(Resource):
         Returns:
 
         """
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
 
         table_object = Category.query.get_or_404(int_id)
         form = CategoryForm(obj=table_object)
@@ -210,14 +178,7 @@ class DeleteCategoryResource(Resource):
         Returns:
 
         """
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
+
         table_object = Category.query.get_or_404(int_id)
 
         try:

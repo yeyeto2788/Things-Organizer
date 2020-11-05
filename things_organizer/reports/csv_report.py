@@ -64,7 +64,8 @@ class ReportCSV(BaseReport):
     def generate_by_category(self, category_id):
         column_names, things = self.get_things_by_category(category_id)
         lst_remove = ["category_id"]
-        things_refined = self._remove_data([row.__dict__ for row in things], lst_remove)
+        things_refined = self._remove_data([row.__dict__ for row in things],
+                                           lst_remove)
         self.write_file(column_names, things_refined)
 
         file_dir = os.path.join(self.file_directory, self.file_name)
@@ -74,7 +75,8 @@ class ReportCSV(BaseReport):
     def generate_by_storage(self, storage_id):
         column_names, things = self.get_things_by_category(storage_id)
         lst_remove = ["storage_id"]
-        things_refined = self._remove_data([row.__dict__ for row in things], lst_remove)
+        things_refined = self._remove_data([row.__dict__ for row in things],
+                                           lst_remove)
         self.write_file(column_names, things_refined)
 
         file_dir = os.path.join(self.file_directory, self.file_name)
@@ -84,7 +86,8 @@ class ReportCSV(BaseReport):
     def generate_all(self):
         column_names, things = self.get_things()
         lst_remove = ["user_id"]
-        things_refined = self._remove_data([row.__dict__ for row in things], lst_remove)
+        things_refined = self._remove_data([row.__dict__ for row in things],
+                                           lst_remove)
         self.write_file(column_names, things_refined)
         file_dir = os.path.join(self.file_directory, self.file_name)
 

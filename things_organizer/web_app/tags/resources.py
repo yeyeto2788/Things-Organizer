@@ -24,15 +24,6 @@ class TagResource(Resource):
 
         """
 
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
-
         form = TagForm()
         tags = Tag.query.filter().all()
 
@@ -62,15 +53,6 @@ class TagResource(Resource):
             flask template.
 
         """
-
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
 
         form = TagForm()
 
@@ -115,14 +97,6 @@ class EditTagResource(Resource):
         Returns:
 
         """
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
 
         table_object = Tag.query.get_or_404(int_id)
         form = TagForm(obj=table_object)
@@ -140,14 +114,7 @@ class EditTagResource(Resource):
         Returns:
 
         """
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
+
         table_object = Tag.query.get_or_404(int_id)
         form = TagForm(obj=table_object)
 
@@ -172,14 +139,6 @@ class DeleteTagResource(Resource):
         Returns:
 
         """
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
 
         table_object = Tag.query.get_or_404(int_id)
         form = TagForm(obj=table_object)
@@ -204,14 +163,7 @@ class DeleteTagResource(Resource):
         Returns:
 
         """
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
+
         table_object = Tag.query.get_or_404(int_id)
 
         try:

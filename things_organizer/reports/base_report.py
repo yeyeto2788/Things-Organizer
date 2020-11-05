@@ -18,7 +18,8 @@ class BaseReport:
         """
 
         things = Thing.query.filter_by(user_id=self.user_id).all()
-        column_names = [str(name).split('.')[1] for name in Thing.__table__.columns]
+        column_names = [str(name).split('.')[1] for name in
+                        Thing.__table__.columns]
 
         return column_names, things
 
@@ -62,8 +63,10 @@ class BaseReport:
         """
         category = self.get_category(int_id)
 
-        things = Thing.query.filter_by(user_id=self.user_id, category=category).all()
-        column_names = [str(name).split('.')[1] for name in Thing.__table__.columns]
+        things = Thing.query.filter_by(user_id=self.user_id,
+                                       category=category).all()
+        column_names = [str(name).split('.')[1] for name in
+                        Thing.__table__.columns]
         column_names.remove('category_id')
 
         return column_names, things
@@ -83,8 +86,10 @@ class BaseReport:
 
         storage = self.get_storage(int_id)
 
-        things = Thing.query.filter_by(user_id=self.user_id, storage=storage).all()
-        column_names = [str(name).split('.')[1] for name in Thing.__table__.columns]
+        things = Thing.query.filter_by(user_id=self.user_id,
+                                       storage=storage).all()
+        column_names = [str(name).split('.')[1] for name in
+                        Thing.__table__.columns]
         column_names.remove('storage_id')
 
         return column_names, things

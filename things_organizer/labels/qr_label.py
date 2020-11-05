@@ -6,7 +6,6 @@ Module to generate QR labels with the data of a given Thing in the database.
 import os
 
 import qrcode
-
 from PIL import Image, ImageDraw
 
 from things_organizer import utils
@@ -56,7 +55,8 @@ class QRLabel:
 
     def generate_label(self):
         """
-        Method to generate the label from class properties using the qr-code module.
+        Generate the label from class properties using
+        the qr-code module.
 
         """
 
@@ -69,10 +69,12 @@ class QRLabel:
 
         final_file_name = os.path.join(self.file_directory, self.file_name)
 
-        qr_img = qrcode.QRCode(version=1,
-                               error_correction=qrcode.constants.ERROR_CORRECT_L,
-                               box_size=10,
-                               border=4)
+        qr_img = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_L,
+            box_size=10,
+            border=4
+        )
 
         qr_img.add_data(str_data)
         qr_img.make(fit=True)
@@ -103,7 +105,8 @@ class QRLabel:
         for int_index, line in enumerate(lst_data):
             add_height = int_index * 10
             final_text = line.replace('\n', '').lstrip()
-            drawing.text((10, base_width + add_height), final_text, fill='black')
+            drawing.text((10, base_width + add_height), final_text,
+                         fill='black')
 
         final_position = int((bg_width - base_width) / 2)
         # Add qr image on background image and save it.

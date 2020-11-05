@@ -1,6 +1,6 @@
 # pylint:disable=C0103,C0111,W0212,W0611
-import os
 import logging
+import os
 import unittest
 
 from things_organizer import utils

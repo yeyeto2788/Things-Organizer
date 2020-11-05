@@ -25,15 +25,6 @@ class SearchResource(Resource):
 
         """
 
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
-
         if flask_login.current_user.is_authenticated:
 
             form_text = flask.request.form.get('search-text')
