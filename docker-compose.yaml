@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  # Python application
+  things_organizer:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: things_organizer_app
+    environment:
+      VIRTUAL_HOST: things.juanbiondi.com
+    ports:
+      - "80:8080"
+      - "443:8080"
+    volumes:
+      - ./data:/app/data
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
