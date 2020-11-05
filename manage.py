@@ -1,24 +1,27 @@
+#!/usr/bin/python3
 """
 Flask server run
 """
 import os
 
+from flask_migrate import MigrateCommand
+from flask_script import Manager
 from waitress import serve
 
 from things_organizer.app import create_app
-from things_organizer.utils import str_to_bln
+
+app = create_app()
+manager = Manager(app, with_default_commands=False)
+manager.add_command('db', MigrateCommand)
 
 
-def run(debug: bool = False):
-    """
-    Serves a flask application using waitress.
-
-        Args:
-            debug: enables debug mode or not. Default is False so it is disabled.
-
-    """
-    app = create_app(debug=debug)
-
+@manager.option(
+    '-d', '--debug',
+    dest='debug', help="Run server on debug mode or not",
+    default=False
+)
+def runserver(debug):
+    """Run the server application"""
     if debug is True:
         app.run(
             host='127.0.0.1',
@@ -34,10 +37,4 @@ def run(debug: bool = False):
 
 
 if __name__ == '__main__':
-    debug_string = os.getenv("DEBUG", "false")
-    debug = False
-
-    if str_to_bln(debug_string):
-        debug = True
-
-    run(debug)
+    manager.run()

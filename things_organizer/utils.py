@@ -70,7 +70,7 @@ def str_to_bln(str_value):
 
     val = str_value.lower()
 
-    if val in ('true', '1', 't', 'y', 'yes', 'yeah', 'yup', 'certainly'):
+    if val in ('true', '1', 't', 'y', 'yes', 'on', 'yeah', 'yup', 'certainly'):
         bln_return = True
 
     elif val in ('n', 'no', 'f', 'false', 'off', '0'):

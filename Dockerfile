@@ -29,4 +29,4 @@ RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 ENV LANG en
 
 # Execute the application
-CMD ["python3", "run.py"]
+CMD ["python3", "manage.py", "runserver"]

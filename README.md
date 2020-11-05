@@ -1,194 +1,115 @@
 # Things Organizer
 
-Simple and "lightweight" web application for organizing that disaster or room/garage/lab
-(I suppose) we all have.
-
-<div style="text-align:center">
-  <img src="documentation/img/animation.gif" />
+<div align="center">
+  <img src="documentation/img/animation.gif"/>
+  <p>
+    Simple and "lightweight" web application for organizing that disaster or room/garage/lab (I suppose) we all have.
+  </p>
 </div>
 
-The idea came from a day I was looking a SOC board like the Raspberry Pi and I could not find it
-due to the mess I had, all boards, cables, equipment, etc. where all around in different boxes and
-different places all over my house from my room lab to the garage.
+---
 
+## Build status
 
-So I came up with the idea of develop a server using [Flask](http://flask.pocoo.org/) and
-[some other](/requirements.txt) Python libraries.
+|                                        Master                                        |                                          Development                                           |
+| :----------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------: |
+| ![Master build](https://travis-ci.com/yeyeto2788/Things-Organizer.svg?branch=master) | ![Development build](https://travis-ci.com/yeyeto2788/Things-Organizer.svg?branch=development) |
 
+---
 
-Now I can search the thing I'm looking for on the application and it will tell me where I have
-stored that thing. I can also print the label for that item or even for the storage boxes and bags
-I have on different locations(**e.g.** Garage, Room, etc.).
+## Features
+
+- Open Source :sparkles:
+- Python based application. :snake:
+- Search items :mag:
+- Print labels for items, categories and storages. :printer:
+- Report generation. :chart_with_upwards_trend:
+  - CSV
+  - TXT
+- User authentication. :lock:
+
+---
+
+## Background
+
+The idea :bulb: came to my mind one day I was looking a SOC board like the Raspberry Pi and I could not find it due to the mess I had, all boards, cables :electric_plug:, equipment :hammer_and_wrench:, etc. where all around in different boxes :package: and different places all over my house :house: from my room lab to the garage.
+
+So I came up with the idea of develop a server using [Flask](http://flask.pocoo.org/) and [some other](./requirements.txt) Python libraries.
+
+Now I can:
+
+- Search the for item I'm looking for on the application and it will tell me where I have it stored.
+
+- Print the label for that item or even for the storage boxes and bags I have on different locations(**e.g.** Garage, Room, etc.).
+
+---
+
+## Documentation
+
+If you want to know more in depth what each single file does go to the application [documentation](./documentation/).
 
 This tool is using the bootstrap template from @BlackrockDigital
 [Start Bootstrap - SB Admin](https://github.com/BlackrockDigital/startbootstrap-sb-admin)
 
-## Build status
-|Master|Development|
-|---|---|
-|![Master build](https://travis-ci.com/yeyeto2788/Things-Organizer.svg?branch=master)|![Development build](https://travis-ci.com/yeyeto2788/Things-Organizer.svg?branch=development)|
-
-## Project Structure
-
-Below you can see a basic layout of the repository and a quick and short description of each folder.
-
-```
-Main Repository Folder(Thing-Organizer)
-        └── Doc - Folder(All documentation related files)
-        └── Scripts - Folder(Some scripts for automate some things.)
-        └── Module - Folder(things_organizer)
-        |       └── api - Module(API for the application)
-        |       └── data - Folder(Database and reports storage)
-        |       └── db - Module(Models of Database)
-        |       └── reports - Module(Report generator modules)
-        |       └── static - Folder(Static files to be served)
-        |       └── templates - Folder(Flask templates to be used.)
-        |       └── test - Folder(All application tests)
-        |       └── forms.py
-        |       └── utils.py
-        |       └── views.py
-        └── run_app.py
-```
-
-If you want to know more in depth what each single file does go to the
-application [documentation](documentation/project_documentation/things_organizer).
-
-## DataBase information.
-
-#### Naming convention for tables and columns
-
-For tables in the database we have use the Pascal Case
-(a.k.a [Upper Camel Case](https://en.wikipedia.org/wiki/Camel_case)) and the tables on the database
-are the following:
-
-* **thing**
-    * id `int`
-    * name `str`
-    * description `str`
-    * unit `str`
-    * quantity `int`
-    * storage_id `int`
-    * category_id `int`
-    * user_id `int`
-    * date `date`
-* **category**
-    * id `int`
-    * name `str`
-    * user_id `int`
-* **storage**
-    * id  `int`
-    * name `str`
-    * location `str`
-    * user_id `int`
-* **tag**
-    * id `int`
-    * name `str`
-* **thing_tag**
-    * thing_id `int`
-    * tag_id `int`
-* **user**
-    * id `int`
-    * username `str`
-    * email `str`
-    * password_hash `str`
-
-#### Database Schema:
-
-In the image below you can see the relationship of each table created on the database.
-
-<p align="center"><img src="documentation/img/sql_diagram.png" alt="SQL schema Diagram"  width="500"/></p>
-<p align="center">Image done with <a href="https://www.dbschema.com/download.html">dbschema</a>.</p>
-<p align="center">Pending to use <a href="https://github.com/schemacrawler/SchemaCrawler">SchemaCrawler</a> since it is open source.</p>
-
-As you can see in the image above there are some uniques columns on tables, which are the following:
-
-<center>
-  <table>
-    <tr>
-      <th>Table</th>
-      <th>Column</th>
-    </tr>
-    <tr>
-      <td><code>storage</code></td>
-      <td>name</td>
-    </tr>
-    <tr>
-      <td><code>category</code></td>
-      <td>name</td>
-    </tr>
-    <tr>
-      <td><code>user</code></td>
-      <td>email</td>
-    </tr>
-    <tr>
-      <td><code>user</code></td>
-      <td>username</td>
-    </tr>
-  </table>
-</center>
-
-#### Other information of the DataBase
-
-Taking into account that some errors may arise I have decided to create a
-different DataBase for logging.
-
-All logs are accessible from the route `<ip:port>/logs`
-**e.g.** [http://127.0.0.1/8080/logs](http://127.0.0.1/8080/logs)
+---
 
 ## Running the application
 
-### Create the virtual environment
-```console
-python3 -m virtualenv venv
-source ./venv/bin/activate
-```
+- Clone this repository. :dancers:
 
-### Install dependencies
-```console
-pip3 install -r requirements.txt
-```
+  ```shell
+  git clone https://github.com/yeyeto2788/Things-Organizer.git
+  ```
 
-### Initialize the db (If you haven't)
-```console
-python run_app.py db upgrade
-```
+- Create the virtual environment.
 
-### Finally run the application
-```console
-python run_app.py run_production
-```
+  ```console
+  python3 -m virtualenv venv
+  source ./venv/bin/activate
+  ```
 
-## TODO:
- - [ ] Scripts for automate some repetitive work.
-   <ul>
-     <li> - [ ] Generate off-line labels.</li>
-     <li> - [ ] Generate off-line reports.</li>
-     <li> - [ ] Populate database from `sql` file.</li>
-   </ul>
- - [ ] Features to add:
-   <ul>
-     <li> - [] Generate reports.
-       <ul>
-         <li> - [ ] PDF</li>
-       </ul>
-     </li>
-     <li> - [ ] More API Operations</li>
-     <li> - [ ] Add link on labels.</li>
-     <li> - [ ] Barcode label.</li>
-     <li> - [ ] Add migrations.</li>
-   </ul>
- - [ ] Refactoring.
-  <ul>
-    <li> - [ ] See if we can move the `utils.py` into `common` module.</li>
-    <li> - [ ] Move all modules logic into a `Controller` object to separate logic.</li>
-    <li> - [ ] Fix tests.</li>
-    <li> - [ ] Use JSON configuration for `constants` or create a module for it.</li>
-    <li> - [ ] FINAL STEP put object into one resource for all CRUD operations.</li>
-    <li> - [ ] Catch general errors on app.</li>
-  </ul>
- - [ ] Documentation.
-  <ul>
-    <li> - [ ] API.</li>
-    <li> - [ ] Report Generation.</li>
-    <li> - [ ] Final application file structure (THIS README).</li>
-  </ul>
+- Install dependencies. :computer:
+
+  ```console
+  pip3 install -r requirements.txt
+  ```
+
+- Finally run the application. :snake:
+
+  ```console
+  python manage.py runserver
+  ```
+
+---
+
+<!-- Frequently asked questions -->
+
+## FAQ :raising_hand_woman::raising_hand_man:
+
+No frequently asked question yet. :neutral_face:
+
+---
+
+<!-- Support -->
+
+## Support :mechanic:
+
+Reach out to me at one of the following places!
+
+- Website at [juanbiondi.com](https://www.juanbiondi.com)
+- Create an [issue](https://github.com/yeyeto2788/Things-Organizer/issues/new/choose) on this repository. :pirate_flag:
+- Send me an [email](mailto:jebp.freelance@gmail.com) :email:
+
+---
+
+<!-- Contributing -->
+
+## Contributing
+
+Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/super_awesome_feature`)
+3. Commit your Changes (`git commit -m 'Add some awesome feature'`)
+4. Push to the Branch (`git push origin feature/super_awesome_feature`)
+5. Open a Pull Request
