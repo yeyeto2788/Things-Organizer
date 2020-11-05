@@ -1,16 +1,16 @@
-import inspect
-import time
+import logging
 
 import flask
 import flask_login
 from flask_restful import Resource
 
-from things_organizer import utils
 from things_organizer.extensions import database
 from things_organizer.web_app.categories.models import Category
 from things_organizer.web_app.storages.models import Storage
 from things_organizer.web_app.things.forms import ThingForm
 from things_organizer.web_app.things.models import Thing
+
+logger = logging.getLogger()
 
 
 class AddThingResource(Resource):
@@ -168,7 +168,7 @@ class ThingResource(Resource):
         """
 
         if flask_login.current_user.is_authenticated:
-            utils.debug("Redirecting to 'things' page.")
+            logger.info("Redirecting to 'things' page.")
 
             things = Thing.query.filter_by(
                 user_id=flask_login.current_user.id).all()
@@ -182,7 +182,7 @@ class ThingResource(Resource):
             )
 
         else:
-            utils.debug("Redirecting to 'login' page.")
+            logger.info("Redirecting to 'login' page.")
             template_return = flask.redirect(flask.url_for('handle_login'))
             flask.session['next_url'] = flask.request.path
 
@@ -225,15 +225,6 @@ class DeleteThingResource(Resource):
         Returns:
 
         """
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime()
-                )
-            )
-        )
         table_object = Thing.query.get_or_404(int_id)
 
         database.session.delete(table_object)

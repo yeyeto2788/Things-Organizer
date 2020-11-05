@@ -1,4 +1,5 @@
 import inspect
+import logging
 import time
 
 import flask
@@ -6,10 +7,11 @@ import flask_login
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 
-from things_organizer import utils
 from things_organizer.extensions import database
 from things_organizer.web_app.categories.forms import CategoryForm
 from things_organizer.web_app.categories.models import Category
+
+logger = logging.getLogger()
 
 
 class CategoryResource(Resource):
@@ -37,7 +39,7 @@ class CategoryResource(Resource):
             form=form
         )
 
-        utils.debug(
+        logger.info(
             "** {} - END\t{} **\n".format(
                 inspect.stack()[0][3],
                 time.strftime(
@@ -92,7 +94,7 @@ class EditCategoryResource(Resource):
         Returns:
 
         """
-        utils.debug(
+        logger.info(
             "** {} - INI\t{} **\n".format(
                 inspect.stack()[0][3],
                 time.strftime(

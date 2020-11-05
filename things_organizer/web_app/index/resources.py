@@ -1,7 +1,9 @@
+import logging
+
 import flask
 from flask_restful import Resource
 
-from things_organizer import utils
+logger = logging.getLogger()
 
 
 class HomeResource(Resource):
@@ -15,7 +17,7 @@ class HomeResource(Resource):
 
         """
 
-        utils.debug("Rendering 'Index' page.")
+        logger.info("Rendering 'Index' page.")
 
         template_return = flask.render_template('index.html')
 
