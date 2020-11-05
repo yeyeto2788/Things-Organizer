@@ -1,13 +1,5 @@
 # DataBase information.
 
-## Naming convention for tables and columns
-
-For tables in the database we have use the Pascal Case
-(a.k.a [Upper Camel Case](https://en.wikipedia.org/wiki/Camel_case)) and the tables on the database
-are the following:
-
----
-
 ## Tables
 
 Below you can see the database structure.

@@ -1,40 +1,42 @@
 <!-- Sidebar -->
-  <ul class="sidebar navbar-nav toggled">
+<ul class="sidebar navbar-nav toggled">
     <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fas fa-fw fa-folder"></i>
-        <span>Pages</span>
-      </a>
-      <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-        {% if current_user.is_authenticated %}
-          <h6 class="dropdown-header">Pages:</h6>
-          <a class="dropdown-item" href="{{ url_for('handle_categories') }}">Categories</a>
-          <a class="dropdown-item" href="{{ url_for('handle_storage') }}">Storage</a>
-          <a class="dropdown-item" href="/tags">Tags</a>
-          <div class="dropdown-divider"></div>
-          <h6 class="dropdown-header">Reports:</h6>
-          <a class="dropdown-item" href="{{ url_for('handle_report') }}">Generate report</a>
-          <div class="dropdown-divider"></div>
-        {% endif %}
-        <!--<h6 class="dropdown-header">Logs:</h6>-->
-        <!--<a class="dropdown-item" href="">View logs</a>-->
-        <!--<div class="dropdown-divider"></div>-->
-        <h6 class="dropdown-header">Others:</h6>
-        <a class="dropdown-item" href="/about">About</a>
-      </div>
+        <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+           id="pagesDropdown" role="button">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Pages</span>
+        </a>
+        <div aria-labelledby="pagesDropdown" class="dropdown-menu">
+            {% if current_user.is_authenticated %}
+            <h6 class="dropdown-header">Pages:</h6>
+            <a class="dropdown-item" href="{{ url_for('handle_categories') }}">Categories</a>
+            <a class="dropdown-item" href="{{ url_for('handle_storage') }}">Storage</a>
+            <a class="dropdown-item" href="/tags">Tags</a>
+            <div class="dropdown-divider"></div>
+            <h6 class="dropdown-header">Reports:</h6>
+            <a class="dropdown-item" href="{{ url_for('handle_report') }}">Generate report</a>
+            <div class="dropdown-divider"></div>
+            {% endif %}
+            <!--<h6 class="dropdown-header">Logs:</h6>-->
+            <!--<a class="dropdown-item" href="">View logs</a>-->
+            <!--<div class="dropdown-divider"></div>-->
+            <h6 class="dropdown-header">Others:</h6>
+            <a class="dropdown-item" href="/about">About</a>
+        </div>
     </li>
 
     {% if current_user.is_authenticated %}
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="thingsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Things</span>
+    <li class="nav-item dropdown">
+        <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+           id="thingsDropdown" role="button">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Things</span>
         </a>
-        <div class="dropdown-menu" aria-labelledby="thingsDropdown">
-          <h6 class="dropdown-header">Things:</h6>
-          <a class="dropdown-item" href="{{ url_for('handle_things') }}">View Things</a>
-          <a class="dropdown-item" href="{{ url_for('handle_add_thing') }}">Add new thing</a>
+        <div aria-labelledby="thingsDropdown" class="dropdown-menu">
+            <h6 class="dropdown-header">Things:</h6>
+            <a class="dropdown-item" href="{{ url_for('handle_things') }}">View Things</a>
+            <a class="dropdown-item" href="{{ url_for('handle_add_thing') }}">Add new thing</a>
         </div>
-      </li>
+    </li>
     {% endif %}
-  </ul>
+</ul>

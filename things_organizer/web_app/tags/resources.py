@@ -1,12 +1,8 @@
-import inspect
-import time
-
 import flask
 import flask_login
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 
-from things_organizer import utils
 from things_organizer.extensions import database
 from things_organizer.web_app.tags.forms import TagForm
 from things_organizer.web_app.tags.models import Tag
@@ -24,15 +20,6 @@ class TagResource(Resource):
 
         """
 
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
-
         form = TagForm()
         tags = Tag.query.filter().all()
 
@@ -41,15 +28,6 @@ class TagResource(Resource):
 
         template_return = flask.render_template('tags.html', table_data=tags,
                                                 form=form)
-
-        utils.debug(
-            "** {} - END\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
 
         return flask.Response(template_return, mimetype='text/html')
 
@@ -62,15 +40,6 @@ class TagResource(Resource):
             flask template.
 
         """
-
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
 
         form = TagForm()
 
@@ -91,15 +60,6 @@ class TagResource(Resource):
             form=form
         )
 
-        utils.debug(
-            "** {} - END\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
-
         return flask.Response(template_return, mimetype='text/html')
 
 
@@ -115,14 +75,6 @@ class EditTagResource(Resource):
         Returns:
 
         """
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
 
         table_object = Tag.query.get_or_404(int_id)
         form = TagForm(obj=table_object)
@@ -140,14 +92,7 @@ class EditTagResource(Resource):
         Returns:
 
         """
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
+
         table_object = Tag.query.get_or_404(int_id)
         form = TagForm(obj=table_object)
 
@@ -172,14 +117,6 @@ class DeleteTagResource(Resource):
         Returns:
 
         """
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
 
         table_object = Tag.query.get_or_404(int_id)
         form = TagForm(obj=table_object)
@@ -204,14 +141,7 @@ class DeleteTagResource(Resource):
         Returns:
 
         """
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
+
         table_object = Tag.query.get_or_404(int_id)
 
         try:

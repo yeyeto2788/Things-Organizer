@@ -1,12 +1,8 @@
-import inspect
-import time
-
 import flask
 import flask_login
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 
-from things_organizer import utils
 from things_organizer.extensions import database
 from things_organizer.web_app.storages.forms import StorageForm
 from things_organizer.web_app.storages.models import Storage
@@ -24,15 +20,6 @@ class StorageResource(Resource):
 
         """
 
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
-
         form = StorageForm()
         storages = Storage.query.filter_by(
             user_id=flask_login.current_user.id).all()
@@ -43,15 +30,6 @@ class StorageResource(Resource):
         template_return = flask.render_template(
             'storages.html',
             table_data=storages, form=form
-        )
-
-        utils.debug(
-            "** {} - END\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
         )
 
         return flask.Response(template_return, mimetype='text/html')
@@ -65,15 +43,6 @@ class StorageResource(Resource):
             Flask template based on the request method.
 
         """
-
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
 
         form = StorageForm()
         user_id = flask_login.current_user.id
@@ -104,15 +73,6 @@ class StorageResource(Resource):
             table_data=storages, form=form
         )
 
-        utils.debug(
-            "** {} - END\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
-
         return flask.Response(template_return, mimetype='text/html')
 
 
@@ -128,14 +88,6 @@ class EditStorageResource(Resource):
         Returns:
 
         """
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
 
         table_object = Storage.query.get_or_404(int_id)
         form = StorageForm(obj=table_object)
@@ -156,14 +108,7 @@ class EditStorageResource(Resource):
         Returns:
 
         """
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
+
         table_object = Storage.query.get_or_404(int_id)
         form = StorageForm(obj=table_object)
 
@@ -188,14 +133,6 @@ class DeleteStorageResource(Resource):
         Returns:
 
         """
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
 
         table_object = Storage.query.get_or_404(int_id)
         form = StorageForm(obj=table_object)
@@ -219,14 +156,7 @@ class DeleteStorageResource(Resource):
         Returns:
 
         """
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
+
         table_object = Storage.query.get_or_404(int_id)
 
         try:

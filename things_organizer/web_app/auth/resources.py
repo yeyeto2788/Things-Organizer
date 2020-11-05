@@ -1,14 +1,10 @@
-import inspect
-import time
-
 import flask
 import flask_login
 from flask_restful import Resource
 
-from things_organizer import utils
+from things_organizer.extensions import database
 from things_organizer.web_app.auth.forms import LoginForm, SignupForm
 from things_organizer.web_app.users.models import User
-from things_organizer.extensions import database
 
 
 class LoginResource(Resource):
@@ -21,26 +17,10 @@ class LoginResource(Resource):
             Flask template based on the request method.
 
         """
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
 
         form = LoginForm()
         flask_template = flask.render_template("login.html", form=form)
 
-        utils.debug(
-            "** {} - END\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
         return flask.Response(flask_template, mimetype='text/html')
 
     def post(self):
@@ -75,15 +55,6 @@ class LoginResource(Resource):
         else:
             flask_template = flask.render_template("login.html", form=form)
 
-        utils.debug(
-            "** {} - END\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
-
         return flask.Response(flask_template, mimetype='text/html')
 
 
@@ -100,26 +71,8 @@ class RegisterResource(Resource):
 
         """
 
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
-
         form = SignupForm()
         flask_template = flask.render_template("register.html", form=form)
-
-        utils.debug(
-            "** {} - END\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
 
         return flask.Response(flask_template, mimetype='text/html')
 
@@ -150,15 +103,6 @@ class RegisterResource(Resource):
             )
             flask_template = flask.render_template("register.html", form=form)
 
-            utils.debug(
-                "** {} - END\t{} **\n".format(
-                    inspect.stack()[0][3],
-                    time.strftime(
-                        "%Y-%m-%d %H:%M:%S",
-                        time.gmtime())
-                )
-            )
-
             return flask.Response(flask_template, mimetype='text/html')
 
 
@@ -173,24 +117,7 @@ class LogoutResource(Resource):
 
         """
 
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
         # Remove the username from the session if it's there
         flask_login.logout_user()
-
-        utils.debug(
-            "** {} - END\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
 
         return flask.redirect(flask.url_for('handle_root'))

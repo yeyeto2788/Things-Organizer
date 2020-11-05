@@ -1,10 +1,9 @@
-import inspect
-import time
+import logging
 
 import flask
 from flask_restful import Resource
 
-from things_organizer import utils
+logger = logging.getLogger()
 
 
 class HomeResource(Resource):
@@ -17,24 +16,9 @@ class HomeResource(Resource):
             Template of the different tools hosted.
 
         """
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
-        utils.debug("Rendering 'Index' page.")
+
+        logger.info("Rendering 'Index' page.")
 
         template_return = flask.render_template('index.html')
 
-        utils.debug(
-            "** {} - END\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
         return flask.Response(template_return, mimetype='text/html')

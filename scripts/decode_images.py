@@ -7,7 +7,7 @@ import os
 from PIL import Image
 from pyzbar.pyzbar import decode
 
-from things_organizer.utils import LABEL_PATH
+from things_organizer.constants import LABEL_PATH
 
 for file in os.listdir(LABEL_PATH):
     print('\nReading \'{}\''.format(file))

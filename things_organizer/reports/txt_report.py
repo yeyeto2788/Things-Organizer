@@ -14,7 +14,7 @@ import os
 
 from prettytable import PrettyTable
 
-from things_organizer import utils
+import things_organizer.constants
 from things_organizer.reports.base_report import BaseReport
 
 
@@ -54,7 +54,8 @@ class ReportTXT(BaseReport):
             file_name: Name for the `.txt` file.
 
         """
-        self.file_directory = os.path.join(utils.REPORT_PATH, 'TXT')
+        self.file_directory = os.path.join(
+            things_organizer.constants.REPORT_PATH, 'TXT')
         self.file_name = '{}.txt'.format(file_name)
         self.user_id = int_user
 
@@ -66,7 +67,8 @@ class ReportTXT(BaseReport):
         column_names, things = self.get_things_by_category(category_id)
 
         self.write_file(column_names, things,
-                        'All things sorted by \'{}\' Category'.format(category_obj.name))
+                        'All things sorted by \'{}\' Category'.format(
+                            category_obj.name))
 
         file_dir = os.path.join(self.file_directory, self.file_name)
 
@@ -77,7 +79,8 @@ class ReportTXT(BaseReport):
         column_names, things = self.get_things_by_category(storage_id)
 
         self.write_file(column_names, things,
-                        'All things sorted by \'{}\' Storage'.format(storage_obj.name))
+                        'All things sorted by \'{}\' Storage'.format(
+                            storage_obj.name))
 
         file_dir = os.path.join(self.file_directory, self.file_name)
 
@@ -103,7 +106,6 @@ class ReportTXT(BaseReport):
         """
 
         file_dir = os.path.join(self.file_directory, self.file_name)
-
 
         if 'user_id' in lst_columns:
             lst_columns.remove('user_id')

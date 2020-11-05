@@ -1,87 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
+<head>
 
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <meta content="" name="description">
+    <meta content="" name="author">
 
     <title>Things Organizer - Login</title>
 
     <!-- Bootstrap core CSS-->
     <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <!-- Custom fonts for this template-->
-    <link href="{{ url_for('static', filename='vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet"
+          type="text/css">
     <!-- Custom styles for this template-->
     <link href="{{ url_for('static', filename='css/sb-admin.css') }}" rel="stylesheet">
 
-  </head>
+</head>
 
-  <body class="bg-dark">
+<body class="bg-dark">
 
-    <div class="container">
-      <div class="card card-login mx-auto mt-5">
+<div class="container">
+    <div class="card card-login mx-auto mt-5">
         <div class="card-header">Login</div>
         <div class="card-body">
-          <form action="" method="post">
-            {{form.hidden_tag()}}
-            <div class="form-group">
-              <div class="form-label-group">
-                {{ form.username(class_="form-control") }}
-                <label for="username">User name</label>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="form-label-group">
-                {{ form.password(class_="form-control") }}
-                <!--<input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password" required="required">-->
-                <label for="password">Password</label>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="checkbox">
-                <label>
-                  {{ form.remember_me }}
-                  Remember Password
-                </label>
-              </div>
-            </div>
-            <div class="form-group">
-                {% with messages = get_flashed_messages() %}
-                  {% if messages %}
+            <form action="" method="post">
+                {{form.hidden_tag()}}
+                <div class="form-group">
+                    <div class="form-label-group">
+                        {{ form.username(class_="form-control") }}
+                        <label for="username">User name</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-label-group">
+                        {{ form.password(class_="form-control") }}
+                        <!--<input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password" required="required">-->
+                        <label for="password">Password</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            {{ form.remember_me }}
+                            Remember Password
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
                     {% for message in messages %}
-                      {% if message.startswith('ERROR:') %}
-                        <div class="alert alert-danger" role="alert">
-                          <li>{{ message.replace('ERROR:', '') }}</li>
-                        </div>
-                      {% else %}
-                        <div class="alert alert-primary" role="alert">
-                          <li>{{ message }}</li>
-                        </div>
-                      {% endif %}
+                    {% if message.startswith('ERROR:') %}
+                    <div class="alert alert-danger" role="alert">
+                        <li>{{ message.replace('ERROR:', '') }}</li>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-primary" role="alert">
+                        <li>{{ message }}</li>
+                    </div>
+                    {% endif %}
                     {% endfor %}
-                  {% endif %}
-                {% endwith %}
+                    {% endif %}
+                    {% endwith %}
+                </div>
+                <button class="btn btn-primary btn-block" type="submit">Login</button>
+            </form>
+            <div class="text-center">
+                <a class="d-block small mt-3" href="{{ url_for('handle_register') }}">Register an Account</a>
+                <!--<a class="d-block small" href="forgot-password.html">Forgot Password?</a>-->
             </div>
-          <button type="submit" class="btn btn-primary btn-block">Login</button>
-          </form>
-          <div class="text-center">
-            <a class="d-block small mt-3" href="{{ url_for('handle_register') }}">Register an Account</a>
-            <!--<a class="d-block small" href="forgot-password.html">Forgot Password?</a>-->
-          </div>
         </div>
-      </div>
     </div>
+</div>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <!-- Core plugin JavaScript-->
-    <script src="{{ url_for('static', filename='vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+<!-- Bootstrap core JavaScript-->
+<script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<!-- Core plugin JavaScript-->
+<script src="{{ url_for('static', filename='vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 
-  </body>
+</body>
 
 </html>

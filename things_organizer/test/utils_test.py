@@ -1,6 +1,6 @@
 # pylint:disable=C0103,C0111,W0212,W0611
-import os
 import logging
+import os
 import unittest
 
 from things_organizer import utils
@@ -64,7 +64,8 @@ class TestUtilsWithoutTempFiles(unittest.TestCase):
             with self.assertRaises(ValueError) as exe_error:
                 utils.str_to_bln(item)
                 self.assertTrue(
-                    'is not compatible to convert into boolean.' in exe_error.exception
+                    'is not compatible to convert into boolean.'
+                    in exe_error.exception
                 )
 
     def tearDown(self):

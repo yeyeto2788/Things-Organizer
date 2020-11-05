@@ -3,7 +3,7 @@ import os
 
 from flask import Flask, request
 
-from things_organizer import utils
+import things_organizer.constants
 from things_organizer.extensions import (
     database, login_manager, api, migrate
 )
@@ -40,7 +40,9 @@ def create_dirs():
     Returns:
 
     """
-    dirs = [utils.DB_PATH, utils.LABEL_PATH, utils.REPORT_PATH]
+    dirs = [things_organizer.constants.DB_PATH,
+            things_organizer.constants.LABEL_PATH,
+            things_organizer.constants.REPORT_PATH]
 
     for directory in dirs:
         os.makedirs(directory, exist_ok=True)

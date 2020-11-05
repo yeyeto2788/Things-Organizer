@@ -1,16 +1,16 @@
-import inspect
-import time
+import logging
 
 import flask
 import flask_login
 from flask_restful import Resource
 from sqlalchemy import or_
 
-from things_organizer import utils
 from things_organizer.web_app.categories.models import Category
 from things_organizer.web_app.storages.models import Storage
 from things_organizer.web_app.things.models import Thing
 from things_organizer.web_app.users.models import User
+
+logger = logging.getLogger()
 
 
 class SearchResource(Resource):
@@ -18,21 +18,13 @@ class SearchResource(Resource):
     @flask_login.login_required
     def get(self):
         """
-        This function is meant to be used for searching a text within the database.
+        This function is meant to be used for searching a text within the
+        database.
 
         Returns:
             Flask template.
 
         """
-
-        utils.debug(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
 
         if flask_login.current_user.is_authenticated:
 
@@ -95,16 +87,8 @@ class SearchResource(Resource):
             )
 
         else:
-            utils.debug("Redirecting to 'login' page.")
+            logger.info("Redirecting to 'login' page.")
             flask_template = flask.redirect(flask.url_for('handle_login'))
             flask.session['next_url'] = flask.request.path
 
-        utils.debug(
-            "** {} - END\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime())
-            )
-        )
         return flask.Response(flask_template, mimetype='text/html')
