@@ -6,7 +6,7 @@ flask-login==0.4.1
 flask-wtf==0.14.3
 Flask-Script==2.0.6
 Flask-Migrate==2.4.0
-ujson==1.35
+ujson==5.4.0
 pylint>=2.2.2
 pylint-flask==0.6
 PrettyTable==0.7.2
