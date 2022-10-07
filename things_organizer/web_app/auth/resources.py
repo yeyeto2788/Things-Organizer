@@ -3,7 +3,8 @@ import flask_login
 from flask_restful import Resource
 
 from things_organizer.extensions import database
-from things_organizer.web_app.auth.forms import LoginForm, SignupForm
+from things_organizer.web_app.auth.forms import LoginForm
+from things_organizer.web_app.auth.forms import SignupForm
 from things_organizer.web_app.users.models import User
 
 

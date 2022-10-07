@@ -1,42 +1,36 @@
 import logging
 import os
 
-from flask import Flask, request
+from flask import Flask
+from flask import request
 
 import things_organizer.constants
-from things_organizer.extensions import api, database, login_manager, migrate
+from things_organizer.extensions import api
+from things_organizer.extensions import database
+from things_organizer.extensions import login_manager
+from things_organizer.extensions import migrate
 from things_organizer.login_utils import load_user
 from things_organizer.web_app.about.resources import AboutResource
-from things_organizer.web_app.auth.resources import (
-    LoginResource,
-    LogoutResource,
-    RegisterResource,
-)
-from things_organizer.web_app.categories.resources import (
-    CategoryResource,
-    DeleteCategoryResource,
-    EditCategoryResource,
-)
+from things_organizer.web_app.auth.resources import LoginResource
+from things_organizer.web_app.auth.resources import LogoutResource
+from things_organizer.web_app.auth.resources import RegisterResource
+from things_organizer.web_app.categories.resources import CategoryResource
+from things_organizer.web_app.categories.resources import DeleteCategoryResource
+from things_organizer.web_app.categories.resources import EditCategoryResource
 from things_organizer.web_app.index.resources import HomeResource
 from things_organizer.web_app.labels.resources import LabelResource
 from things_organizer.web_app.reports.resources import ReportResource
 from things_organizer.web_app.search.resources import SearchResource
-from things_organizer.web_app.storages.resources import (
-    DeleteStorageResource,
-    EditStorageResource,
-    StorageResource,
-)
-from things_organizer.web_app.tags.resources import (
-    DeleteTagResource,
-    EditTagResource,
-    TagResource,
-)
-from things_organizer.web_app.things.resources import (
-    AddThingResource,
-    DeleteThingResource,
-    EditThingResource,
-    ThingResource,
-)
+from things_organizer.web_app.storages.resources import DeleteStorageResource
+from things_organizer.web_app.storages.resources import EditStorageResource
+from things_organizer.web_app.storages.resources import StorageResource
+from things_organizer.web_app.tags.resources import DeleteTagResource
+from things_organizer.web_app.tags.resources import EditTagResource
+from things_organizer.web_app.tags.resources import TagResource
+from things_organizer.web_app.things.resources import AddThingResource
+from things_organizer.web_app.things.resources import DeleteThingResource
+from things_organizer.web_app.things.resources import EditThingResource
+from things_organizer.web_app.things.resources import ThingResource
 
 logger = logging.getLogger()
 

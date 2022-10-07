@@ -6,7 +6,8 @@ Module to generate QR labels with the data of a given Thing in the database.
 import os
 
 import qrcode
-from PIL import Image, ImageDraw
+from PIL import Image
+from PIL import ImageDraw
 
 import things_organizer.constants
 

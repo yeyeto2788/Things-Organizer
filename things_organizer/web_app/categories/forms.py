@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, ValidationError
+from wtforms import StringField
+from wtforms import ValidationError
 
 from things_organizer.web_app.categories.models import Category
 

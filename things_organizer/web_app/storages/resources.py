@@ -124,9 +124,7 @@ class DeleteStorageResource(Resource):
         table_object = Storage.query.get_or_404(int_id)
         form = StorageForm(obj=table_object)
 
-        flask.flash(
-            f"Please confirm deleting the category '{table_object.name}'."
-        )
+        flask.flash(f"Please confirm deleting the category '{table_object.name}'.")
         template_return = flask.render_template("confirm_deletion.html", form=form)
 
         return flask.Response(template_return, mimetype="text/html")

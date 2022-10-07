@@ -122,7 +122,7 @@ class TestUtilsWithTempFiles(unittest.TestCase):
 
         for index, item in enumerate(self.files):
             file_path = os.path.join(self.temp_directory, item)
-            with open(file_path, "w", encoding="uft-8") as txt_file:
+            with open(file_path, "w", encoding="utf-8") as txt_file:
                 txt_file.write(f"File created: {item}\nIndex: {index}")
             txt_file.close()
 
