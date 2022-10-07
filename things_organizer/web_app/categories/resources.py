@@ -15,7 +15,6 @@ logger = logging.getLogger()
 
 
 class CategoryResource(Resource):
-
     @flask_login.login_required
     def get(self):
         """
@@ -27,27 +26,22 @@ class CategoryResource(Resource):
         """
 
         form = CategoryForm()
-        categories = Category.query.filter_by(
-            user_id=flask_login.current_user.id).all()
+        categories = Category.query.filter_by(user_id=flask_login.current_user.id).all()
 
         if not categories:
             categories = None
 
         template_return = flask.render_template(
-            'categories.html',
-            table_data=categories,
-            form=form
+            "categories.html", table_data=categories, form=form
         )
 
         logger.info(
-            "** {} - END\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime()))
+            "** %s - END\t%s **\n",
+            inspect.stack()[0][3],
+            time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()),
         )
 
-        return flask.Response(template_return, mimetype='text/html')
+        return flask.Response(template_return, mimetype="text/html")
 
     @flask_login.login_required
     def post(self):
@@ -65,25 +59,21 @@ class CategoryResource(Resource):
             category_obj = Category(name=name, user_id=user_id)
             database.session.add(category_obj)
             database.session.commit()
-            flask.flash("Category {} stored.".format(category_obj.name))
+            flask.flash(f"Category {category_obj.name} stored.")
 
-        categories = Category.query.filter_by(
-            user_id=flask_login.current_user.id).all()
+        categories = Category.query.filter_by(user_id=flask_login.current_user.id).all()
 
         if not categories:
             categories = None
 
         template_return = flask.render_template(
-            'categories.html',
-            table_data=categories,
-            form=form
+            "categories.html", table_data=categories, form=form
         )
 
-        return flask.Response(template_return, mimetype='text/html')
+        return flask.Response(template_return, mimetype="text/html")
 
 
 class EditCategoryResource(Resource):
-
     @flask_login.login_required
     def get(self, int_id):
         """
@@ -95,21 +85,19 @@ class EditCategoryResource(Resource):
 
         """
         logger.info(
-            "** {} - INI\t{} **\n".format(
-                inspect.stack()[0][3],
-                time.strftime(
-                    "%Y-%m-%d %H:%M:%S",
-                    time.gmtime()))
+            "** %s - INI\t%s **\n",
+            inspect.stack()[0][3],
+            time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()),
         )
 
         table_object = Category.query.get_or_404(int_id)
         form = CategoryForm(obj=table_object)
-        template_return = flask.render_template('edit.html', form=form)
+        template_return = flask.render_template("edit.html", form=form)
 
         if flask_login.current_user.id != table_object.user_id:
             flask.abort(403)
 
-        return flask.Response(template_return, mimetype='text/html')
+        return flask.Response(template_return, mimetype="text/html")
 
     @flask_login.login_required
     def post(self, int_id):
@@ -130,7 +118,7 @@ class EditCategoryResource(Resource):
 
         database.session.commit()
 
-        template_return = flask.redirect(flask.url_for('handle_categories'))
+        template_return = flask.redirect(flask.url_for("handle_categories"))
         return template_return
 
 
@@ -149,17 +137,10 @@ class DeleteCategoryResource(Resource):
         table_object = Category.query.get_or_404(int_id)
         form = CategoryForm(obj=table_object)
 
-        flask.flash(
-            "Please confirm deleting the category '{}'.".format(
-                table_object.name
-            )
-        )
-        template_return = flask.render_template(
-            "confirm_deletion.html",
-            form=form
-        )
+        flask.flash(f"Please confirm deleting the category '{table_object.name}'.")
+        template_return = flask.render_template("confirm_deletion.html", form=form)
 
-        return flask.Response(template_return, mimetype='text/html')
+        return flask.Response(template_return, mimetype="text/html")
 
     @flask_login.login_required
     def post(self, int_id):
@@ -188,12 +169,15 @@ class DeleteCategoryResource(Resource):
             )
             template_return = flask.Response(
                 flask.render_template("confirm_deletion.html", form=form),
-                mimetype='text/html')
+                mimetype="text/html",
+            )
 
         else:
-            flask.flash("Deleted '{}' category".format(table_object.name))
+            flask.flash(f"Deleted '{table_object.name}' category")
             template_return = flask.redirect(
-                flask.url_for('handle_categories',
-                              username=flask_login.current_user.username))
+                flask.url_for(
+                    "handle_categories", username=flask_login.current_user.username
+                )
+            )
 
         return template_return

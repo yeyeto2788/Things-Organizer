@@ -3,7 +3,8 @@ from datetime import datetime
 from sqlalchemy import desc
 
 from things_organizer.extensions import database
-from things_organizer.web_app.tags.models import tags, Tag
+from things_organizer.web_app.tags.models import Tag
+from things_organizer.web_app.tags.models import tags
 
 
 class Thing(database.Model):
@@ -12,57 +13,29 @@ class Thing(database.Model):
 
     """
 
-    id = database.Column(
-        database.Integer,
-        primary_key=True
-    )
-    name = database.Column(
-        database.Text,
-        nullable=False
-    )
-    description = database.Column(
-        database.String(300)
-    )
-    unit = database.Column(
-        database.String(100)
-    )
-    quantity = database.Column(
-        database.Integer
-    )
+    id = database.Column(database.Integer, primary_key=True)
+    name = database.Column(database.Text, nullable=False)
+    description = database.Column(database.String(300))
+    unit = database.Column(database.String(100))
+    quantity = database.Column(database.Integer)
     user_id = database.Column(
-        database.Integer,
-        database.ForeignKey('user.id'),
-        nullable=False
+        database.Integer, database.ForeignKey("user.id"), nullable=False
     )
     category_id = database.Column(
-        database.Integer,
-        database.ForeignKey('category.id'),
-        nullable=False
+        database.Integer, database.ForeignKey("category.id"), nullable=False
     )
     storage_id = database.Column(
-        database.Integer,
-        database.ForeignKey('storage.id'),
-        nullable=False
+        database.Integer, database.ForeignKey("storage.id"), nullable=False
     )
-    date = database.Column(
-        database.DateTime,
-        default=datetime.utcnow
-    )
+    date = database.Column(database.DateTime, default=datetime.utcnow)
     _tags = database.relationship(
-        'Tag',
-        secondary=tags,
-        backref=database.backref('things',
-                                 lazy='dynamic')
+        "Tag", secondary=tags, backref=database.backref("things", lazy="dynamic")
     )
     category = database.relationship(
-        'Category',
-        backref=database.backref('things',
-                                 lazy='dynamic')
+        "Category", backref=database.backref("things", lazy="dynamic")
     )
     storage = database.relationship(
-        'Storage',
-        backref=database.backref('things',
-                                 lazy='dynamic')
+        "Storage", backref=database.backref("things", lazy="dynamic")
     )
 
     @staticmethod
@@ -99,8 +72,7 @@ class Thing(database.Model):
 
         """
         if string:
-            self._tags = [Tag.get_or_create(name) for name in
-                          string.split(',')]
+            self._tags = [Tag.get_or_create(name) for name in string.split(",")]
 
     def __repr__(self):
-        return "<Thing %r>" % self.name
+        return f"<Thing {self.name}>"

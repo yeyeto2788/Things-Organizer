@@ -1,0 +1,138 @@
+fail_fast: true
+default_stages: [commit, push, commit-msg]
+
+repos:
+  - repo: local
+    hooks:
+      - id: isort
+        name: Sort library imports
+        entry: poetry run isort --force-single-line-imports scripts things_organizer manage.py
+
+        pass_filenames: false
+        language: system
+        always_run: true
+
+  - repo: local
+    hooks:
+      - id: black
+        name: Black Formatting
+        entry: poetry run black scripts things_organizer manage.py
+
+        pass_filenames: false
+        language: system
+        always_run: true
+
+  - repo: local
+    hooks:
+      - id: flake8
+        name: Flake8 linting
+        entry: poetry run flake8 scripts things_organizer manage.py
+
+        language: system
+        always_run: true
+        pass_filenames: false
+
+  - repo: local
+    hooks:
+      - id: pylint
+        name: Pylint linting.
+        entry: poetry run pylint things_organizer scripts
+        language: system
+        always_run: true
+        pass_filenames: false
+
+  - repo: local
+    hooks:
+      - id: mypy
+        name: MyPy type hint check.
+        entry: poetry run mypy things_organizer
+        language: system
+        always_run: true
+        pass_filenames: false
+
+  - repo: local
+    hooks:
+      - id: test
+        name: Executing tests
+        entry: poetry run pytest --cov-report html --cov-report xml --cov-report term --cov-report annotate --cov=
+        pass_filenames: false
+        language: system
+        always_run: true
+
+  - repo: local
+    hooks:
+      - id: export
+        name: Export requirements.txt
+        language: system
+        pass_filenames: false
+        entry: poetry export --without-hashes -o requirements.txt
+        files: ^(pyproject.toml|poetry.lock)$
+        always_run: true
+
+  - repo: local
+    hooks:
+      - id: export_lambdas_requirements
+        name: Export requirements.txt for lambdas
+        language: system
+        pass_filenames: false
+        entry: poetry export --without-hashes -o ./lambdas/requirements.txt
+        files: ^(pyproject.toml|poetry.lock)$
+        always_run: true
+
+  - repo: local
+    hooks:
+      - id: export-dev
+        name: Export requeriments-dev.txt
+        language: system
+        pass_filenames: false
+        entry: poetry export --dev --without-hashes --with-credentials -o requirements-dev.txt
+        files: ^(pyproject.toml|poetry.lock)$
+        always_run: true
+
+  - repo: local
+    hooks:
+      - id: bandit
+        name: Check for vulnerabilities
+        entry: poetry run bandit --exclude "./.venv/*,./test/*,./venv/*" -r -ll .
+        pass_filenames: false
+        verbose: true
+        language: system
+        always_run: true
+
+  - repo: local
+    hooks:
+      - id: safety
+        name: Safety
+        entry: poetry check
+        pass_filenames: false
+        language: system
+        always_run: true
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1
+    hooks:
+      - id: check-added-large-files
+        always_run: true
+      - id: check-case-conflict
+        always_run: true
+      - id: check-executables-have-shebangs
+        always_run: true
+      - id: check-json
+        always_run: true
+      - id: check-merge-conflict
+        always_run: true
+      - id: check-xml
+        always_run: true
+      - id: check-yaml
+        always_run: true
+      - id: detect-private-key
+        always_run: true
+
+  - repo: local
+    hooks:
+      - id: pull
+        name: Pull git changes
+        entry: git pull
+        language: system
+        stages:
+          - post-commit

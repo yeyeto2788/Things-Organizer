@@ -55,8 +55,9 @@ class ReportCSV(BaseReport):
         """
 
         self.file_directory = os.path.join(
-            things_organizer.constants.REPORT_PATH, 'CSV')
-        self.file_name = '{}.csv'.format(file_name)
+            things_organizer.constants.REPORT_PATH, "CSV"
+        )
+        self.file_name = f"{file_name}.csv"
         self.user_id = int_user
 
         if not os.path.exists(self.file_directory):
@@ -65,8 +66,7 @@ class ReportCSV(BaseReport):
     def generate_by_category(self, category_id):
         column_names, things = self.get_things_by_category(category_id)
         lst_remove = ["category_id"]
-        things_refined = self._remove_data([row.__dict__ for row in things],
-                                           lst_remove)
+        things_refined = self._remove_data([row.__dict__ for row in things], lst_remove)
         self.write_file(column_names, things_refined)
 
         file_dir = os.path.join(self.file_directory, self.file_name)
@@ -76,8 +76,7 @@ class ReportCSV(BaseReport):
     def generate_by_storage(self, storage_id):
         column_names, things = self.get_things_by_category(storage_id)
         lst_remove = ["storage_id"]
-        things_refined = self._remove_data([row.__dict__ for row in things],
-                                           lst_remove)
+        things_refined = self._remove_data([row.__dict__ for row in things], lst_remove)
         self.write_file(column_names, things_refined)
 
         file_dir = os.path.join(self.file_directory, self.file_name)
@@ -87,14 +86,13 @@ class ReportCSV(BaseReport):
     def generate_all(self):
         column_names, things = self.get_things()
         lst_remove = ["user_id"]
-        things_refined = self._remove_data([row.__dict__ for row in things],
-                                           lst_remove)
+        things_refined = self._remove_data([row.__dict__ for row in things], lst_remove)
         self.write_file(column_names, things_refined)
         file_dir = os.path.join(self.file_directory, self.file_name)
 
         return os.path.realpath(file_dir)
 
-    def write_file(self, lst_columns, things, str_title: str = None):
+    def write_file(self, lst_columns, things):
         """
         Common method for writing data into the `.csv` file.
 
@@ -105,10 +103,10 @@ class ReportCSV(BaseReport):
         """
         file_dir = os.path.join(self.file_directory, self.file_name)
 
-        if 'user_id' in lst_columns:
-            lst_columns.remove('user_id')
+        if "user_id" in lst_columns:
+            lst_columns.remove("user_id")
 
-        with open('{}'.format(file_dir), mode='w') as csv_file:
+        with open(file_dir, mode="w", encoding="utf-8") as csv_file:
             file_writer = csv.DictWriter(csv_file, fieldnames=lst_columns)
             file_writer.writeheader()
 

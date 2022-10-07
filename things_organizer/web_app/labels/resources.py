@@ -8,7 +8,6 @@ from things_organizer.web_app.things.models import Thing
 
 
 class LabelResource(Resource):
-
     @flask_login.login_required
     def get(self, int_id):
         """
@@ -23,27 +22,23 @@ class LabelResource(Resource):
         """
 
         thing = Thing.query.filter_by(
-            user_id=flask_login.current_user.id,
-            id=int_id
+            user_id=flask_login.current_user.id, id=int_id
         ).first()
 
         storage = Storage.query.filter_by(id=thing.storage_id).first()
 
         if thing:
-            label = QRLabel(thing.name, thing.description, storage.name,
-                            storage.location)
+            label = QRLabel(
+                thing.name, thing.description, storage.name, storage.location
+            )
             label.generate_label()
 
             template_return = flask.send_from_directory(
-                label.file_directory,
-                label.file_name,
-                as_attachment=True
+                label.file_directory, label.file_name, as_attachment=True
             )
-            flask.flash("Label '{}' generated.".format(label.file_name))
+            flask.flash(f"Label '{label.file_name}' generated.")
 
             return template_return
 
-        else:
-            template_return = flask.redirect(flask.url_for('handle_things'))
-
-            return flask.Response(template_return, mimetype='text/html')
+        template_return = flask.redirect(flask.url_for("handle_things"))
+        return flask.Response(template_return, mimetype="text/html")

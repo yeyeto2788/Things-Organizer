@@ -14,7 +14,6 @@ logger = logging.getLogger()
 
 
 class SearchResource(Resource):
-
     @flask_login.login_required
     def get(self):
         """
@@ -28,43 +27,41 @@ class SearchResource(Resource):
 
         if flask_login.current_user.is_authenticated:
 
-            form_text = flask.request.form.get('search-text')
-            template_text = "Results for <b>'{}'</b>. ".format(form_text)
+            form_text = flask.request.form.get("search-text")
+            template_text = f"Results for <b>'{form_text}'</b>. "
             print(form_text)
 
-            if form_text.startswith('thing:'):
-                search_txt = form_text.split(':')[1].lstrip()
+            if form_text.startswith("thing:"):
+                search_txt = form_text.split(":")[1].lstrip()
                 print(search_txt)
                 things = Thing.query.filter(
-                    User.id == flask_login.current_user.id, or_(
-                        Thing.name.contains('{}%'.format(search_txt)),
-                        Thing.description.contains('{}%'.format(search_txt)))
+                    User.id == flask_login.current_user.id,
+                    or_(
+                        Thing.name.contains(f"{search_txt}%"),
+                        Thing.description.contains(f"{search_txt}%"),
+                    ),
                 ).all()
 
                 if things:
-                    template_text += 'Found <b>{}</b> items.\n\n'.format(
-                        len(things))
+                    template_text += f"Found <b>{len(things)}</b> items.\n\n"
 
                     for int_index, thing in enumerate(things):
                         int_index += 1
-                        template_text += '<b>Item {:02}</b>\n'.format(
-                            int_index)
-                        template_text += '<b>Name:</b> {}\n'.format(
-                            str(thing.name))
-                        template_text += '<b>Description:</b> {}\n'.format(
-                            str(thing.description))
-                        storage = Storage.query.filter_by(
-                            id=thing.storage_id).first()
-                        template_text += '<b>Storage:</b> {}\n'.format(
-                            storage.name)
-                        template_text += '<b>Location:</b> {}\n'.format(
-                            storage.location)
-                        category = Category.query.filter_by(
-                            id=thing.category_id).first()
-                        template_text += '<b>Category:</b> {}\n\n'.format(
-                            category.name)
+                        template_text += f"<b>Item {int_index:02}</b>\n"
+                        template_text += f"<b>Name:</b> {str(thing.name)}\n"
+                        template_text += (
+                            f"<b>Description:</b> {str(thing.description)}\n"
+                        )
 
-                    template_text = template_text.replace('\n', '<br>')
+                        storage = Storage.query.filter_by(id=thing.storage_id).first()
+                        template_text += f"<b>Storage:</b> {storage.name}\n"
+                        template_text += f"<b>Location:</b> {storage.location}\n"
+                        category = Category.query.filter_by(
+                            id=thing.category_id
+                        ).first()
+                        template_text += f"<b>Category:</b> {category.name}\n\n"
+
+                    template_text = template_text.replace("\n", "<br>")
 
                 else:
                     template_text += "<b>No items found.</b>"
@@ -72,23 +69,22 @@ class SearchResource(Resource):
             else:
                 template_text += "<b>No items found.</b>"
 
-            container = """
+            container = f"""
                 <div class="container-fluid lead">
-                {}
+                {template_text}
                 <p class="lead" align="center">
                 You can <a href="javascript:history.back()">go back</a>
                 to the previous page, or <a href="/home">home</a>.
                 </p>
-                </div>""".format(template_text)
+                </div>"""
+
             flask_template = flask.render_template(
-                '_blank.html',
-                str_to_display=str(
-                    container)
+                "_blank.html", str_to_display=str(container)
             )
 
         else:
             logger.info("Redirecting to 'login' page.")
-            flask_template = flask.redirect(flask.url_for('handle_login'))
-            flask.session['next_url'] = flask.request.path
+            flask_template = flask.redirect(flask.url_for("handle_login"))
+            flask.session["next_url"] = flask.request.path
 
-        return flask.Response(flask_template, mimetype='text/html')
+        return flask.Response(flask_template, mimetype="text/html")

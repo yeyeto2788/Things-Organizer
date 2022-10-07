@@ -8,4 +8,4 @@ class TagForm(FlaskForm):
 
     """
 
-    name = StringField(label='Tag Name')
+    name = StringField(label="Tag Name")

@@ -11,30 +11,27 @@ api = flask_restful.Api()
 migrate = Migrate()
 
 logging_configuration = {
-    'version': 1,
-    'formatters': {
-        'default': {
-            'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
+    "version": 1,
+    "formatters": {
+        "default": {
+            "format": "[%(asctime)s] %(levelname)s in %(module)s: %(message)s",
         }
     },
-    'handlers': {
-        'wsgi': {
-            'class': 'logging.StreamHandler',
-            'stream': 'ext://flask.logging.wsgi_errors_stream',
-            'formatter': 'default'
+    "handlers": {
+        "wsgi": {
+            "class": "logging.StreamHandler",
+            "stream": "ext://flask.logging.wsgi_errors_stream",
+            "formatter": "default",
         },
-        'file': {
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': './things_organizer.log',
-            'formatter': 'default',
-            'maxBytes': 1024,
-            'backupCount': 5
-        }
+        "file": {
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": "./things_organizer.log",
+            "formatter": "default",
+            "maxBytes": 1024,
+            "backupCount": 5,
+        },
     },
-    'root': {
-        'level': 'INFO',
-        'handlers': ['wsgi', 'file']
-    }
+    "root": {"level": "INFO", "handlers": ["wsgi", "file"]},
 }
 
 dictConfig(logging_configuration)

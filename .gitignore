@@ -3,6 +3,7 @@
 
 # Virtual environments:
 venv/*
+poetry.lock
 
 # Pycharm related:
 .idea/

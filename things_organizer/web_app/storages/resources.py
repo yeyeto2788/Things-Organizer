@@ -9,7 +9,6 @@ from things_organizer.web_app.storages.models import Storage
 
 
 class StorageResource(Resource):
-
     @flask_login.login_required
     def get(self):
         """
@@ -21,18 +20,16 @@ class StorageResource(Resource):
         """
 
         form = StorageForm()
-        storages = Storage.query.filter_by(
-            user_id=flask_login.current_user.id).all()
+        storages = Storage.query.filter_by(user_id=flask_login.current_user.id).all()
 
         if not storages:
             storages = None
 
         template_return = flask.render_template(
-            'storages.html',
-            table_data=storages, form=form
+            "storages.html", table_data=storages, form=form
         )
 
-        return flask.Response(template_return, mimetype='text/html')
+        return flask.Response(template_return, mimetype="text/html")
 
     @flask_login.login_required
     def post(self):
@@ -50,18 +47,11 @@ class StorageResource(Resource):
         if form.validate_on_submit():
             name = form.name.data
             location = form.location.data
-            storage_obj = Storage(
-                name=name,
-                location=location,
-                user_id=user_id
-            )
+            storage_obj = Storage(name=name, location=location, user_id=user_id)
             database.session.add(storage_obj)
             database.session.commit()
             flask.flash(
-                "Storage {} stored with location {}.".format(
-                    storage_obj.name,
-                    storage_obj.location
-                )
+                f"Storage {storage_obj.name} stored with location {storage_obj.location}."
             )
         storages = Storage.query.filter_by(user_id=user_id).all()
 
@@ -69,15 +59,13 @@ class StorageResource(Resource):
             storages = None
 
         template_return = flask.render_template(
-            'storages.html',
-            table_data=storages, form=form
+            "storages.html", table_data=storages, form=form
         )
 
-        return flask.Response(template_return, mimetype='text/html')
+        return flask.Response(template_return, mimetype="text/html")
 
 
 class EditStorageResource(Resource):
-
     @flask_login.login_required
     def get(self, int_id):
         """
@@ -91,12 +79,12 @@ class EditStorageResource(Resource):
 
         table_object = Storage.query.get_or_404(int_id)
         form = StorageForm(obj=table_object)
-        template_return = flask.render_template('edit.html', form=form)
+        template_return = flask.render_template("edit.html", form=form)
 
         if flask_login.current_user.id != table_object.user_id:
             flask.abort(403)
 
-        return flask.Response(template_return, mimetype='text/html')
+        return flask.Response(template_return, mimetype="text/html")
 
     @flask_login.login_required
     def post(self, int_id):
@@ -117,12 +105,11 @@ class EditStorageResource(Resource):
 
         database.session.commit()
 
-        template_return = flask.redirect(flask.url_for('handle_storage'))
+        template_return = flask.redirect(flask.url_for("handle_storage"))
         return template_return
 
 
 class DeleteStorageResource(Resource):
-
     @flask_login.login_required
     def get(self, int_id):
         """
@@ -137,14 +124,10 @@ class DeleteStorageResource(Resource):
         table_object = Storage.query.get_or_404(int_id)
         form = StorageForm(obj=table_object)
 
-        flask.flash("Please confirm deleting the category '{}'.".format(
-            table_object.name))
-        template_return = flask.render_template(
-            "confirm_deletion.html",
-            form=form
-        )
+        flask.flash(f"Please confirm deleting the category '{table_object.name}'.")
+        template_return = flask.render_template("confirm_deletion.html", form=form)
 
-        return flask.Response(template_return, mimetype='text/html')
+        return flask.Response(template_return, mimetype="text/html")
 
     @flask_login.login_required
     def post(self, int_id):
@@ -169,17 +152,18 @@ class DeleteStorageResource(Resource):
 
             flask.flash(
                 f"You can't delete '{table_object.name}' category "
-                f"since it is assigned to an item.")
+                f"since it is assigned to an item."
+            )
             template_return = flask.Response(
                 flask.render_template("confirm_deletion.html", form=form),
-                mimetype='text/html')
+                mimetype="text/html",
+            )
 
         else:
-            flask.flash("Deleted '{}' storage".format(table_object.name))
+            flask.flash(f"Deleted '{table_object.name}' storage")
             template_return = flask.redirect(
                 flask.url_for(
-                    'handle_storage',
-                    username=flask_login.current_user.username
+                    "handle_storage", username=flask_login.current_user.username
                 )
             )
 
