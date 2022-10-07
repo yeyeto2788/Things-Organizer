@@ -1,0 +1,25 @@
+{
+  "recommendations": [
+    "ban.spellright",
+    "njpwerner.autodocstring",
+    "shakram02.bash-beautify",
+    "jeff-hykin.better-dockerfile-syntax",
+    "ms-azuretools.vscode-docker",
+    "bungcip.better-toml",
+    "janisdd.vscode-edit-csv",
+    "perkovec.emoji",
+    "irongeek.vscode-env",
+    "yzhang.markdown-all-in-one",
+    "bierner.markdown-emoji",
+    "pkief.material-icon-theme",
+    "yutengjing.open-in-external-app",
+    "esbenp.prettier-vscode",
+    "ms-python.vscode-pylance",
+    "ms-python.python",
+
+    "ms-vscode-remote.vscode-remote-extensionpack",
+    "mtxr.sqltools",
+    "gruntfuggly.todo-tree",
+    "redhat.vscode-yaml"
+  ]
+}

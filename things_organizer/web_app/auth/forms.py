@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, ValidationError
-from wtforms.validators import DataRequired, Length, Regexp, EqualTo, Email
+from wtforms import BooleanField, PasswordField, StringField, ValidationError
+from wtforms.validators import DataRequired, Email, EqualTo, Length, Regexp
 
 from things_organizer.web_app.users.models import User
 
@@ -11,17 +11,9 @@ class LoginForm(FlaskForm):
 
     """
 
-    username = StringField(
-        label='Username',
-        validators=[DataRequired()]
-    )
-    password = PasswordField(
-        label='Password',
-        validators=[DataRequired()]
-    )
-    remember_me = BooleanField(
-        label='Keep me logged in'
-    )
+    username = StringField(label="Username", validators=[DataRequired()])
+    password = PasswordField(label="Password", validators=[DataRequired()])
+    remember_me = BooleanField(label="Keep me logged in")
 
 
 class SignupForm(FlaskForm):
@@ -31,36 +23,26 @@ class SignupForm(FlaskForm):
     """
 
     username = StringField(
-        label='Username',
+        label="Username",
         validators=[
             DataRequired(),
             Length(3, 80),
             Regexp(
-                '^[A-Za-z0-9_]{3,}$',
-                message='Username should consist of numbers, '
-                        'letters, and underscores.'
-            )
-        ]
+                "^[A-Za-z0-9_]{3,}$",
+                message="Username should consist of numbers, "
+                "letters, and underscores.",
+            ),
+        ],
     )
     password = PasswordField(
-        'Password',
+        "Password",
         validators=[
             DataRequired(),
-            EqualTo('password2', message='Passwords must match.')
-        ]
+            EqualTo("password2", message="Passwords must match."),
+        ],
     )
-    password2 = PasswordField(
-        'Confirm password',
-        validators=[DataRequired()]
-    )
-    email = StringField(
-        'Email',
-        validators=[
-            DataRequired(),
-            Length(1, 120),
-            Email()
-        ]
-    )
+    password2 = PasswordField("Confirm password", validators=[DataRequired()])
+    email = StringField("Email", validators=[DataRequired(), Length(1, 120), Email()])
 
     def validate_email(self, email_field):
         """
@@ -75,8 +57,7 @@ class SignupForm(FlaskForm):
         """
 
         if User.query.filter_by(email=email_field.data).first():
-            raise ValidationError(
-                'There already is a user with this email address.')
+            raise ValidationError("There already is a user with this email address.")
 
     def validate_username(self, username_field):
         """
@@ -91,4 +72,4 @@ class SignupForm(FlaskForm):
         """
 
         if User.query.filter_by(username=username_field.data).first():
-            raise ValidationError('This username is already taken.')
+            raise ValidationError("This username is already taken.")

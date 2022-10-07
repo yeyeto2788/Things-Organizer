@@ -7,7 +7,6 @@ Common conversions and so on.
 """
 import os
 import re
-
 from zipfile import ZipFile
 
 
@@ -23,8 +22,10 @@ def sort_alphanumeric_list(lst_unsorted):
 
     """
 
-    convert = lambda text: int(text) if text.isdigit() else text
-    alphanum_key = lambda key: [convert(c) for c in re.split('([0-9]+)', key)]
+    convert = lambda text: int(text) if text.isdigit() else text  # noqa: E731
+    alphanum_key = lambda key: [  # noqa: E731
+        convert(character) for character in re.split("([0-9]+)", key)
+    ]  # noqa: E731
     return sorted(lst_unsorted, key=alphanum_key)
 
 
@@ -46,16 +47,14 @@ def str_to_bln(str_value):
 
     val = str_value.lower()
 
-    if val in ('true', '1', 't', 'y', 'yes', 'on', 'yeah', 'yup', 'certainly'):
+    if val in ("true", "1", "t", "y", "yes", "on", "yeah", "yup", "certainly"):
         bln_return = True
 
-    elif val in ('n', 'no', 'f', 'false', 'off', '0'):
+    elif val in ("n", "no", "f", "false", "off", "0"):
         bln_return = False
 
     else:
-        raise ValueError(
-            "{} is not compatible to convert into boolean.".format(str_value)
-        )
+        raise ValueError(f"{str_value} is not compatible to convert into boolean.")
 
     return bln_return
 
@@ -77,8 +76,8 @@ def zip_dir(zip_directory, zip_name, str_directory, bln_delete=0):
 
     file_paths = []
 
-    if not zip_name.endswith('.zip'):
-        zip_name = '{}.zip'.format(zip_name)
+    if not zip_name.endswith(".zip"):
+        zip_name = f"{zip_name}.zip"
 
     for root, _directories, files in os.walk(str_directory):
         for filename in files:
@@ -88,12 +87,10 @@ def zip_dir(zip_directory, zip_name, str_directory, bln_delete=0):
     if file_paths:
         zip_filename = os.path.join(zip_directory, zip_name)
 
-        with ZipFile(zip_filename, 'w') as zip_file:
+        with ZipFile(zip_filename, "w") as zip_file:
             for file in file_paths:
                 folder_name = os.path.basename(os.path.dirname(file))
-                zip_location = os.path.join(
-                    folder_name, os.path.basename(file)
-                )
+                zip_location = os.path.join(folder_name, os.path.basename(file))
                 zip_file.write(file, zip_location)
         zip_file.close()
 
@@ -101,6 +98,6 @@ def zip_dir(zip_directory, zip_name, str_directory, bln_delete=0):
             for str_file in file_paths:
                 os.remove(str_file)
     else:
-        zip_filename = ''
+        zip_filename = ""
 
     return zip_filename

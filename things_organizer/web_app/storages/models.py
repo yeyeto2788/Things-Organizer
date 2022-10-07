@@ -7,23 +7,11 @@ class Storage(database.Model):
 
     """
 
-    id = database.Column(
-        database.Integer,
-        primary_key=True
-    )
-    name = database.Column(
-        database.String(50),
-        unique=True,
-        nullable=False
-    )
-    location = database.Column(
-        database.String(120),
-        nullable=False
-    )
+    id = database.Column(database.Integer, primary_key=True)
+    name = database.Column(database.String(50), unique=True, nullable=False)
+    location = database.Column(database.String(120), nullable=False)
     user_id = database.Column(
-        database.Integer,
-        database.ForeignKey('user.id'),
-        nullable=False
+        database.Integer, database.ForeignKey("user.id"), nullable=False
     )
 
     @classmethod
@@ -44,4 +32,4 @@ class Storage(database.Model):
         return storages
 
     def __repr__(self):
-        return '<Storage %r>' % self.name
+        return "<Storage {self.name}>"

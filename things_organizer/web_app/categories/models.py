@@ -7,23 +7,14 @@ class Category(database.Model):
 
     """
 
-    id = database.Column(
-        database.Integer,
-        primary_key=True
-    )
-    name = database.Column(
-        database.String(50),
-        unique=True,
-        nullable=False
-    )
+    id = database.Column(database.Integer, primary_key=True)
+    name = database.Column(database.String(50), unique=True, nullable=False)
     user_id = database.Column(
-        database.Integer,
-        database.ForeignKey('user.id'),
-        nullable=False
+        database.Integer, database.ForeignKey("user.id"), nullable=False
     )
 
     def __repr__(self):
-        return '<Category %r>' % self.name
+        return f"<Category {self.name}>"
 
     @classmethod
     def get_user_categories(cls, user_id):

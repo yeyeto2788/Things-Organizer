@@ -9,7 +9,6 @@ from things_organizer.web_app.tags.models import Tag
 
 
 class TagResource(Resource):
-
     @flask_login.login_required
     def get(self):
         """
@@ -26,10 +25,9 @@ class TagResource(Resource):
         if not tags:
             tags = None
 
-        template_return = flask.render_template('tags.html', table_data=tags,
-                                                form=form)
+        template_return = flask.render_template("tags.html", table_data=tags, form=form)
 
-        return flask.Response(template_return, mimetype='text/html')
+        return flask.Response(template_return, mimetype="text/html")
 
     @flask_login.login_required
     def post(self):
@@ -48,23 +46,18 @@ class TagResource(Resource):
             tag_obj = Tag(name=name)
             database.session.add(tag_obj)
             database.session.commit()
-            flask.flash("Tag {} stored.".format(tag_obj.name))
+            flask.flash(f"Tag {tag_obj.name} stored.")
         tags = Tag.query.filter().all()
 
         if not tags:
             tags = None
 
-        template_return = flask.render_template(
-            'tags.html',
-            table_data=tags,
-            form=form
-        )
+        template_return = flask.render_template("tags.html", table_data=tags, form=form)
 
-        return flask.Response(template_return, mimetype='text/html')
+        return flask.Response(template_return, mimetype="text/html")
 
 
 class EditTagResource(Resource):
-
     @flask_login.login_required
     def get(self, int_id):
         """
@@ -78,7 +71,7 @@ class EditTagResource(Resource):
 
         table_object = Tag.query.get_or_404(int_id)
         form = TagForm(obj=table_object)
-        template_return = flask.render_template('edit.html', form=form)
+        template_return = flask.render_template("edit.html", form=form)
 
         return template_return
 
@@ -101,12 +94,11 @@ class EditTagResource(Resource):
 
         database.session.commit()
 
-        template_return = flask.redirect(flask.url_for('handle_categories'))
-        return flask.Response(template_return, mimetype='text/html')
+        template_return = flask.redirect(flask.url_for("handle_categories"))
+        return flask.Response(template_return, mimetype="text/html")
 
 
 class DeleteTagResource(Resource):
-
     @flask_login.login_required
     def get(self, int_id):
         """
@@ -121,15 +113,10 @@ class DeleteTagResource(Resource):
         table_object = Tag.query.get_or_404(int_id)
         form = TagForm(obj=table_object)
 
-        flask.flash(
-            "Please confirm deleting the tag '{}'.".format(table_object.name)
-        )
-        template_return = flask.render_template(
-            "confirm_deletion.html",
-            form=form
-        )
+        flask.flash(f"Please confirm deleting the tag '{table_object.name}'.")
+        template_return = flask.render_template("confirm_deletion.html", form=form)
 
-        return flask.Response(template_return, mimetype='text/html')
+        return flask.Response(template_return, mimetype="text/html")
 
     @flask_login.login_required
     def post(self, int_id):
@@ -158,12 +145,13 @@ class DeleteTagResource(Resource):
             )
             template_return = flask.Response(
                 flask.render_template("confirm_deletion.html", form=form),
-                mimetype='text/html')
+                mimetype="text/html",
+            )
 
         else:
-            flask.flash("Deleted '{}' tag".format(table_object.name))
+            flask.flash(f"Deleted '{table_object.name}' tag")
             template_return = flask.redirect(
-                flask.url_for('handle_tags',
-                              username=flask_login.current_user.username))
+                flask.url_for("handle_tags", username=flask_login.current_user.username)
+            )
 
         return template_return

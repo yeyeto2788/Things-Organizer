@@ -10,10 +10,10 @@ DATABASE_PATH = os.path.abspath(
     os.path.join(things_organizer.constants.DB_PATH, "things_organizer.db")
 )
 
-if sys.platform == 'linux':
-    SQLALCHEMY_DATABASE_URI = "sqlite:////{}".format(DATABASE_PATH)
+if sys.platform == "linux":
+    SQLALCHEMY_DATABASE_URI = f"sqlite:////{DATABASE_PATH}"
     print(f"Using the db {DATABASE_PATH}")
 
 else:
-    SQLALCHEMY_DATABASE_URI = "sqlite:///{}".format(DATABASE_PATH)
+    SQLALCHEMY_DATABASE_URI = f"sqlite:///{DATABASE_PATH}"
     print(f"Using the db {DATABASE_PATH}")

@@ -11,10 +11,10 @@ http://semver.org/
 """
 
 VERSION_INFO = {
-    'MAJOR': 0,
-    'MINOR': 1,
-    'PATCH': 3,
+    "MAJOR": 0,
+    "MINOR": 1,
+    "PATCH": 3,
 }
-__version__ = '{MAJOR:d}.{MINOR:d}.{PATCH:d}'.format(**VERSION_INFO)
-__author__ = 'Juan Biondi'
-__email__ = 'juanernestobiondi@gmail.com'
+__version__ = "{MAJOR:d}.{MINOR:d}.{PATCH:d}".format(**VERSION_INFO)
+__author__ = "Juan Biondi"
+__email__ = "juanernestobiondi@gmail.com"

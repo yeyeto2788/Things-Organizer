@@ -3,7 +3,6 @@ from flask_restful import Resource
 
 
 class AboutResource(Resource):
-
     def get(self):
         """
         Shows information about the project.
@@ -13,6 +12,6 @@ class AboutResource(Resource):
 
         """
 
-        template_return = flask.render_template('about.html')
+        template_return = flask.render_template("about.html")
 
-        return flask.Response(template_return, mimetype='text/html')
+        return flask.Response(template_return, mimetype="text/html")

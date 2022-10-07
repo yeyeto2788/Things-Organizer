@@ -14,7 +14,6 @@ logger = logging.getLogger()
 
 
 class AddThingResource(Resource):
-
     @flask_login.login_required
     def get(self):
         """Show the `add_thing` template on the site."""
@@ -26,12 +25,9 @@ class AddThingResource(Resource):
         storages = Storage.get_user_storages(user_id=current_user)
         form.storage.choices = storages
 
-        template_return = flask.render_template(
-            'add_thing.html',
-            form=form
-        )
+        template_return = flask.render_template("add_thing.html", form=form)
 
-        return flask.Response(template_return, mimetype='text/html')
+        return flask.Response(template_return, mimetype="text/html")
 
     @flask_login.login_required
     def post(self):
@@ -67,26 +63,20 @@ class AddThingResource(Resource):
                 storage_id=storage_id,
                 tags=tags,
                 unit=unit,
-                quantity=quantity
+                quantity=quantity,
             )
             database.session.add(thing_obj)
             database.session.commit()
-            flask.flash("Stored '{}'".format(thing_obj.name))
-            template_return = flask.redirect(flask.url_for('handle_things'))
+            flask.flash(f"Stored '{thing_obj.name}'")
+            template_return = flask.redirect(flask.url_for("handle_things"))
 
             return template_return
 
-        else:
-            template_return = flask.render_template(
-                'add_thing.html',
-                form=form
-            )
-
-        return flask.Response(template_return, mimetype='text/html')
+        template_return = flask.render_template("add_thing.html", form=form)
+        return flask.Response(template_return, mimetype="text/html")
 
 
 class EditThingResource(Resource):
-
     @flask_login.login_required
     def get(self, int_id):
         """
@@ -114,8 +104,8 @@ class EditThingResource(Resource):
         if flask_login.current_user != table_object.user:
             flask.abort(403)
 
-        template_return = flask.render_template('edit.html', form=form)
-        return flask.Response(template_return, mimetype='text/html')
+        template_return = flask.render_template("edit.html", form=form)
+        return flask.Response(template_return, mimetype="text/html")
 
     @flask_login.login_required
     def post(self, int_id):
@@ -123,14 +113,10 @@ class EditThingResource(Resource):
         table_object = Thing.query.get_or_404(int_id)
         form = ThingForm(**flask.request.form)
 
-        categories = Category.get_user_categories(
-            user_id=flask_login.current_user.id)
-
+        categories = Category.get_user_categories(user_id=flask_login.current_user.id)
         form.category.choices = categories
 
-        storages = Storage.get_user_storages(
-            user_id=flask_login.current_user.id)
-
+        storages = Storage.get_user_storages(user_id=flask_login.current_user.id)
         form.storage.choices = storages
 
         if flask_login.current_user != table_object.user:
@@ -147,16 +133,14 @@ class EditThingResource(Resource):
             table_object.tags = form.tags.data
 
             database.session.commit()
-            template_return = flask.redirect(flask.url_for('handle_things'))
+            template_return = flask.redirect(flask.url_for("handle_things"))
             return template_return
 
-        else:
-            template_return = flask.render_template('edit.html', form=form)
-            return flask.Response(template_return, mimetype='text/html')
+        template_return = flask.render_template("edit.html", form=form)
+        return flask.Response(template_return, mimetype="text/html")
 
 
 class ThingResource(Resource):
-
     @flask_login.login_required
     def get(self):
         """
@@ -170,27 +154,22 @@ class ThingResource(Resource):
         if flask_login.current_user.is_authenticated:
             logger.info("Redirecting to 'things' page.")
 
-            things = Thing.query.filter_by(
-                user_id=flask_login.current_user.id).all()
+            things = Thing.query.filter_by(user_id=flask_login.current_user.id).all()
 
             if not things:
                 things = None
 
-            template_return = flask.render_template(
-                'things.html',
-                table_data=things
-            )
+            template_return = flask.render_template("things.html", table_data=things)
 
         else:
             logger.info("Redirecting to 'login' page.")
-            template_return = flask.redirect(flask.url_for('handle_login'))
-            flask.session['next_url'] = flask.request.path
+            template_return = flask.redirect(flask.url_for("handle_login"))
+            flask.session["next_url"] = flask.request.path
 
-        return flask.Response(template_return, mimetype='text/html')
+        return flask.Response(template_return, mimetype="text/html")
 
 
 class DeleteThingResource(Resource):
-
     @flask_login.login_required
     def get(self, int_id):
         """
@@ -205,15 +184,10 @@ class DeleteThingResource(Resource):
         table_object = Thing.query.get_or_404(int_id)
         form = ThingForm(obj=table_object)
 
-        flask.flash(
-            "Please confirm deleting the item '{}'.".format(
-                table_object.name
-            )
-        )
-        template_return = flask.render_template("confirm_deletion.html",
-                                                form=form)
+        flask.flash(f"Please confirm deleting the item '{table_object.name}'.")
+        template_return = flask.render_template("confirm_deletion.html", form=form)
 
-        return flask.Response(template_return, mimetype='text/html')
+        return flask.Response(template_return, mimetype="text/html")
 
     @flask_login.login_required
     def post(self, int_id):
@@ -229,12 +203,9 @@ class DeleteThingResource(Resource):
 
         database.session.delete(table_object)
         database.session.commit()
-        flask.flash("Deleted '{}' item".format(table_object.name))
+        flask.flash(f"Deleted '{table_object.name}' item")
         template_return = flask.redirect(
-            flask.url_for(
-                'handle_things',
-                username=flask_login.current_user.username
-            )
+            flask.url_for("handle_things", username=flask_login.current_user.username)
         )
 
         return template_return

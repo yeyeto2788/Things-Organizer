@@ -10,10 +10,10 @@ class StorageForm(FlaskForm):
 
     """
 
-    name = StringField(label='Storage Name')
-    location = StringField(label='Location')
+    name = StringField(label="Storage Name")
+    location = StringField(label="Location")
 
-    def validate(self):
+    def validate(self, extra_validators=None):
         """
         Validation of the Storage form checking whether the storage name
         and location pair already exists or not.
@@ -25,12 +25,11 @@ class StorageForm(FlaskForm):
 
         bln_return = True
 
-        if not FlaskForm.validate(self):
+        if not FlaskForm.validate(self, extra_validators=extra_validators):
             bln_return = False
 
         if Storage.query.filter_by(
-                name=self.name.data,
-                location=self.location.data
+            name=self.name.data, location=self.location.data
         ).first():
             bln_return = False
 

@@ -1,5 +1,5 @@
 from flask_login import UserMixin
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 
 from things_organizer.extensions import database
 
@@ -10,28 +10,11 @@ class User(database.Model, UserMixin):
 
     """
 
-    id = database.Column(
-        database.Integer,
-        primary_key=True
-    )
-    username = database.Column(
-        database.String(80),
-        unique=True,
-        nullable=False
-    )
-    email = database.Column(
-        database.String(120),
-        unique=True,
-        nullable=False
-    )
-    things = database.relationship(
-        'Thing',
-        backref='user',
-        lazy='dynamic'
-    )
-    password_hash = database.Column(
-        database.String
-    )
+    id = database.Column(database.Integer, primary_key=True)
+    username = database.Column(database.String(80), unique=True, nullable=False)
+    email = database.Column(database.String(120), unique=True, nullable=False)
+    things = database.relationship("Thing", backref="user", lazy="dynamic")
+    password_hash = database.Column(database.String)
 
     @property
     def password(self):
@@ -43,7 +26,7 @@ class User(database.Model, UserMixin):
             AttributeError.
 
         """
-        raise AttributeError('password: write-only field')
+        raise AttributeError("password: write-only field")
 
     @password.setter
     def password(self, password):
@@ -86,7 +69,7 @@ class User(database.Model, UserMixin):
         return User.query.filter_by(username=username).first()
 
     def __repr__(self):
-        return "<User %r>" % self.username
+        return f"<User {self.username}>"
 
     def __unicode__(self):
         return self.username

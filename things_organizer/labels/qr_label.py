@@ -47,9 +47,8 @@ class QRLabel:
         self.thing_description = str_description
         self.storage_name = s_name
         self.storage_location = s_location
-        self.file_name = '{}.png'.format(str_name)
-        self.file_directory = os.path.realpath(
-            things_organizer.constants.LABEL_PATH)
+        self.file_name = f"{str_name}.png"
+        self.file_directory = os.path.realpath(things_organizer.constants.LABEL_PATH)
 
         if not os.path.exists(self.file_directory):
             os.makedirs(self.file_directory)
@@ -61,12 +60,11 @@ class QRLabel:
 
         """
 
-        str_data = """Name:             {}
-        Description:      {}
-        Storage name:     {}
-        Storage location: {}
-        """.format(self.thing_name, self.thing_description,
-                   self.storage_name, self.storage_location)
+        str_data = f"""Name:             {self.thing_name}
+        Description:      {self.thing_description}
+        Storage name:     {self.storage_name}
+        Storage location: {self.storage_location}
+        """
 
         final_file_name = os.path.join(self.file_directory, self.file_name)
 
@@ -74,27 +72,27 @@ class QRLabel:
             version=1,
             error_correction=qrcode.constants.ERROR_CORRECT_L,
             box_size=10,
-            border=4
+            border=4,
         )
 
         qr_img.add_data(str_data)
         qr_img.make(fit=True)
         img = qr_img.make_image(fill_color="black", back_color="white")
 
-        with open('{}'.format(final_file_name), 'wb') as qr_img_file:
+        with open(final_file_name, "wb") as qr_img_file:
             img.save(qr_img_file)
 
         qr_image = Image.open(final_file_name)
 
         # Calculate new values for the label
         base_width = 350
-        width_percent = (base_width / float(qr_image.size[0]))
+        width_percent = base_width / float(qr_image.size[0])
         height_size = int((float(qr_image.size[1]) * float(width_percent)))
 
         # Resize qr image since default gives 570x570px
         qr_image = qr_image.resize((base_width, height_size), Image.ANTIALIAS)
 
-        lst_data = str_data.split('\n')
+        lst_data = str_data.split("\n")
 
         # Final image with text
         bg_width = 384
@@ -105,12 +103,11 @@ class QRLabel:
         # Fill background image with the text on the label.
         for int_index, line in enumerate(lst_data):
             add_height = int_index * 10
-            final_text = line.replace('\n', '').lstrip()
-            drawing.text((10, base_width + add_height), final_text,
-                         fill='black')
+            final_text = line.replace("\n", "").lstrip()
+            drawing.text((10, base_width + add_height), final_text, fill="black")
 
         final_position = int((bg_width - base_width) / 2)
         # Add qr image on background image and save it.
         bg_image.paste(qr_image, (final_position, 0))
-        self.file_name = 'label-{}'.format(self.file_name)
+        self.file_name = f"label-{self.file_name}"
         bg_image.save(os.path.join(self.file_directory, self.file_name))

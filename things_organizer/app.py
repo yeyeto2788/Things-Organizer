@@ -4,31 +4,38 @@ import os
 from flask import Flask, request
 
 import things_organizer.constants
-from things_organizer.extensions import (
-    database, login_manager, api, migrate
-)
+from things_organizer.extensions import api, database, login_manager, migrate
 from things_organizer.login_utils import load_user
 from things_organizer.web_app.about.resources import AboutResource
 from things_organizer.web_app.auth.resources import (
-    LoginResource, RegisterResource, LogoutResource
+    LoginResource,
+    LogoutResource,
+    RegisterResource,
 )
 from things_organizer.web_app.categories.resources import (
-    CategoryResource, EditCategoryResource,
-    DeleteCategoryResource
+    CategoryResource,
+    DeleteCategoryResource,
+    EditCategoryResource,
 )
 from things_organizer.web_app.index.resources import HomeResource
 from things_organizer.web_app.labels.resources import LabelResource
 from things_organizer.web_app.reports.resources import ReportResource
 from things_organizer.web_app.search.resources import SearchResource
 from things_organizer.web_app.storages.resources import (
-    StorageResource, EditStorageResource, DeleteStorageResource
+    DeleteStorageResource,
+    EditStorageResource,
+    StorageResource,
 )
 from things_organizer.web_app.tags.resources import (
-    TagResource, EditTagResource, DeleteTagResource
+    DeleteTagResource,
+    EditTagResource,
+    TagResource,
 )
 from things_organizer.web_app.things.resources import (
-    AddThingResource, ThingResource, EditThingResource,
-    DeleteThingResource
+    AddThingResource,
+    DeleteThingResource,
+    EditThingResource,
+    ThingResource,
 )
 
 logger = logging.getLogger()
@@ -40,9 +47,11 @@ def create_dirs():
     Returns:
 
     """
-    dirs = [things_organizer.constants.DB_PATH,
-            things_organizer.constants.LABEL_PATH,
-            things_organizer.constants.REPORT_PATH]
+    dirs = [
+        things_organizer.constants.DB_PATH,
+        things_organizer.constants.LABEL_PATH,
+        things_organizer.constants.REPORT_PATH,
+    ]
 
     for directory in dirs:
         os.makedirs(directory, exist_ok=True)
@@ -63,12 +72,10 @@ def configure_migrations(app: Flask):
 
     """
     migrations_dir = os.path.join(
-        os.path.dirname(os.path.dirname(__file__)),
-        'migrations'
+        os.path.dirname(os.path.dirname(__file__)), "migrations"
     )
     print(migrations_dir)
-    migrate.init_app(app, database, compare_type=True,
-                     directory=migrations_dir)
+    migrate.init_app(app, database, compare_type=True, directory=migrations_dir)
 
 
 def configure_login(app: Flask):
@@ -97,97 +104,60 @@ def configure_api(app: Flask):
 
     """
     # Web Resources
+    api.add_resource(RegisterResource, "/register", endpoint="handle_register")
+    api.add_resource(SearchResource, "/search", endpoint="handle_search")
+    api.add_resource(LoginResource, "/login", endpoint="handle_login")
+    api.add_resource(LogoutResource, "/logout", endpoint="handle_logout")
+    api.add_resource(AboutResource, "/about", endpoint="handle_about")
+    api.add_resource(HomeResource, "/", "/home", endpoint="handle_root")
+    api.add_resource(ThingResource, "/things", endpoint="handle_things")
+    api.add_resource(AddThingResource, "/add_thing", endpoint="handle_add_thing")
     api.add_resource(
-        RegisterResource, '/register',
-        endpoint='handle_register'
+        EditThingResource, "/edit/thing/<int:int_id>", endpoint="handle_edit_thing"
     )
     api.add_resource(
-        SearchResource, "/search",
-        endpoint='handle_search'
+        DeleteThingResource,
+        "/delete/thing/<int:int_id>",
+        endpoint="handle_delete_thing",
+    )
+    api.add_resource(CategoryResource, "/categories", endpoint="handle_categories")
+    api.add_resource(
+        EditCategoryResource,
+        "/edit/category/<int:int_id>",
+        endpoint="handle_edit_category",
     )
     api.add_resource(
-        LoginResource, "/login",
-        endpoint='handle_login'
+        DeleteCategoryResource,
+        "/delete/category/<int:int_id>",
+        endpoint="handle_delete_category",
+    )
+    api.add_resource(StorageResource, "/storages", endpoint="handle_storage")
+    api.add_resource(
+        EditStorageResource,
+        "/edit/storage/<int:int_id>",
+        endpoint="handle_edit_storage",
     )
     api.add_resource(
-        LogoutResource, "/logout",
-        endpoint='handle_logout'
+        DeleteStorageResource,
+        "/delete/storage/<int:int_id>",
+        endpoint="handle_delete_storage",
+    )
+    api.add_resource(ReportResource, "/reports", endpoint="handle_report")
+    api.add_resource(TagResource, "/tags", endpoint="handle_tags")
+    api.add_resource(
+        EditTagResource, "/edit/tag/<int:int_id>", endpoint="handle_edit_tag"
     )
     api.add_resource(
-        AboutResource, "/about",
-        endpoint='handle_about'
+        DeleteTagResource, "/delete/tag/<int:int_id>", endpoint="handle_delete_tag"
     )
-    api.add_resource(
-        HomeResource, '/', '/home',
-        endpoint='handle_root'
-    )
-    api.add_resource(
-        ThingResource, '/things',
-        endpoint='handle_things'
-    )
-    api.add_resource(
-        AddThingResource, '/add_thing',
-        endpoint='handle_add_thing'
-    )
-    api.add_resource(
-        EditThingResource, '/edit/thing/<int:int_id>',
-        endpoint='handle_edit_thing'
-    )
-    api.add_resource(
-        DeleteThingResource, '/delete/thing/<int:int_id>',
-        endpoint='handle_delete_thing'
-    )
-    api.add_resource(
-        CategoryResource, '/categories',
-        endpoint='handle_categories'
-    )
-    api.add_resource(
-        EditCategoryResource, '/edit/category/<int:int_id>',
-        endpoint='handle_edit_category'
-    )
-    api.add_resource(
-        DeleteCategoryResource, '/delete/category/<int:int_id>',
-        endpoint='handle_delete_category'
-    )
-    api.add_resource(
-        StorageResource, '/storages',
-        endpoint='handle_storage'
-    )
-    api.add_resource(
-        EditStorageResource, '/edit/storage/<int:int_id>',
-        endpoint='handle_edit_storage'
-    )
-    api.add_resource(
-        DeleteStorageResource, '/delete/storage/<int:int_id>',
-        endpoint='handle_delete_storage'
-    )
-    api.add_resource(
-        ReportResource, '/reports',
-        endpoint='handle_report'
-    )
-    api.add_resource(
-        TagResource, '/tags',
-        endpoint='handle_tags'
-    )
-    api.add_resource(
-        EditTagResource, '/edit/tag/<int:int_id>',
-        endpoint='handle_edit_tag'
-    )
-    api.add_resource(
-        DeleteTagResource, '/delete/tag/<int:int_id>',
-        endpoint='handle_delete_tag'
-    )
-    api.add_resource(
-        LabelResource, '/label/<int:int_id>',
-        endpoint='handle_label'
-    )
+    api.add_resource(LabelResource, "/label/<int:int_id>", endpoint="handle_label")
     # Initialize api
     api.init_app(app)
 
 
 def log_request():
     """Simple logging function so all hits are recorded."""
-    logger.info("{}".format(str(request.__dict__)))
+    logger.info(str(request.__dict__))
 
 
 def create_app() -> Flask:

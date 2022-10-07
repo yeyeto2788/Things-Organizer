@@ -9,9 +9,6 @@ from things_organizer.reports.txt_report import ReportTXT
 
 
 def get_report(file_name):
-    report_types = {
-        ".txt": ReportTXT,
-        ".csv": ReportCSV
-    }
-    filename, file_extension = os.path.splitext(file_name)
+    report_types = {".txt": ReportTXT, ".csv": ReportCSV}
+    _, file_extension = os.path.splitext(file_name)
     return report_types.get(file_extension)

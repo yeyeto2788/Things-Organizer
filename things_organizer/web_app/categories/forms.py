@@ -10,7 +10,7 @@ class CategoryForm(FlaskForm):
 
     """
 
-    name = StringField(label='Category Name')
+    name = StringField(label="Category Name")
 
     def validate_name(self, name_field):
         """
@@ -24,4 +24,4 @@ class CategoryForm(FlaskForm):
 
         """
         if Category.query.filter_by(name=name_field.data).first():
-            raise ValidationError('This category already exists.')
+            raise ValidationError("This category already exists.")
