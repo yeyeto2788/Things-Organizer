@@ -42,7 +42,7 @@ nodeenv==1.7.0; python_version >= "3.7" and python_full_version < "3.0.0" or pyt
 packaging==21.3; python_version >= "3.7"
 pathspec==0.10.1; python_version >= "3.7"
 pbr==5.10.0; python_version >= "3.8"
-pillow==9.2.0; python_version >= "3.7"
+pillow==9.3.0; python_version >= "3.7"
 platformdirs==2.5.2; python_version >= "3.7" and python_full_version >= "3.7.2"
 pluggy==1.0.0; python_version >= "3.7"
 pre-commit==2.20.0; python_version >= "3.7"
