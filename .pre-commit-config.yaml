@@ -71,21 +71,11 @@ repos:
 
   - repo: local
     hooks:
-      - id: export_lambdas_requirements
-        name: Export requirements.txt for lambdas
-        language: system
-        pass_filenames: false
-        entry: poetry export --without-hashes -o ./lambdas/requirements.txt
-        files: ^(pyproject.toml|poetry.lock)$
-        always_run: true
-
-  - repo: local
-    hooks:
       - id: export-dev
         name: Export requeriments-dev.txt
         language: system
         pass_filenames: false
-        entry: poetry export --dev --without-hashes --with-credentials -o requirements-dev.txt
+        entry: poetry export --with dev --without-hashes --with-credentials -o requirements-dev.txt
         files: ^(pyproject.toml|poetry.lock)$
         always_run: true
 
